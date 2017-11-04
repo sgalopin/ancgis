@@ -85,7 +85,7 @@ anc.map = new ol.Map({
 		new ol.control.ScaleLine(),
 		new ol.control.MousePosition({
 			className:'',
-			target:document.getElementById('mapMousePosition'),
+			target:document.getElementById('anc-mapstatus-mouseposition'),
 			coordinateFormat :function(coords){
 				var template = 'X: {x} - Y: {y} ';
 				return ol.coordinate.format(coords, template);
