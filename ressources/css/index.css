@@ -80,7 +80,8 @@ html, body, .container-fluid {
     font-size: 10px;
 }
 .ol-periodswitcher:hover {
-    background-color: transparent;
+    background-color: rgba(255,255,255,.6);
+    color: black;
 }
 .ol-periodswitcher-title:hover {
     cursor: pointer;
@@ -94,6 +95,7 @@ html, body, .container-fluid {
     border-radius: 5px;
 }
 .ol-periodswitcher-button {
+    color: white;
     display: inline;
     padding: 6px 12px;
     text-decoration: none;
