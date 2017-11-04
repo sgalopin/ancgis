@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IGN WMTS</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.4.2/css/ol.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./ressources/css/index.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.4.2/build/ol-debug.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="./ressources/js/ol/interaction/addhive.js"></script>
+	<script src="./ressources/js/ol/control/periodswitcher.js"></script>
+  </head>
+  <body>
+	<script>
+		// The following code will enable all tooltips in the document
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip(); 
+		});
+	</script>
+	<div class="container-fluid">
+		<!-- Map control tbar -->
+		<div id="anc-mapcontrol-tbar" class="btn-group">
+			<button id="anc-mapcontrol-addhive" class="btn btn-default" alt="Ajouter une ruche" type="button" data-toggle="tooltip" data-placement="bottom" title="Ajouter une ruche. La commande &#171; ctrl + roulette &#187; permet la rotation de la ruche." data-shortid="addhive"><span class="anc-glyphicons anc-glyphicons-kiosk"></span></button>
+			<button id="anc-mapcontrol-draw" class="btn btn-default" alt="Editer la couche de la période sélectionnée" type="button" data-toggle="tooltip" data-placement="bottom" title="Editer la couche de la période sélectionnée" data-shortid="draw"><span class="anc-glyphicons anc-glyphicons-vectorpathpolygon"></span></button>
+		</div>
+		<!-- Application message -->
+		<div id="anc-appmessage" style="position:absolute; top:45px; z-index:1000; margin-left:5px;">
+			<div class="alert alert-info" style="padding: 5px; display: none;">
+				Message d'info...
+			</div>
+		</div>
+		<!-- Map -->
+		<div id="anc-map" class="map"></div>
+		<!-- Map status tbar -->
+		<div id="anc-mapstatus-tbar">
+			<div id="anc-mapstatus-projection">EPSG:3857</div>
+			<div id="anc-mapstatus-mouseposition"></div>
+		</div>
+	</div>
+	<script src="./ressources/js/anc/map.js"></script>
+  </body>
+</html>
