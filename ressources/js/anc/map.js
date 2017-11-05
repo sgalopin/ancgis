@@ -125,3 +125,13 @@ $('#anc-mapcontrol-tbar>button').on('controlChange', function(event) {
 		anc.map.removeInteraction(anc.interaction[$(this)[0].dataset.shortid]);
 	}
 });
+$('#anc-zoneform-cancelbtn').on('click', function(event) {
+	event.stopPropagation();
+	$('#anc-zoneform').toggleClass('hidden');
+});
+
+//TODO: Add the EditZoneProperties interaction only with the draw interaction ?
+window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+anc.map.addInteraction(new ol.interaction.EditZoneProperties({
+	propertiesForm: 'anc-zoneform'
+}));
