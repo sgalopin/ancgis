@@ -46,6 +46,21 @@ html, body, .container-fluid {
 }
 
 /*************************/
+/**       AppMessage    **/
+/*************************/
+
+#anc-appmessage {
+    position: absolute;
+    top: 45px;
+    z-index: 1000;
+    margin-left: 5px;
+}
+#anc-appmessage>div {
+    padding: 5px;
+    display: none;
+}
+
+/*************************/
 /**      Glyphicons     **/
 /*************************/
 
@@ -206,6 +221,9 @@ html, body, .container-fluid {
 }
 .anc-zoneform-taxonstable {
     width: 100%;
+}
+.anc-zoneform-taxonstable thead {
+    border-bottom: 1px solid rgb(50,50,50);
 }
 .anc-zoneform-periodcolumn {
     width: 80px;
