@@ -24,6 +24,7 @@ var stroke = new ol.style.Stroke({color: 'black', width: 2});
 var fill = new ol.style.Fill({color: 'green'});
 var drawLayerSource = new ol.source.Vector({wrapX: false});
 var drawLayer = new ol.layer.Vector({
+	name: 'draw',
 	source: drawLayerSource,
 	style: new ol.style.Style({
 		fill: fill,
@@ -107,6 +108,11 @@ anc.interaction.draw = new ol.interaction.Draw({
 	source: drawLayerSource,
 	type: 'Polygon'
 });
+// Edit Zone Properties interaction
+anc.interaction.editzoneproperties = new ol.interaction.EditZoneProperties({
+	propertiesFormId: 'anc-zoneform',
+	zonesLayerName: 'draw'
+});
 
 $('#anc-mapcontrol-tbar>button').click(function(){
 	event.stopPropagation();
@@ -114,6 +120,7 @@ $('#anc-mapcontrol-tbar>button').click(function(){
 	if($(this).is('.active')){
 		$('#anc-mapcontrol-tbar>button[id!="'+ $(this).attr('id') +'"]').trigger('controlChange');
 		anc.map.addInteraction(anc.interaction[$(this)[0].dataset.shortid]);
+		$('#anc-map').trigger('interactionAdded');
 	} else {
 		anc.map.removeInteraction(anc.interaction[$(this)[0].dataset.shortid]);
 	}
@@ -129,9 +136,11 @@ $('#anc-zoneform-cancelbtn').on('click', function(event) {
 	event.stopPropagation();
 	$('#anc-zoneform').toggleClass('hidden');
 });
-
-//TODO: Add the EditZoneProperties interaction only with the draw interaction ?
+// Keep the editzoneproperties on the top of the map's interactions
 window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
-anc.map.addInteraction(new ol.interaction.EditZoneProperties({
-	propertiesForm: 'anc-zoneform'
-}));
+anc.map.addInteraction(anc.interaction.editzoneproperties);
+$('#anc-map').on('interactionAdded', function(event) {
+	event.stopPropagation();
+	anc.map.removeInteraction(anc.interaction.editzoneproperties);
+	anc.map.addInteraction(anc.interaction.editzoneproperties);
+});

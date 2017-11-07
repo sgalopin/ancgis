@@ -68,8 +68,8 @@ ol.interaction.AddHive = function(opt_options) {
 ol.inherits(ol.interaction.AddHive, ol.interaction.Interaction);
 
 /**
- * Handles the {@link ol.MapBrowserEvent map browser event} (if it was a
- * mousewheel-event) and eventually zooms the map.
+ * Handles the {@link ol.MapBrowserEvent map browser event} 
+ * to eventually add a hive on the map.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} Allow event propagation.
  * @this {ol.interaction.AddHive}
