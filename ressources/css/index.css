@@ -84,6 +84,9 @@ html, body, .container-fluid {
 .anc-glyphicons-vectorpathpolygon {
     background-image: url("../images/glyphicons/glyphicons-97-vector-path-polygon.png");
 }
+.anc-glyphicons-vectorpathcircle {
+    background-image: url("../images/glyphicons/glyphicons-96-vector-path-circle.png");
+}
 .anc-glyphicons-191plussign {
     background-image: url("../images/glyphicons/glyphicons-191-plus-sign.png");
 }

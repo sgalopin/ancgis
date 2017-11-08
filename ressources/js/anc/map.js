@@ -20,19 +20,64 @@ var hivesLayer = new ol.layer.Vector({
 });
 
 // Draw layer
-var stroke = new ol.style.Stroke({color: 'black', width: 2});
-var fill = new ol.style.Fill({color: 'green'});
-var drawLayerSource = new ol.source.Vector({wrapX: false});
+// Add the circle type to the GeoJSON (not supported yet)
+ol.format.GeoJSON.GEOMETRY_READERS_['Circle'] = function(object) {
+  return new ol.geom.Circle(object.coordinates, object.radius);
+};
+var drawLayerSource = new ol.source.Vector({
+	wrapX: false,
+	url: './ressources/geojson/features.geojson',
+    format: new ol.format.GeoJSON()
+});
 var drawLayer = new ol.layer.Vector({
 	name: 'draw',
 	source: drawLayerSource,
-	style: new ol.style.Style({
-		fill: fill,
-		stroke: stroke,
-		text: new ol.style.Text({
-			text: 'Plante...'
-		})
-	})
+	style: function(feature) {
+		var ppts = feature.getProperties();
+		// Style text
+		if(ppts.flore) {
+			var text = '';
+			ppts.flore.forEach(function(taxon, i) {
+				if (i !== 0) {
+					text += '\n\n';
+				}
+			    text += taxon.taxon
+				+ '\n' 
+				+ taxon.period
+				+ '\n' 
+				+ taxon.recovery
+				+ '%';
+			});
+			text = new ol.style.Text({
+				text: text
+			});
+		}
+		// Style stroke and fill
+		var styles = {
+		    'Polygon': new ol.style.Style({
+		      stroke: new ol.style.Stroke({
+		        color: 'black',
+		        width: 2
+		      }),
+		      fill: new ol.style.Fill({
+		        color: 'rgba(255, 255, 0, 0.1)'
+		      }),
+			  text: text ? text : undefined
+		    }),
+		    'Circle': new ol.style.Style({
+		      stroke: new ol.style.Stroke({
+		        color: 'black',
+		        //lineDash: [4],
+		        width: 2
+		      }),
+		      fill: new ol.style.Fill({
+		        color: 'rgba(0,255,0,0.1)'
+		      }),
+			  text: text ? text : undefined
+		    })
+		};
+		return styles[feature.getGeometry().getType()];
+	}
 });
 
 // BDORTHO layer
@@ -103,10 +148,15 @@ anc.map = new ol.Map({
 anc.interaction.addhive = new ol.interaction.AddHive({
 	source: hivesLayerSource
 });
-// Draw Button Control
-anc.interaction.draw = new ol.interaction.Draw({
+// Draw Polygon Button Control
+anc.interaction.drawpolygon = new ol.interaction.Draw({
 	source: drawLayerSource,
 	type: 'Polygon'
+});
+// Draw Circle Button Control
+anc.interaction.drawcircle = new ol.interaction.Draw({
+	source: drawLayerSource,
+	type: 'Circle'
 });
 // Edit Zone Properties interaction
 anc.interaction.editzoneproperties = new ol.interaction.EditZoneProperties({

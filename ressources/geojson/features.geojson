@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [{
+    "type": "Feature",
+    "id":"1",
+    "properties": {
+      "vegetationType": "Arbre",
+      "flore": [{
+        "taxon": "Pommier",
+        "period": "E2",
+        "recovery": 100
+      }]
+    },
+    "geometry": {
+      "type": "Circle",
+      "coordinates": [308562, 6121084],
+      "radius": 5
+    }
+  }, {
+    "type": "Feature",
+    "id":"2",
+    "properties": {
+      "vegetationType": "Cultures",
+      "flore": [{
+        "taxon": "Colza",
+        "period": "E1",
+        "recovery": 100
+      },{
+        "taxon": "Sarrasin",
+        "period": "E2",
+        "recovery": 100
+      }]
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[308538, 6121101], [308556, 6121100], [308553, 6121074], [308534, 6121074]]]
+    }
+  }]
+}
