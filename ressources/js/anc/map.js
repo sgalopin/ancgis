@@ -1,22 +1,30 @@
 
 // Define a namespace for the application.
-var anc = {
-	interaction:{}
-};
+typeof anc != "undefined" ? anc['interaction'] = {} : anc = {interaction:{}};
 
 // Hives layer
-var stroke = new ol.style.Stroke({color: 'black', width: 2});
-var fill = new ol.style.Fill({color: 'red'});
-var hivesLayerSource = new ol.source.Vector({wrapX: false});
+var hivesLayerSource = new ol.source.Vector({
+	wrapX: false,
+	url: './ressources/json/hives.geojson',
+    format: new ol.format.GeoJSON()
+});
 var hivesLayer = new ol.layer.Vector({
 	source: hivesLayerSource,
-	style: new ol.style.Style({
-		fill: fill,
-		stroke: stroke,
-		text: new ol.style.Text({
-			text: 'N°...'
-		})
-	})
+	style: function(feature) {
+		var ppts = feature.getProperties();
+		return new ol.style.Style({
+			fill: new ol.style.Fill({
+				color: 'red'
+			}),
+			stroke: new ol.style.Stroke({
+				color: 'black', 
+				width: 2
+			}),
+			text: new ol.style.Text({
+				text: 'N°' + ppts.registrationNumber
+			})
+		});
+	}
 });
 
 // Draw layer
@@ -26,7 +34,7 @@ ol.format.GeoJSON.GEOMETRY_READERS_['Circle'] = function(object) {
 };
 var drawLayerSource = new ol.source.Vector({
 	wrapX: false,
-	url: './ressources/geojson/features.geojson',
+	url: './ressources/json/vegetations.geojson',
     format: new ol.format.GeoJSON()
 });
 var drawLayer = new ol.layer.Vector({
