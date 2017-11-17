@@ -1,0 +1,71 @@
+<!-- Map control tbar -->
+<div id="anc-mapcontrol-tbar" class="btn-group">
+  <button id="anc-mapcontrol-addhive" class="btn btn-default" alt="Ajouter une ruche" type="button" data-toggle="tooltip" data-placement="bottom" title="Ajouter une ruche. La commande &#171; ctrl + roulette &#187; permet la rotation de la ruche." data-shortid="addhive"><span class="anc-glyphicons anc-glyphicons-kiosk"></span></button>
+  <button id="anc-mapcontrol-drawpolygon" class="btn btn-default" alt="Délimiter une zone de végétation" type="button" data-toggle="tooltip" data-placement="bottom" title="Délimiter une zone de végétation. Un &#171; clic droit &#187; sur une zone permet d'éditer ses propriétés." data-shortid="drawpolygon"><span class="anc-glyphicons anc-glyphicons-vectorpathpolygon"></span></button>
+  <button id="anc-mapcontrol-drawcircle" class="btn btn-default" alt="Délimiter une zone de végétation" type="button" data-toggle="tooltip" data-placement="bottom" title="Délimiter un arbre solitaire. Un &#171; clic droit &#187; sur un arbre permet d'éditer ses propriétés." data-shortid="drawcircle"><span class="anc-glyphicons anc-glyphicons-vectorpathcircle"></span></button>
+</div>
+<!-- Application message -->
+<div id="anc-appmessage">
+  <div class="alert alert-info">
+    Message d'info...
+  </div>
+</div>
+<!-- Map -->
+<div id="anc-map" class="map"></div>
+<!-- Map status tbar -->
+<div id="anc-mapstatus-tbar">
+  <div id="anc-mapstatus-projection">EPSG:3857</div>
+  <div id="anc-mapstatus-mouseposition"></div>
+</div>
+<div id="anc-zoneform" class="hidden">
+  <div class="anc-zoneform-title">Propriétés de la zone de végétation</div>
+  <div class="anc-zoneform-fields">
+    <div class="anc-zoneform-field">
+      <label for="anc-zoneform-typefield">Type de végétation : </label>
+      <select id="anc-zoneform-typefield">
+        <option value="forets">Forêts</option>
+        <option value="prairies">Prairies</option>
+        <option value="cultures">Cultures</option>
+        <option value="landes">Landes</option>
+        <option value="tourbieres">Tourbières</option>
+        <option value="...">...</option>
+      </select>
+    </div>
+  </div>
+  <div class="anc-zoneform-ttbar">
+    <span>Flore mellifère :</span>
+    <button id="anc-zoneform-addtaxonbtn" class="btn btn-default" alt="Ajouter une espèce végétale" type="button" data-toggle="tooltip" data-placement="left" title="Ajouter une espèce végétale."><span class="anc-glyphicons-enlarged anc-glyphicons-191plussign"></span></button>
+  </div>
+  <div class="anc-zoneform-taxonfields">
+    <table class="anc-zoneform-taxonstable">
+      <thead>
+         <tr>
+             <th>Espèce</th>
+             <th class="anc-zoneform-periodcolumn">Période(s)</th>
+             <th class="anc-zoneform-recoverycolumn">Rcvmt</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+             <td>Espèce 1</td>
+             <td>T1</td>
+             <td>20%</td>
+         </tr>
+         <tr>
+             <td>Espèce 2</td>
+             <td>PV1-T2</td>
+             <td>90%</td>
+         </tr>
+         <tr>
+             <td>Espèce 3</td>
+             <td>PV2</td>
+             <td>10%</td>
+         </tr>
+      </tbody>
+      </table>
+  </div>
+  <div class="anc-zoneform-btbar">
+    <button id="anc-zoneform-cancelbtn" class="btn btn-default" alt="Annuler les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Annuler les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-193removesign"></span></button>
+    <button id="anc-zoneform-validatebtn" class="btn btn-default" alt="Valider les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Valider les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-194oksign"></span></button>
+  </div>
+</div>
