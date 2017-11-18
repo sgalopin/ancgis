@@ -141,7 +141,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   # npm install
-  config.vm.provision "npm_install", type: "shell", privileged: false,  inline: <<-SHELL
+  config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
     cd /var/www/app/ && npm install
     npm install nodemon --save-dev
     npm install browser-sync --save-dev
@@ -152,7 +152,7 @@ Vagrant.configure("2") do |config|
 
   # The following provision is executed as "vagrant" and are only run when called explicitly
   if ARGV.include? '--provision-with'
-    config.vm.provision "launch_app", type: "shell", privileged: false, inline: <<-SHELL
+    config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
       # Port 80 requires elevated privileges
       # cd /var/www/app/ && sudo DEBUG=app:* npm start
       cd /var/www/app/ && npm run dev
