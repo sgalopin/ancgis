@@ -12,8 +12,6 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  # config.vm.box = "bento/ubuntu-16.04"
-  # config.vm.box = "ubuntu/xenial64"
   config.vm.box = "debian/stretch64"
 
   # Disable automatic box update checking. If you disable this, then
@@ -140,7 +138,7 @@ Vagrant.configure("2") do |config|
 
   SHELL
 
-  # npm install
+  # Provision "npm-install"
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
     cd /var/www/anc/ && npm install
     npm install nodemon --save-dev
@@ -148,15 +146,18 @@ Vagrant.configure("2") do |config|
     npm install connect-browser-sync --save-dev
   SHELL
 
+  # Provision "populate-db"
   config.vm.provision "populate-db", type: "shell", privileged: false, path: "./vagrant-shell/populate-db.sh"
 
-  # The following provision is executed as "vagrant" and are only run when called explicitly
+  # The following provisions are only run when called explicitly
   if ARGV.include? '--provision-with'
+
+    # Provision "launch-app"
     config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
-      # Port 80 requires elevated privileges
       # cd /var/www/anc/ && sudo DEBUG=app:* npm start
-      cd /var/www/anc/ && npm run dev
+      cd /var/www/anc/ && npm run start
     SHELL
+
   end
 
 end
