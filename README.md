@@ -57,8 +57,10 @@ Vous pouvez maintenant accéder à l'application à l'adresse: http://anc.dev.ne
 - **$ vagrant ssh**: Ouvre une console ssh vers le serveur.
 - **$ vagrant halt**: Stope la VM.
 - **$ vagrant destroy**: Supprime la VM.
-- **$ vagrant provision --provision-with launch-app**: Lance (avec node) le serveur SANS la possibilité de l'arrêter et de le redémarrer.
+- **$ vagrant provision --provision-with npm-install**: Lance l'installation des modules node requis par l'application.
 - **$ vagrant provision --provision-with populate-db**: (Re)charge la base de données (MongoDB).
+- **$ vagrant provision --provision-with launch-app**: Lance (avec node) le serveur SANS la possibilité de l'arrêter et de le redémarrer.
+
 
 ### Commandes serveur (via console ssh)
 - **vagrant@anc:~$ cd /var/www/anc && npm run start**: Lance (avec node) le serveur AVEC la possibilité de l'arrêter et de le redémarrer.

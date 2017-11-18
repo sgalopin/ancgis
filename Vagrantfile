@@ -141,9 +141,6 @@ Vagrant.configure("2") do |config|
   # Provision "npm-install"
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
     cd /var/www/anc/ && npm install
-    npm install nodemon --save-dev
-    npm install browser-sync --save-dev
-    npm install connect-browser-sync --save-dev
   SHELL
 
   # Provision "populate-db"
