@@ -56,9 +56,9 @@ Vagrant.configure("2") do |config|
     group: "vagrant",
     type: "rsync",
     rsync__args: ["--archive", "--delete", "-z"]
-  # Sync the app dir
+  # Sync the application dir
   # On Windows, rsync installed with Cygwin or MinGW will be detected by Vagrant and works well.
-  config.vm.synced_folder "./app", "/var/www/app",
+  config.vm.synced_folder "./application", "/var/www/anc",
     create: true,
     owner: "vagrant",
     group: "vagrant",
@@ -131,18 +131,18 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y mongodb
     # Node modules dir issue (creation of symlinks with 'npm install')
     # mkdir /var/tmp/node_modules_anc
-	  # mkdir -p /var/www/app/node_modules
+	  # mkdir -p /var/www/anc/node_modules
 	  # The following line requires to launch the bash in administrator mode under windows (only for the creation of the box)
-    # ln -s /var/tmp/node_modules_anc /var/www/app/node_modules
+    # ln -s /var/tmp/node_modules_anc /var/www/anc/node_modules
 	  # The following line is not working because vagrant erase this config when it etablish the synced folder (see sudo nano /proc/mounts)
-	  # echo '/var/tmp/node_modules_anc /var/www/app/node_modules none bind' >> /etc/fstab
-    # sudo mount -o bind /var/tmp/node_modules_anc /var/www/app/node_modules
+	  # echo '/var/tmp/node_modules_anc /var/www/anc/node_modules none bind' >> /etc/fstab
+    # sudo mount -o bind /var/tmp/node_modules_anc /var/www/anc/node_modules
 
   SHELL
 
   # npm install
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
-    cd /var/www/app/ && npm install
+    cd /var/www/anc/ && npm install
     npm install nodemon --save-dev
     npm install browser-sync --save-dev
     npm install connect-browser-sync --save-dev
@@ -154,8 +154,8 @@ Vagrant.configure("2") do |config|
   if ARGV.include? '--provision-with'
     config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
       # Port 80 requires elevated privileges
-      # cd /var/www/app/ && sudo DEBUG=app:* npm start
-      cd /var/www/app/ && npm run dev
+      # cd /var/www/anc/ && sudo DEBUG=app:* npm start
+      cd /var/www/anc/ && npm run dev
     SHELL
   end
 
