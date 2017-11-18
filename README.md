@@ -1,8 +1,11 @@
 # anc
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
-## Installer l'environnement de développement
-Vagrant est utilisé pour instancier une machine virtuelle de développement (Node, Mongo...).
+## Installation
+
+### Installation de la machine virtuelle (VM)
+
+Vagrant est utilisé pour instancier la machine virtuelle.
 - Installer [VirtualBox](https://www.virtualbox.org/wiki/Downloads),
 - Installer [Vagrant](https://www.vagrantup.com/downloads.html),
 - Installer [Git](https://git-scm.com/downloads),
@@ -20,21 +23,41 @@ Vagrant est utilisé pour instancier une machine virtuelle de développement (No
         - Cliquer sur 'Git Bash',
         - Taper la ligne de commande suivante: 'git clone https://github.com/sgalopin/anc.git'.
 
-## Ajout de la résolution de l'hôte en local
+### Lancer la VM et le serveur (NodeJS)
+
+Se placer dans le répertoire dans lequel vous avez installé le projet:
+- Ouvrir une console ('clic droit' puis 'Git Bash Here'),
+- Taper la commande 'vagrant up',
+- Ouvrir une autre console (Alt + F2),
+- Taper la commande 'vagrant provision --provision-with launch_app',
+
+### Accès à l'application
+Lancer votre navigateur (Testé uniquement avec Chrome pour l'instant) et entrer l'adresse : http://192.168.50.11/
+
+### Ajout de la résolution de l'hôte en local (Optionnel)
 Dans "C:\Windows\System32\drivers\etc\hosts" ajouter la ligne suivante:
 ```
 192.168.50.11 anc.dev.net
 ```
-## Lancer le serveur
-Se placer dans le répertoire dans lequel vous avez installé le projet:
-- Ouvrir une console ('clic droit' puis 'Git Bash Here'),
-- Taper la commande 'vagrant up',
-- Ouvrir une autre console,
-- Taper la commande 'vagrant provision --provision-with launch_app',
+Vous pouvez maintenant accéder à l'application à l'adresse: http://anc.dev.net/.
 
-## Accès à l'application
-Lancer votre navigateur (Testé uniquement avec Chrome pour l'instant) et entrer l'adresse : http://anc.dev.net/
+## Désinstallation
 
-## Commandes utiles pour le développement
+- Dans Git Bash:
+  - **$ vagrant halt**: Stope la VM.
+  - **$ vagrant destroy**: Supprime la VM.
+- Supprimer les sources,
+- Supprimer VirtualBox, Vagrant, Git, Cygwin.
+
+## Développement
+
+### Commandes vagrant
 - **$ vagrant rsync-auto**: Lance la synchronisation unilatérale (host -> guest) du répertoire 'app' (A lancer dans une nouvelle console).
 - **$ vagrant gatling-rsync-auto**: Lance la synchronisation unilatérale (host -> guest) du répertoire 'app' avec le plugin vagrant [gatling-rsync](https://github.com/smerrill/vagrant-gatling-rsync) (A lancer dans une nouvelle console).
+- **$ vagrant ssh**: Ouvre une console ssh vers le serveur.
+- **$ vagrant halt**: Stope la VM.
+- **$ vagrant destroy**: Supprime la VM.
+- **$ vagrant provision --provision-with launch_app**: Lance le serveur sans la possibilité de l'arrêter et de le redémarrer.
+
+### Commandes serveur
+- **vagrant@anc:~$ cd /var/www/app && npm run dev**: Lance le serveur avec la possibilité de l'arrêter et de le redémarrer.
