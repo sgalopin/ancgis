@@ -49,15 +49,21 @@ Vagrant.configure("2") do |config|
 
   # Disable the default root
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  # Sync the app dir
-  # On Windows, rsync installed with Cygwin or MinGW will be detected by Vagrant and works well.
-  config.vm.synced_folder "./app", "/var/www/app",
-    disabled: false,
+  # Sync the database dir
+  config.vm.synced_folder "./database", "/var/tmp/anc/database",
     create: true,
     owner: "vagrant",
     group: "vagrant",
     type: "rsync",
-    rsync__exclude: [".git/", "node_modules/"],
+    rsync__args: ["--archive", "--delete", "-z"]
+  # Sync the app dir
+  # On Windows, rsync installed with Cygwin or MinGW will be detected by Vagrant and works well.
+  config.vm.synced_folder "./app", "/var/www/app",
+    create: true,
+    owner: "vagrant",
+    group: "vagrant",
+    type: "rsync",
+    rsync__exclude: ["node_modules/"],
     rsync__args: ["--archive", "--delete", "-z"]
 
   # Configure the window for gatling to coalesce writes.
@@ -86,7 +92,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 4096
     v.cpus = 2
-    v.name = "anc_server"
+    v.name = "anc-server"
   end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
@@ -121,7 +127,9 @@ Vagrant.configure("2") do |config|
     # https://docs.requarks.io/wiki/troubleshooting#error-listening-on-port-xx-requires-elevated-privileges
     sudo apt-get install -y libcap2-bin
     sudo setcap 'cap_net_bind_service=+ep' `which node`
-	  # Node modules dir issue (creation of symlinks with 'npm install')
+    # MongoDB
+    sudo apt-get install -y mongodb
+    # Node modules dir issue (creation of symlinks with 'npm install')
     # mkdir /var/tmp/node_modules_anc
 	  # mkdir -p /var/www/app/node_modules
 	  # The following line requires to launch the bash in administrator mode under windows (only for the creation of the box)
@@ -139,6 +147,8 @@ Vagrant.configure("2") do |config|
     npm install browser-sync --save-dev
     npm install connect-browser-sync --save-dev
   SHELL
+
+  config.vm.provision "populate-db", type: "shell", privileged: false, path: "./vagrant-shell/populate-db.sh"
 
   # The following provision is executed as "vagrant" and are only run when called explicitly
   if ARGV.include? '--provision-with'

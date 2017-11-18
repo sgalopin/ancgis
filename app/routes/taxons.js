@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var taxons = require('../models/taxons');
+var Taxon = require('../models/taxons');
 router.get('/', function(req, res) {
-  res.render('taxons', {title: 'Taxons', taxons: taxons});
+ Taxon.find(function(err, taxons) {
+   if (err) return console.error(err);
+   res.render('taxons', {title: 'Taxons', taxons: taxons});
+ });
 });
 module.exports = router;

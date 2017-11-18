@@ -59,5 +59,5 @@ Vous pouvez maintenant accéder à l'application à l'adresse: http://anc.dev.ne
 - **$ vagrant destroy**: Supprime la VM.
 - **$ vagrant provision --provision-with launch_app**: Lance le serveur sans la possibilité de l'arrêter et de le redémarrer.
 
-### Commandes serveur
+### Commandes serveur (via console ssh)
 - **vagrant@anc:~$ cd /var/www/app && npm run dev**: Lance le serveur avec la possibilité de l'arrêter et de le redémarrer.
