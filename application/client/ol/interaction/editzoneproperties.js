@@ -24,11 +24,18 @@ ol.interaction.EditZoneProperties = function(opt_options) {
   this.feature_ = null;
 
   /**
-   * The id of the properties form to display.
-   * @type {string}
+   * The callback function to call with the feature
+   * @type {Function}
    * @private
    */
-  this.propertiesFormId_ =  options.propertiesFormId ? options.propertiesFormId : null;
+  this.callback_ =  options.callback ? options.callback : null;
+
+  /**
+   * The callback scope
+   * @type {Object}
+   * @private
+   */
+  this.callbackScope_ =  options.callbackScope ? options.callbackScope : null;
 
   /**
    * The name of the zones layer.
@@ -41,7 +48,7 @@ ol.interaction.EditZoneProperties = function(opt_options) {
 ol.inherits(ol.interaction.EditZoneProperties, ol.interaction.Interaction);
 
 /**
- * Handles the {@link ol.MapBrowserEvent map browser event} 
+ * Handles the {@link ol.MapBrowserEvent map browser event}
  * to eventually display the zone properties form.
  * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} Allow event propagation.
@@ -49,10 +56,10 @@ ol.inherits(ol.interaction.EditZoneProperties, ol.interaction.Interaction);
  * @api
  */
 ol.interaction.EditZoneProperties.prototype.handleEvent = function(evt) {
-  evt.preventDefault();
 
   // On right click only
   if (evt.type === "pointerdown" && evt.pointerEvent.button === 2) {
+    evt.preventDefault();
     var map = evt.map;
     var zonesLayerName = this.zonesLayerName_;
     var feature = map.forEachFeatureAtPixel(evt.pixel,
@@ -70,9 +77,7 @@ ol.interaction.EditZoneProperties.prototype.handleEvent = function(evt) {
 
     if (feature) {
       this.feature_ = feature;
-      var form = document.getElementById(this.propertiesFormId_);
-      form.classList.remove("hidden");
-      //TODO: Pass the feature to the form
+      this.callback_.call(this.callbackScope_,feature);
     }
 
     return false;

@@ -1,11 +1,21 @@
+// Requirements
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var TaxonSchema = new Schema({
-	"taxon": {type: String, required: true},
+
+// Model's declaration
+module.exports = mongoose.model('Taxon', new mongoose.Schema({
+	"_id": {type: Number, required: true},
+	"name": {type: String, unique: true, required: true},
 	"vernacularName": {type: String, required: true},
 	"periods": {type: [String], required: true},
 	"potential": {type: Number, required: true},
 	"wikipediaUrl": {type: String, required: false}
-});
-var Taxon = mongoose.model('Taxon', TaxonSchema);
-module.exports = Taxon;
+},{
+  toJSON: {
+    virtuals: true, // return the virtual auto assigned id (http://mongoosejs.com/docs/guide.html#id)
+    versionKey: false, // remove the '__v' field
+    transform: function (doc, ret) {
+			delete ret._id;
+			ret.id = Number(ret.id);
+		} // remove the '_id' field
+  }
+}));

@@ -14,58 +14,53 @@ module.exports = (function() {
 		console.log("Your browser doesn't support a stable version of IndexedDB.")
 	}
 
-	const taxonData = JSON.parse($.getJSON({'url': "./json/taxon.json", 'async': false}).responseText);
-
-	// Open the database
-	var request = window.indexedDB.open("ancDB", 1);
-
-	request.onerror = function(event) {
-		console.log("Error loading database.");
-	};
-
 	var me = {
 
 		read : function (id) {
-			var transaction = this.db.transaction(["taxon"]);
-			var objectStore = transaction.objectStore("taxon");
-			var request = objectStore.get(id);
-
-			request.onerror = function(event) {
-			   console.log("Unable to retrieve data from database.");
-			};
-
-			request.onsuccess = function(event) {
-			   if(request.result) {
-			      console.log(request.result.taxon + ", " + request.result.vernacularName);
-			   }
-			   else {
-			      console.log("Data not found in your database.");
-			   }
-			};
+			var scope = this;
+ 			return new Promise(function(resolve, reject) {
+				var request = scope.db.transaction(["taxons"])
+				.objectStore("taxons")
+				.get(id);
+				request.onerror = function(event) {
+				   console.error(Error("Unable to retrieve data from database."));
+				};
+				request.onsuccess = function(event) {
+				   if (request.result) {
+						 	resolve(request.result);
+				   } else {
+						  reject(Error("Data not found in your database."));
+				   }
+				};
+			});
 		},
 
 		readAll : function () {
-			var objectStore = this.db.transaction("taxon").objectStore("taxon");
-
-			objectStore.openCursor().onsuccess = function(event) {
-			   var cursor = event.target.result;
-			   if (cursor) {
-			      console.log(cursor.key + ", " + cursor.value.vernacularName);
-			      cursor.continue();
-			   }
-			   else {
-			      console.log("No more entries!");
-			   }
-			};
+			var scope = this;
+			return new Promise(function(resolve, reject) {
+				var data = [];
+				var objectStore = scope.db.transaction("taxons").objectStore("taxons");
+				objectStore.openCursor().onsuccess = function(event) {
+				   var cursor = event.target.result;
+				   if (cursor) {
+							data.push(cursor.value);
+				      cursor.continue();
+				   }
+				   else {
+						  // No more entries
+						 	resolve(data);
+				   }
+				}; // TODO: Add an 'onerror' handler ?
+			});
 		},
 
-		add : function (obj) {
-			var request = this.db.transaction(["taxon"], "readwrite")
-			.objectStore("taxon")
+		add : function (obj) { // TODO: Return a promise.
+			var request = this.db.transaction(["taxons"], "readwrite")
+			.objectStore("taxons")
 			.add(obj);
 
 			request.onsuccess = function(event) {
-			   console.log("'" + obj.taxon + "' has been added to your database.");
+			   console.log("'" + obj._id + "' has been added to your database.");
 			};
 
 			request.onerror = function(event) {
@@ -73,9 +68,9 @@ module.exports = (function() {
 			}
 		},
 
-		remove : function (id) {
-			var request = this.db.transaction(["taxon"], "readwrite")
-			.objectStore("taxon")
+		remove : function (id) { // TODO: Return a promise.
+			var request = this.db.transaction(["taxons"], "readwrite")
+			.objectStore("taxons")
 			.delete(id);
 
 			request.onsuccess = function(event) {
@@ -84,15 +79,38 @@ module.exports = (function() {
 		}
 	};
 
-	request.onupgradeneeded = function(event) {
-		me.db = event.target.result;
-		var objectStore = me.db.createObjectStore("taxon", {keyPath: "taxon"});
-
-		for (var i in taxonData) {
-			 objectStore.add(taxonData[i]);
-		}
+	function addCollection (collectionName) {
+		me.db.createObjectStore("taxons", {keyPath: "id"});
+		// Get the collection
+		jQuery.getJSON({
+			url: "./rest/" + collectionName,
+			dataType: 'json'
+		})
+		.then(function(data, statusText, xhrObj) {
+			// Add the data to the db
+			var objectStore = me.db.transaction(collectionName, "readwrite").objectStore(collectionName);
+			for (var i in data) {
+				 objectStore.add(data[i]);
+			}
+		}, function(xhrObj, textStatus, err) { // Catch the JQuery error
+			// TODO: Delete the db ?
+			console.log(err);
+		})
+		.catch(function(err) { // Catch the success function error
+			// TODO: Delete the db ?
+			console.log(err);
+		});
 	}
 
+	// Open the database
+	var request = window.indexedDB.open("ancDB", 1);
+	request.onerror = function(event) {
+		console.log("Error loading database.");
+	};
+	request.onupgradeneeded = function(event) {
+		me.db = event.target.result;
+		addCollection("taxons");
+	}
 	request.onsuccess = function(event) {
 			me.db = event.target.result;
 	};

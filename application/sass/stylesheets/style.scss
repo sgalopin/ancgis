@@ -64,16 +64,19 @@ html, body, .container-fluid {
 /**      Glyphicons     **/
 /*************************/
 
+.anc-glyphicons-reducted {
+    width: 10px;
+    height: 10px;
+}
 .anc-glyphicons {
     width: 15px;
     height: 15px;
-    display: block;
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 .anc-glyphicons-enlarged {
     width: 20px;
     height: 20px;
+}
+.anc-glyphicons-reducted, .anc-glyphicons, .anc-glyphicons-enlarged {
     display: block;
     background-size: contain;
     background-repeat: no-repeat;
@@ -95,6 +98,9 @@ html, body, .container-fluid {
 }
 .anc-glyphicons-194oksign {
     background-image: url("../images/glyphicons/glyphicons-194-ok-sign.png");
+}
+.anc-glyphicons-208remove {
+    background-image: url("../images/glyphicons/glyphicons-208-remove.png");
 }
 
 /*************************/
@@ -175,24 +181,32 @@ html, body, .container-fluid {
 /**       ZoneForm      **/
 /*************************/
 
+.anc-form {
+  position: fixed;
+  background-color: rgba(255,255,255,.9);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(221, 221, 221);
+  border-image: initial;
+  border-radius: 5px;
+  color: white;
+}
 #anc-zoneform {
-    position: fixed;
     width: 400px;
     height: 300px;
     top: calc(50% - 150px);
     left: calc(50% - 200px);
-    background-color: rgba(255,255,255,.6);
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(221, 221, 221);
-    border-image: initial;
-    border-radius: 5px;
-    color: white;
 }
-#anc-zoneform button {
+#anc-speciesform {
+    width: 400px;
+    height: 154px;
+    top: calc(50% - 77px);
+    left: calc(50% - 200px);
+}
+.anc-form button {
     padding: 3px 9px;
 }
-.anc-zoneform-title {
+.anc-form-title {
     width: 100%;
     padding: 5px;
     border-top-left-radius: 5px;
@@ -203,38 +217,53 @@ html, body, .container-fluid {
     border-color: rgb(221, 221, 221);
     border-image: initial;
 }
-.anc-zoneform-fields {
-    background-color: rgba(50,50,50,.3);
+.anc-form-fields {
     padding: 10px 10px;
 }
-.anc-zoneform-field {
+#anc-zoneform .anc-form-fields {
+    background-color: rgba(50,50,50,.3);
+}
+.anc-form-field {
     width: 100%;
     color: rgb(50,50,50);
+    margin: 5px 0;
 }
-.anc-zoneform-field>label {
+.anc-form-field>label {
     width: 200px;
     margin: 0;
 }
-.anc-zoneform-field>input, .anc-zoneform-field>select {
+.anc-form-field>input, .anc-form-field>select {
     width: 170px;
 }
-.anc-zoneform-taxonfields {
+.anc-form-florefields {
     color: rgb(50,50,50);
     padding: 5px 10px;
 }
-.anc-zoneform-taxonstable {
+.anc-form-floretable {
     width: 100%;
 }
-.anc-zoneform-taxonstable thead {
+.anc-form-floretable thead {
     border-bottom: 1px solid rgb(50,50,50);
 }
-.anc-zoneform-periodcolumn {
+.anc-form-periodcolumn {
     width: 80px;
 }
-.anc-zoneform-recoverycolumn {
+.anc-form-recoverycolumn {
     width: 50px;
 }
-.anc-zoneform-ttbar, .anc-zoneform-btbar {
+.anc-form-actioncolumn {
+    width: 20px;
+}
+.anc-form-removespecies {
+  text-align: center;
+  span {
+    display: inline-block;
+  }
+  span:hover {
+    cursor: pointer;
+  }
+}
+.anc-form-ttbar, .anc-form-btbar {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -243,13 +272,13 @@ html, body, .container-fluid {
     border-color: rgb(221, 221, 221);
     border-image: initial;
 }
-.anc-zoneform-ttbar {
+.anc-form-ttbar {
     justify-content: space-between;
     padding: 5px 10px;
     align-items: center;
     border-width: 1px 0;
 }
-.anc-zoneform-btbar {
+.anc-form-btbar {
     justify-content: space-around;
     position: absolute;
     bottom: 0;
@@ -257,6 +286,6 @@ html, body, .container-fluid {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-.anc-zoneform-title, .anc-zoneform-ttbar, .anc-zoneform-btbar {
+.anc-form-title, .anc-form-ttbar, .anc-form-btbar {
     background-color: rgb(100,100,100);
 }

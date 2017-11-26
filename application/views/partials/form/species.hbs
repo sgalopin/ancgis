@@ -1,0 +1,27 @@
+<div id="anc-speciesform" class="anc-form">
+  <div class="anc-form-title">Ajout d&#39;une espèce</div>
+  <div class="anc-form-fields">
+    <div class="anc-form-field">
+      <label for="anc-speciesform-taxonfield">Espèce : </label>
+      <select id="anc-speciesform-taxonfield">
+        {{#each taxons}}
+          <option value="{{id}}">{{vernacularName}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="anc-form-field">
+      <label for="anc-speciesform-recoveryfield">Recouvrement (%) : </label>
+      <input id="anc-speciesform-recoveryfield" type="number" list="anc-speciesform-recoveryfield-list" step="5" min="0" max="100">
+      <datalist id="anc-speciesform-recoveryfield-list">
+        <option value="25">
+        <option value="50">
+        <option value="75">
+        <option value="100">
+      </datalist>
+    </div>
+  </div>
+  <div class="anc-form-btbar">
+    <button id="anc-speciesform-cancelbtn" class="btn btn-default" alt="Annuler les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Annuler les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-193removesign"></span></button>
+    <button id="anc-speciesform-validatebtn" class="btn btn-default" alt="Valider les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Valider les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-194oksign"></span></button>
+  </div>
+</div>

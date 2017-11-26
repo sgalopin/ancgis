@@ -1,0 +1,37 @@
+<div id="anc-zoneform" class="anc-form">
+  <div class="anc-form-title">Propriétés de la zone de végétation</div>
+  <div class="anc-form-fields">
+    <div class="anc-form-field">
+      <label for="anc-zoneform-typefield">Type de végétation : </label>
+      <select id="anc-zoneform-typefield">
+        <option value="forets">Forêts</option>
+        <option value="prairies">Prairies</option>
+        <option value="cultures">Cultures</option>
+        <option value="landes">Landes</option>
+        <option value="tourbieres">Tourbières</option>
+        <option value="...">...</option>
+      </select>
+    </div>
+  </div>
+  <div class="anc-form-ttbar">
+    <span>Flore mellifère :</span>
+    <button id="anc-zoneform-addspeciesbtn" class="btn btn-default" alt="Ajouter une espèce végétale" type="button" data-toggle="tooltip" data-placement="left" title="Ajouter une espèce végétale."><span class="anc-glyphicons-enlarged anc-glyphicons-191plussign"></span></button>
+  </div>
+  <div class="anc-form-florefields">
+    <table class="anc-form-floretable">
+      <thead>
+         <tr>
+             <th>Espèce</th>
+             <th class="anc-form-periodcolumn">Période(s)</th>
+             <th class="anc-form-recoverycolumn">Rcvmt</th>
+             <th class="anc-form-actioncolumn"></th>
+         </tr>
+      </thead>
+      <tbody></tbody>
+      </table>
+  </div>
+  <div class="anc-form-btbar">
+    <button id="anc-zoneform-cancelbtn" class="btn btn-default" alt="Annuler les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Annuler les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-193removesign"></span></button>
+    <button id="anc-zoneform-validatebtn" class="btn btn-default" alt="Valider les modifications" type="button" data-toggle="tooltip" data-placement="top" title="Valider les modifications."><span class="anc-glyphicons-enlarged anc-glyphicons-194oksign"></span></button>
+  </div>
+</div>

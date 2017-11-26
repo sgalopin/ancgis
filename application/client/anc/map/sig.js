@@ -20,7 +20,10 @@ module.exports = (function() {
     }),
     // Edit Zone Properties interaction
     editzoneproperties : new ol.interaction.EditZoneProperties({
-      propertiesFormId: 'anc-zoneform',
+      callback: function(feature) {
+				var buildForm = require('../form/zone');
+				buildForm(feature);
+			},
       zonesLayerName: 'vegetationsLayer'
     })
   };
@@ -42,10 +45,6 @@ module.exports = (function() {
       $(this).toggleClass('active');
       map.removeInteraction(interactions[$(this)[0].dataset.shortid]);
     }
-  });
-  $('#anc-zoneform-cancelbtn').on('click', function(event) {
-    event.stopPropagation();
-    $('#anc-zoneform').toggleClass('hidden');
   });
   // Keep the editzoneproperties on the top of the map's interactions
   window.addEventListener("contextmenu", function(e) { e.preventDefault(); })

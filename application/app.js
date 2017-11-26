@@ -11,7 +11,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var taxons = require('./routes/taxons');
+var taxons = require('./routes/rest/taxons');
+var vegetationZones = require('./routes/rest/vegetation-zones');
+var hives = require('./routes/rest/hives');
 
 var app = express();
 
@@ -25,6 +27,7 @@ app.use (
     debug: true,
   })
 );
+browserify.settings({ transform: ['hbsfy'] });
 app.get('/javascripts/bundle.js', browserify('./client/main.js'));
 var dbConnectionString = process.env.MONGODB_URI || 'mongodb://localhost/anc';
 mongoose.connect(dbConnectionString + '/taxons');
@@ -51,7 +54,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/taxons', taxons);
+app.use('/rest/taxons', taxons);
+app.use('/rest/vegetation-zones', vegetationZones);
+app.use('/rest/hives', hives);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

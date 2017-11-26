@@ -10,7 +10,7 @@ module.exports = (function() {
 	// Hives layer
 	var hivesLayerSource = new ol.source.Vector({
 		wrapX: false,
-		url: './json/hives.geojson',
+		url: './rest/hives',
 	    format: new ol.format.GeoJSON()
 	});
 	var hivesLayer = new ol.layer.Vector({
@@ -40,7 +40,7 @@ module.exports = (function() {
 	};
 	var vegetationsLayerSource = new ol.source.Vector({
 		wrapX: false,
-		url: './json/vegetations.geojson',
+		url: './rest/vegetation-zones',
 	    format: new ol.format.GeoJSON()
 	});
 	var vegetationsLayer = new ol.layer.Vector({
@@ -51,16 +51,13 @@ module.exports = (function() {
 			// Style text
 			if(ppts.flore) {
 				var text = '';
-				ppts.flore.forEach(function(taxon, i) {
+				ppts.flore.forEach(function(species, i) {
 					if (i !== 0) {
 						text += '\n\n';
 					}
-				    text += taxon.taxon
-					+ '\n'
-					+ taxon.period
-					+ '\n'
-					+ taxon.recovery
-					+ '%';
+				  text += species.taxon.vernacularName + '\n'
+					+ species.taxon.periods + '\n'
+					+ species.recovery + '%';
 				});
 				text = new ol.style.Text({
 					text: text
