@@ -9,7 +9,7 @@ module.exports = function(feature) {
 
   // Setup the local vars
   var ppts = feature.getProperties();
-  var newPpts = jQuery.extend(true, {}, ppts);
+  var newPpts = jQuery.extend(true, {flore:[]}, ppts);
   delete newPpts.geometry;
 
   // HTML builds
@@ -98,12 +98,40 @@ module.exports = function(feature) {
     uPpts.flore = uPpts.flore.map(function(obj) {
         return { taxon: obj.taxon.id, recovery: obj.recovery };
     });
-    jQuery.ajax({ // TODO: use promise
-      url: '/rest/vegetation-zones/' + feature.getId(),
-      type: 'PUT',
-      data: JSON.stringify({
+    const featureId = feature.getId();
+    let type, data, url = '/rest/vegetation-zones/';
+    if (!featureId) { // Create
+      type = 'POST';
+      data = {
+        "type": "Feature",
         "properties": uPpts
-      }),
+      };
+      const geom = ppts.geometry;
+      const geomType = geom.getType();
+      // TODO: create and use a extended json writer (including circle)
+      if (geomType === 'Circle') {
+        data.geometry = {
+          "type": geomType,
+          "coordinates": geom.getCenter(),
+          "radius": geom.getRadius()
+        };
+      } else if (geomType === 'Polygon') {
+        data.geometry = {
+          "type": geomType,
+          "coordinates": geom.getCoordinates()
+        };
+      }
+    } else { // Update
+      url += featureId;
+      type = 'PUT';
+      data = {
+        "properties": uPpts
+      };
+    }
+    jQuery.ajax({ // TODO: use promise
+      url: url,
+      type: type,
+      data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success: function(response) {
