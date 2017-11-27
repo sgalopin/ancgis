@@ -203,6 +203,9 @@ html, body, .container-fluid {
     top: calc(50% - 77px);
     left: calc(50% - 200px);
 }
+#anc-zoneform:focus, #anc-speciesform:focus {
+  outline: none;
+}
 .anc-form button {
     padding: 3px 9px;
 }

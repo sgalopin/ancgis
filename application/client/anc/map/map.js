@@ -38,6 +38,13 @@ module.exports = (function() {
 	ol.format.GeoJSON.GEOMETRY_READERS_['Circle'] = function(object) {
 	  return new ol.geom.Circle(object.coordinates, object.radius);
 	};
+	ol.format.GeoJSON.GEOMETRY_WRITERS_['Circle'] = function(geometry, opt_options) {
+	  return ({
+	    type: 'Circle',
+			coordinates: geometry.getCenter(),
+			radius: geometry.getRadius()
+	  });
+	};
 	var vegetationsLayerSource = new ol.source.Vector({
 		wrapX: false,
 		url: './rest/vegetation-zones',

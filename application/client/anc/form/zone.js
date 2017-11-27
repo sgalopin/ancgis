@@ -19,6 +19,43 @@ module.exports = function(feature) {
   $('#anc-zoneform-typefield').val(ppts.type);
   $('.anc-form-florefields>table>tbody').append(floreLineHtml);
   $('#anc-zoneform [data-toggle="tooltip"]').tooltip();
+  $('#anc-zoneform').focus();
+
+  // keys handler
+  // Note: 'keypress' doesn't seem to be handled consistently
+  // between browsers whereas keyup is consistent.
+  $('#anc-zoneform-typefield').on("keypress", function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    });
+  $('#anc-zoneform, #anc-zoneform-typefield').on("keyup", function (event) {
+    if (event.keyCode == 27) { // ESC
+      event.stopPropagation();
+      event.preventDefault();
+      $('#anc-zoneform').remove();
+    } else if (event.keyCode == 13) { // ENTER
+      event.stopPropagation();
+      event.preventDefault();
+      updateFeature(newPpts);
+    }
+  });
+
+  // Manage the 'speciesFormValidated' event thrown by the species form
+  $('#anc-zoneform').on('speciesFormValidated', function(event, sfValues) {
+    event.stopPropagation();
+    // Check the absence of the taxon
+    if(!newPpts.flore.some(function(species) {
+      return species.taxon.id === sfValues.taxon.id;
+    })) {
+      // Add the new species to the local properties object
+      newPpts.flore.push(sfValues);
+      // Update the view
+      updateSpeciesLines(newPpts);
+    } else {
+      // TODO: Display an Error
+      console.error(Error('Species already present'));
+    }
+  });
 
   // Manage the 'change' event thrown by the type field
   $('#anc-zoneform-typefield').change(function() {
@@ -32,23 +69,6 @@ module.exports = function(feature) {
     // Display the species form
     var buildForm = require('./species');
     buildForm();
-  });
-
-  // Manage the 'speciesFormValidated' event thrown by the species form
-  $('#anc-zoneform').on('speciesFormValidated', function(event, sfValues) {
-    event.stopPropagation();
-    // Check the absence of the taxon
-    if(!newPpts.flore.some(function(species) {
-			return species.taxon.id === sfValues.taxon.id;
-		})) {
-      // Add the new species to the local properties object
-      newPpts.flore.push(sfValues);
-      // Update the view
-      updateSpeciesLines(newPpts);
-    } else {
-      // TODO: Display an Error
-      console.error(Error('Species already present'));
-    }
   });
 
   // Remove buttons handler
@@ -101,31 +121,18 @@ module.exports = function(feature) {
     const featureId = feature.getId();
     let type, data, url = '/rest/vegetation-zones/';
     if (!featureId) { // Create
+      const format = new ol.format.GeoJSON();
       type = 'POST';
       data = {
-        "type": "Feature",
-        "properties": uPpts
+        type: "Feature",
+        properties: uPpts,
+        geometry: format.writeGeometryObject(ppts.geometry)
       };
-      const geom = ppts.geometry;
-      const geomType = geom.getType();
-      // TODO: create and use a extended json writer (including circle)
-      if (geomType === 'Circle') {
-        data.geometry = {
-          "type": geomType,
-          "coordinates": geom.getCenter(),
-          "radius": geom.getRadius()
-        };
-      } else if (geomType === 'Polygon') {
-        data.geometry = {
-          "type": geomType,
-          "coordinates": geom.getCoordinates()
-        };
-      }
     } else { // Update
       url += featureId;
       type = 'PUT';
       data = {
-        "properties": uPpts
+        properties: uPpts
       };
     }
     jQuery.ajax({ // TODO: use promise
