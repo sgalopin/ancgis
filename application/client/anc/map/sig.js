@@ -3,6 +3,7 @@
  */
 module.exports = (function() {
 	var map = require('./map');
+	var zoneDAO = require('../dao/zone');
   var interactions = {
     // Add Hive Button Control
     addhive : new ol.interaction.AddHive({
@@ -18,9 +19,18 @@ module.exports = (function() {
       source: map.getLayerByName('vegetationsLayer').getSource(),
       type: 'Circle'
     }),
+		// Translate Button Control
+		translate : new ol.interaction.Translate(),
+		// Modify Button Control
+		modify : new ol.interaction.ModifyFeature({
+			source: map.getLayerByName('vegetationsLayer').getSource()
+		}),
+		// Erase Button Control
+		erase : new ol.interaction.RemoveFeatures(),
     // Edit Zone Properties interaction
     editzoneproperties : new ol.interaction.EditZoneProperties({
-      callback: function(feature) {
+			// TODO: remove the callback and add a listener
+			callback: function(feature) {
 				var buildForm = require('../form/zone');
 				buildForm(feature);
 			},
@@ -28,6 +38,33 @@ module.exports = (function() {
     })
   };
 
+	// Management of the interactions events
+	interactions.translate.on(
+		ol.interaction.TranslateEventType.TRANSLATEEND,
+		function(evt){
+			evt.features.forEach(function(feature){
+				zoneDAO.updateFeature(feature);
+			}, this);
+		}
+	);
+	interactions.modify.on(
+		ol.interaction.ModifyEventType.MODIFYFEATURES,
+		function(evt){
+			evt.features.forEach(function(feature){
+				zoneDAO.updateFeature(feature);
+			}, this);
+		}
+	);
+	interactions.erase.on(
+		ol.interaction.Select.EventType_.REMOVE,
+		function(evt){
+			evt.selected.forEach(function(feature){
+				zoneDAO.removeFeature(feature);
+			}, this);
+		}
+	);
+
+	// Management of the toggling of the interactions
   $('#anc-mapcontrol-tbar>button').click(function(){
     event.stopPropagation();
     $(this).toggleClass('active');

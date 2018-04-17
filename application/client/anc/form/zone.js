@@ -6,6 +6,7 @@ module.exports = function(feature) {
   // Requirements
   var zoneFormTemplate = require("../../../views/partials/form/zone.hbs");
   var floreLineTemplate = require("../../../views/partials/form/flore-line.hbs");
+  var zoneDAO = require('../dao/zone');
 
   // Setup the local vars
   var ppts = feature.getProperties();
@@ -36,7 +37,7 @@ module.exports = function(feature) {
     } else if (event.keyCode == 13) { // ENTER
       event.stopPropagation();
       event.preventDefault();
-      updateFeature(newPpts);
+      zoneDAO.updateFeature(feature, newPpts);
     }
   });
 
@@ -83,7 +84,7 @@ module.exports = function(feature) {
   // Validate button handler
   $("#anc-zoneform-validatebtn").click(function() {
     event.stopPropagation();
-    updateFeature(newPpts);
+    zoneDAO.updateFeature(feature, newPpts);
   });
 
   // Remove buttons handler function
@@ -102,56 +103,10 @@ module.exports = function(feature) {
   }
 
   // Update the species lines
-  function updateSpeciesLines(uPpts) {
+  function updateSpeciesLines(ppts) {
     const tbody = $('.anc-form-florefields>table>tbody');
     tbody.empty();
-    tbody.append(floreLineTemplate({species: uPpts.flore}));
+    tbody.append(floreLineTemplate({species: ppts.flore}));
     $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
-  }
-
-  // Update the zone's properties
-  function updateFeature (uPpts) {
-    // Update the feature locally
-    feature.setProperties(uPpts);
-
-    // Update the feature remotly
-    uPpts.flore = uPpts.flore.map(function(obj) {
-        return { taxon: obj.taxon.id, recovery: obj.recovery };
-    });
-    const featureId = feature.getId();
-    let type, data, url = '/rest/vegetation-zones/';
-    if (!featureId) { // Create
-      const format = new ol.format.GeoJSON();
-      type = 'POST';
-      data = {
-        type: "Feature",
-        properties: uPpts,
-        geometry: format.writeGeometryObject(ppts.geometry)
-      };
-    } else { // Update
-      url += featureId;
-      type = 'PUT';
-      data = {
-        properties: uPpts
-      };
-    }
-    jQuery.ajax({ // TODO: use promise
-      url: url,
-      type: type,
-      data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      success: function(response) {
-        if (response.status === 'success') {
-          // TODO: Save locally into indexDB (sync = true)
-          $('#anc-zoneform').remove();
-        } else {
-          // TODO: Display an error message
-          // TODO: Save locally into indexDB (sync = false)
-          // TODO: Make the synchronization with a web worker.
-        }
-      }
-      // TODO: Catch the error
-    });
   }
 }

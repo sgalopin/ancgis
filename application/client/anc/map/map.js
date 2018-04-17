@@ -1,5 +1,7 @@
 require('../../ol/interaction/addhive');
 require('../../ol/interaction/editzoneproperties');
+require('../../ol/interaction/removefeatures');
+require('../../ol/interaction/modifyfeature');
 require('../../ol/control/periodswitcher');
 
 /**
