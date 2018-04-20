@@ -4,7 +4,6 @@ $(document).ready(function(){
 });
 
 // Define a namespace for the application.
-anc = {
-  idbms: require('./anc/dbms/indexedDB'),
-  sig: require('./anc/map/sig')
-};
+anc = window.anc ? anc : {};
+anc.idbms = require('./anc/dbms/indexedDB');
+require('./anc/map/sig');

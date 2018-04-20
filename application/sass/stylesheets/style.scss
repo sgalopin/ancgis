@@ -61,6 +61,19 @@ html, body, .container-fluid {
 }
 
 /*************************/
+/**      Modal Boxs     **/
+/*************************/
+// TODO: Use the less variables...
+.btn-primary {
+    background-color: #999;
+    border-color: #777;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #777 !important;
+    border-color: #555 !important;
+}
+
+/*************************/
 /**      Glyphicons     **/
 /*************************/
 
@@ -200,6 +213,12 @@ html, body, .container-fluid {
   border-radius: 5px;
   color: white;
 }
+#anc-hiveform {
+    width: 400px;
+    height: 180px;
+    top: calc(50% - 77px);
+    left: calc(50% - 200px);
+}
 #anc-zoneform {
     width: 400px;
     height: 300px;
@@ -212,7 +231,7 @@ html, body, .container-fluid {
     top: calc(50% - 77px);
     left: calc(50% - 200px);
 }
-#anc-zoneform:focus, #anc-speciesform:focus {
+.anc-form:focus {
   outline: none;
 }
 .anc-form button {

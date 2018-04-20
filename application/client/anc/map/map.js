@@ -1,13 +1,16 @@
 require('../../ol/interaction/addhive');
-require('../../ol/interaction/editzoneproperties');
+require('../../ol/interaction/editproperties');
 require('../../ol/interaction/removefeatures');
 require('../../ol/interaction/modifyfeature');
 require('../../ol/control/periodswitcher');
+require('./const');
 
 /**
  * Map builder.
  */
 module.exports = (function() {
+
+	var dao = require('../dao/abstract');
 
 	// Hives layer
 	var hivesLayerSource = new ol.source.Vector({
@@ -15,8 +18,16 @@ module.exports = (function() {
 		url: './rest/hives',
 	    format: new ol.format.GeoJSON()
 	});
+	var hivesLayerName = 'hivesLayer';
+	hivesLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
+		e.feature.setProperties({
+			layerName: hivesLayerName,
+			featureType: anc.sig.const.featureType.HIVE
+		}, true);
+		dao.updateFeature(e.feature);
+	});
 	var hivesLayer = new ol.layer.Vector({
-		name: 'hivesLayer',
+		name: hivesLayerName,
 		source: hivesLayerSource,
 		style: function(feature) {
 			var ppts = feature.getProperties();
@@ -52,8 +63,16 @@ module.exports = (function() {
 		url: './rest/vegetation-zones',
 	    format: new ol.format.GeoJSON()
 	});
+	var vegetationsLayerName = 'vegetationsLayer';
+	vegetationsLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
+		e.feature.setProperties({
+			layerName: vegetationsLayerName,
+			featureType: anc.sig.const.featureType.ZONE
+		}, true);
+		dao.updateFeature(e.feature);
+	});
 	var vegetationsLayer = new ol.layer.Vector({
-		name: 'vegetationsLayer',
+		name: vegetationsLayerName,
 		source: vegetationsLayerSource,
 		style: function(feature) {
 			var ppts = feature.getProperties();

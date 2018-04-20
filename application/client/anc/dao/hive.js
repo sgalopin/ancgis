@@ -3,7 +3,7 @@
  */
 module.exports = (function() {
 
-  var url = '/rest/vegetation-zones/';
+  var url = '/rest/hives/';
 
   return {
 
@@ -13,10 +13,9 @@ module.exports = (function() {
       // Setup the geojsonPpts var
       var ppts = feature.getProperties();
       var geojsonPpts = {
+        registrationNumber : ppts.registrationNumber ?  ppts.registrationNumber : null,
         type : ppts.type ? ppts.type : null,
-        flore : ppts.flore ? ppts.flore.map(function(obj) {
-            return { taxon: obj.taxon.id, recovery: obj.recovery };
-        }) : []
+        framesCount : ppts.framesCount ? ppts.framesCount : null
       };
 
       // Update the feature remotly
@@ -50,7 +49,7 @@ module.exports = (function() {
               feature.setId(response.data.id);
             }
             // TODO: Save locally into indexDB (sync = true)
-            $('#anc-zoneform').remove(); // TODO: Don't do this here
+            $('#anc-hiveform').remove(); // TODO: Don't do this here
           } else {
             // TODO: Display an error message
             // TODO: Save locally into indexDB (sync = false)
@@ -84,5 +83,4 @@ module.exports = (function() {
       }
     }
   }
-
 })();

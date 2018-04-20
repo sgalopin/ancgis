@@ -41,20 +41,27 @@ ol.inherits(ol.interaction.RemoveFeatures, ol.interaction.Select);
  * @private
  */
 ol.interaction.RemoveFeatures.prototype.removeFeatures_ = function(event) {
-  if (confirm('Confirmez-vous la suppression ?')) {
-    this.getFeatures().forEach(function(feature){
-      this.getLayer(feature).getSource().removeFeature(feature);
-    }, this);
-    this.dispatchEvent(
-      new ol.interaction.Select.Event(
-        ol.interaction.Select.EventType_.REMOVE,
-        this.getFeatures().getArray(),
-        [],
-        event.mapBrowserEvent
-      )
-    );
-  }
-  this.getFeatures().clear();
+  // TODO: don't use anc lib here...
+  var ancTool = require('../../anc/tool/modal');
+  ancTool.confirm('Confirmez-vous la suppression ?').then(
+    $.proxy( function (e) {
+      this.getFeatures().forEach(function(feature){
+        this.getLayer(feature).getSource().removeFeature(feature);
+      }, this);
+      this.dispatchEvent(
+        new ol.interaction.Select.Event(
+          ol.interaction.Select.EventType_.REMOVE,
+          this.getFeatures().getArray(),
+          [],
+          event.mapBrowserEvent
+        )
+      );
+      this.getFeatures().clear();
+    }, this ),
+    $.proxy( function (e) {
+      this.getFeatures().clear();
+    }, this )
+  );
 };
 
 /**

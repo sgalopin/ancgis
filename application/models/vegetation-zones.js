@@ -23,9 +23,11 @@ module.exports = mongoose.model('VegetationZone', new mongoose.Schema({
     versionKey: false, // remove the '__v' field
     transform: function (doc, ret) {
       delete ret._id;
-      ret.properties.flore.forEach(function(element){
-        delete element._id;
-      });
+      if (ret.properties.flore) {
+          ret.properties.flore.forEach(function(element){
+          delete element._id;
+        });
+      }
     } // remove the '_id' fields
   }
 }));

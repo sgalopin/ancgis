@@ -3,7 +3,7 @@
  */
 module.exports = (function() {
 	var map = require('./map');
-	var zoneDAO = require('../dao/zone');
+	var dao = require('../dao/abstract');
   var interactions = {
     // Add Hive Button Control
     addhive : new ol.interaction.AddHive({
@@ -28,39 +28,49 @@ module.exports = (function() {
 		// Erase Button Control
 		erase : new ol.interaction.RemoveFeatures(),
     // Edit Zone Properties interaction
-    editzoneproperties : new ol.interaction.EditZoneProperties({
-			// TODO: remove the callback and add a listener
-			callback: function(feature) {
-				var buildForm = require('../form/zone');
-				buildForm(feature);
-			},
-      zonesLayerName: 'vegetationsLayer'
-    })
+		editproperties : new ol.interaction.EditProperties()
   };
 
 	// Management of the interactions events
 	interactions.translate.on(
 		ol.interaction.TranslateEventType.TRANSLATEEND,
-		function(evt){
-			evt.features.forEach(function(feature){
-				zoneDAO.updateFeature(feature);
+		function(e){
+			e.features.forEach(function(feature){
+				dao.updateFeature(feature);
 			}, this);
 		}
 	);
 	interactions.modify.on(
 		ol.interaction.ModifyEventType.MODIFYFEATURES,
-		function(evt){
-			evt.features.forEach(function(feature){
-				zoneDAO.updateFeature(feature);
+		function(e){
+			e.features.forEach(function(feature){
+				dao.updateFeature(feature);
 			}, this);
 		}
 	);
 	interactions.erase.on(
 		ol.interaction.Select.EventType_.REMOVE,
-		function(evt){
-			evt.selected.forEach(function(feature){
-				zoneDAO.removeFeature(feature);
+		function(e){
+			e.selected.forEach(function(feature){
+				dao.removeFeature(feature);
 			}, this);
+		}
+	);
+	interactions.editproperties.on(
+		ol.interaction.EditProperties.EventType.SELECT,
+		function(e){
+			switch (e.feature.get('featureType')) {
+				case anc.sig.const.featureType.ZONE:
+					var zoneForm = require('../form/zone');
+					zoneForm.show(e.feature);
+					break;
+				case anc.sig.const.featureType.HIVE:
+					var hiveForm = require('../form/hive');
+					hiveForm.show(e.feature);
+					break;
+				default:
+					console.error('Unknow feature type.');
+			}
 		}
 	);
 
@@ -83,13 +93,13 @@ module.exports = (function() {
       map.removeInteraction(interactions[$(this)[0].dataset.shortid]);
     }
   });
-  // Keep the editzoneproperties on the top of the map's interactions
+  // Keep the editproperties on the top of the map's interactions
   window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
-  map.addInteraction(interactions.editzoneproperties);
+  map.addInteraction(interactions.editproperties);
   $('#anc-map').on('interactionAdded', function(event) {
     event.stopPropagation();
-    map.removeInteraction(interactions.editzoneproperties);
-    map.addInteraction(interactions.editzoneproperties);
+    map.removeInteraction(interactions.editproperties);
+    map.addInteraction(interactions.editproperties);
   });
 
   return {
