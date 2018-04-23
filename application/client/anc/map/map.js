@@ -19,12 +19,15 @@ module.exports = (function() {
 	    format: new ol.format.GeoJSON()
 	});
 	var hivesLayerName = 'hivesLayer';
+	// Set the default values and save the new hive
 	hivesLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: hivesLayerName,
 			featureType: anc.sig.const.featureType.HIVE
 		}, true);
-		dao.updateFeature(e.feature);
+		if( e.feature.getId() === undefined ) {
+			dao.updateFeature(e.feature);
+		}
 	});
 	var hivesLayer = new ol.layer.Vector({
 		name: hivesLayerName,
@@ -64,12 +67,15 @@ module.exports = (function() {
 	    format: new ol.format.GeoJSON()
 	});
 	var vegetationsLayerName = 'vegetationsLayer';
+	// Set the default values and save the new zone
 	vegetationsLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: vegetationsLayerName,
 			featureType: anc.sig.const.featureType.ZONE
 		}, true);
-		dao.updateFeature(e.feature);
+		if( e.feature.getId() === undefined ) {
+			dao.updateFeature(e.feature);
+		}
 	});
 	var vegetationsLayer = new ol.layer.Vector({
 		name: vegetationsLayerName,

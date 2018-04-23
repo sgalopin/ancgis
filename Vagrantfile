@@ -127,6 +127,9 @@ Vagrant.configure("2") do |config|
     sudo setcap 'cap_net_bind_service=+ep' `which node`
     # MongoDB
     sudo apt-get install -y mongodb
+    sudo sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
+    sudo service mongodb restart
+
     # Node modules dir issue (creation of symlinks with 'npm install')
     # mkdir /var/tmp/node_modules_anc
 	  # mkdir -p /var/www/anc/node_modules
