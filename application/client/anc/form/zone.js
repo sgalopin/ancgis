@@ -10,6 +10,19 @@ module.exports = (function() {
       var floreLineTemplate = require("../../../views/partials/form/flore-line.hbs");
       var zoneDAO = require('../dao/zone');
 
+      // Setup the local vars
+      var ppts = feature.getProperties();
+      var newPpts = jQuery.extend(true, {flore:[]}, ppts);
+      delete newPpts.geometry;
+
+      // Update the species lines
+      function updateSpeciesLines(ppts) {
+        const tbody = $('.anc-form-florefields>table>tbody');
+        tbody.empty();
+        tbody.append(floreLineTemplate({species: ppts.flore}));
+        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
+      }
+      
       // Remove buttons handler function
       function onRemoveSpeciesClick(event) {
         event.stopPropagation();
@@ -24,19 +37,6 @@ module.exports = (function() {
           updateSpeciesLines(newPpts);
         }
       }
-
-      // Update the species lines
-      function updateSpeciesLines(ppts) {
-        const tbody = $('.anc-form-florefields>table>tbody');
-        tbody.empty();
-        tbody.append(floreLineTemplate({species: ppts.flore}));
-        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
-      }
-
-      // Setup the local vars
-      var ppts = feature.getProperties();
-      var newPpts = jQuery.extend(true, {flore:[]}, ppts);
-      delete newPpts.geometry;
 
       // HTML builds
       var zoneFormHtml = zoneFormTemplate();

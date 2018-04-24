@@ -82,9 +82,10 @@ module.exports = (function() {
 		source: vegetationsLayerSource,
 		style: function(feature) {
 			var ppts = feature.getProperties();
+			var text = undefined;
 			// Style text
 			if(ppts.flore) {
-				var text = '';
+				text = '';
 				ppts.flore.forEach(function(species, i) {
 					if (i !== 0) {
 						text += '\n\n';
@@ -132,8 +133,8 @@ module.exports = (function() {
 	var maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
 
 	for (var i = 0; i < 18; i++) {
-		matrixIds[i] = i.toString();
-		resolutions[i] = maxResolution / Math.pow(2, i);
+		matrixIds[i] = i.toString(); // eslint-disable-line detect-object-injection
+		resolutions[i] = maxResolution / Math.pow(2, i); // eslint-disable-line detect-object-injection
 	}
 
 	var tileGrid = new ol.tilegrid.WMTS({
