@@ -1,3 +1,4 @@
+/*global ol*/
 goog.provide('ol.interaction.RemoveFeatures');
 
 /**
@@ -75,7 +76,7 @@ ol.interaction.RemoveFeatures.prototype.onFeatureSelect_ = function(event) {
     if (!this.keyuplistening_) {
       // TODO: use ol event listener to avoid to use JQuery
       $(document).one('keyup', $.proxy(function(e) {
-        if (e.keyCode == 17) { // Control key
+        if (e.keyCode === 17) { // Control key
           this.keyuplistening_ = false;
           this.removeFeatures_(event);
         }

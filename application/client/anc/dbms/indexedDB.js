@@ -89,9 +89,9 @@ module.exports = (function() {
 		.then(function(data, statusText, xhrObj) {
 			// Add the data to the db
 			var objectStore = me.db.transaction(collectionName, "readwrite").objectStore(collectionName);
-			for (var i in data) {
-				 objectStore.add(data[i]);
-			}
+			data.forEach(function(element) {
+			  objectStore.add(element);
+			});
 		}, function(xhrObj, textStatus, err) { // Catch the JQuery error
 			// TODO: Delete the db ?
 			console.log(err);

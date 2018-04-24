@@ -10,6 +10,29 @@ module.exports = (function() {
       var floreLineTemplate = require("../../../views/partials/form/flore-line.hbs");
       var zoneDAO = require('../dao/zone');
 
+      // Remove buttons handler function
+      function onRemoveSpeciesClick(event) {
+        event.stopPropagation();
+        // remove the new species from the local properties object
+        const id = Number($(this).parent().attr("data-id"));
+        const speciesIndex = newPpts.flore.findIndex(function(species) {
+    			return species.taxon.id === id;
+    		});
+        if (speciesIndex !== -1) {
+          newPpts.flore.splice(speciesIndex,1);
+          // Update the view
+          updateSpeciesLines(newPpts);
+        }
+      }
+
+      // Update the species lines
+      function updateSpeciesLines(ppts) {
+        const tbody = $('.anc-form-florefields>table>tbody');
+        tbody.empty();
+        tbody.append(floreLineTemplate({species: ppts.flore}));
+        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
+      }
+
       // Setup the local vars
       var ppts = feature.getProperties();
       var newPpts = jQuery.extend(true, {flore:[]}, ppts);
@@ -32,11 +55,11 @@ module.exports = (function() {
           event.preventDefault();
         });
       $('#anc-zoneform, #anc-zoneform-typefield').on("keyup", function (event) {
-        if (event.keyCode == 27) { // ESC
+        if (event.keyCode === 27) { // ESC
           event.stopPropagation();
           event.preventDefault();
           $('#anc-zoneform').remove();
-        } else if (event.keyCode == 13) { // ENTER
+        } else if (event.keyCode === 13) { // ENTER
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
@@ -90,29 +113,6 @@ module.exports = (function() {
         feature.setProperties(newPpts);
         zoneDAO.updateFeature(feature);
       });
-
-      // Remove buttons handler function
-      function onRemoveSpeciesClick(event) {
-        event.stopPropagation();
-        // remove the new species from the local properties object
-        const id = Number($(this).parent().attr("data-id"));
-        const speciesIndex = newPpts.flore.findIndex(function(species) {
-    			return species.taxon.id === id;
-    		});
-        if (speciesIndex !== -1) {
-          newPpts.flore.splice(speciesIndex,1);
-          // Update the view
-          updateSpeciesLines(newPpts);
-        }
-      }
-
-      // Update the species lines
-      function updateSpeciesLines(ppts) {
-        const tbody = $('.anc-form-florefields>table>tbody');
-        tbody.empty();
-        tbody.append(floreLineTemplate({species: ppts.flore}));
-        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
-      }
     }
   }
 })();

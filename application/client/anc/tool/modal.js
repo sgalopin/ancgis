@@ -19,7 +19,7 @@ module.exports = (function() {
         });
         // Manages the 'ENTER' keyup event
         $('#anc-confirm').on('keyup', function (e) {
-          if (e.keyCode == 13) { // ENTER
+          if (e.keyCode === 13) { // ENTER
             $('#anc-confirm .btn-primary').trigger('click', e);
           }
         });

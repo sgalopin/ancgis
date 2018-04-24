@@ -31,7 +31,7 @@ browserify.settings({ transform: ['hbsfy'] });
 app.get('/javascripts/bundle.js', browserify('./client/main.js'));
 var dbConnectionString = process.env.MONGODB_URI || 'mongodb://localhost/anc';
 mongoose.connect(dbConnectionString + '/taxons');
-if (app.get('env') == 'development') {
+if (app.get('env') === 'development') {
   var browserSync = require('browser-sync');
   var config = {
     files: ["public/**/*.{js,css}", "client/*.js", "sass/**/*.scss", "views/**/*.hbs"],

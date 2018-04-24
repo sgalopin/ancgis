@@ -7,59 +7,7 @@ module.exports = (function() {
     show: function (feature) {
       // Requirements
       var speciesFormTemplate = require("../../../views/partials/form/species.hbs");
-
-      // Get the taxon fields
       var idbms = require('../dbms/indexedDB');
-      idbms.readAll()
-      .then(function(taxons) {
-        // HTML builds
-        var speciesFormHtml = speciesFormTemplate({taxons: taxons});
-        $('body').append(speciesFormHtml);
-        $('#anc-speciesform [data-toggle="tooltip"]').tooltip();
-        $('#anc-speciesform').focus();
-
-        // keys handler
-        // Note: 'keypress' doesn't seem to be handled consistently
-        // between browsers whereas keyup is consistent.
-        $('#anc-speciesform-taxonfield').on("keypress", function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-          });
-        $('#anc-speciesform, #anc-speciesform-taxonfield, #anc-speciesform-recoveryfield').on("keyup", function (event) {
-          if (event.keyCode == 27) { // ESC
-            event.stopPropagation();
-            event.preventDefault();
-            $('#anc-speciesform').remove();
-            $('#anc-zoneform').show( 0, function() {
-              $('#anc-zoneform').focus();
-            });
-          } else if (event.keyCode == 13) { // ENTER
-            event.stopPropagation();
-            event.preventDefault();
-            validateForm();
-          }
-        });
-
-        // Cancel button handler
-        $('#anc-speciesform-cancelbtn').on('click', function(event) {
-          event.stopPropagation();
-          $('#anc-speciesform').remove();
-          $('#anc-zoneform').show( 0, function() {
-            $('#anc-zoneform').focus();
-          });
-        });
-
-        // Validate button handler
-        $("#anc-speciesform-validatebtn").on('click', function(event) {
-          event.stopPropagation();
-          validateForm();
-        });
-      }, function(err) { // Catch the 'readAll' function error
-        console.error(err);
-      })
-      .catch(function(err) { // Catch the 'then' function error
-        console.error(err);
-      });
 
       // Manage the validation of the form
       function validateForm () {
@@ -89,6 +37,58 @@ module.exports = (function() {
           });
         }
       }
+
+      // Get the taxon fields
+      idbms.readAll()
+      .then(function(taxons) {
+        // HTML builds
+        var speciesFormHtml = speciesFormTemplate({taxons: taxons});
+        $('body').append(speciesFormHtml);
+        $('#anc-speciesform [data-toggle="tooltip"]').tooltip();
+        $('#anc-speciesform').focus();
+
+        // keys handler
+        // Note: 'keypress' doesn't seem to be handled consistently
+        // between browsers whereas keyup is consistent.
+        $('#anc-speciesform-taxonfield').on("keypress", function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+          });
+        $('#anc-speciesform, #anc-speciesform-taxonfield, #anc-speciesform-recoveryfield').on("keyup", function (event) {
+          if (event.keyCode === 27) { // ESC
+            event.stopPropagation();
+            event.preventDefault();
+            $('#anc-speciesform').remove();
+            $('#anc-zoneform').show( 0, function() {
+              $('#anc-zoneform').focus();
+            });
+          } else if (event.keyCode === 13) { // ENTER
+            event.stopPropagation();
+            event.preventDefault();
+            validateForm();
+          }
+        });
+
+        // Cancel button handler
+        $('#anc-speciesform-cancelbtn').on('click', function(event) {
+          event.stopPropagation();
+          $('#anc-speciesform').remove();
+          $('#anc-zoneform').show( 0, function() {
+            $('#anc-zoneform').focus();
+          });
+        });
+
+        // Validate button handler
+        $("#anc-speciesform-validatebtn").on('click', function(event) {
+          event.stopPropagation();
+          validateForm();
+        });
+      }, function(err) { // Catch the 'readAll' function error
+        console.error(err);
+      })
+      .catch(function(err) { // Catch the 'then' function error
+        console.error(err);
+      });
     }
   }
 })();

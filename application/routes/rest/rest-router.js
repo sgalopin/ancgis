@@ -29,10 +29,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     })
     // CREATE
     .post(function(req, res, next) {
-      var doc = new Model();
-      for (prop in req.body) {
-        doc[prop] = req.body[prop];
-      }
+      var doc = new Model(req.body);
       doc.save()
       .then(function (doc) {
         res.json({'status': 'success', 'data': doc});
@@ -54,12 +51,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     })
     // UPDATE
     .put(function(req, res, next) {
-      var doc = {};
-      var prop;
-      for (prop in req.body) {
-        doc[prop] = req.body[prop];
-      }
-      Model.update({_id: req.params.id}, doc)
+      Model.update({_id: req.params.id}, req.body)
       .exec(function (err, writeOpResult) {
         if (err) return res.status(400).json({'status': 'fail', 'error': err});
         res.json({'status': 'success', 'data': writeOpResult});

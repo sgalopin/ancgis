@@ -1,3 +1,4 @@
+/*global ol*/
 goog.provide('ol.interaction.EditProperties');
 
 /**

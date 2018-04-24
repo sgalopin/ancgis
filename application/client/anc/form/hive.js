@@ -31,11 +31,11 @@ module.exports = (function() {
         event.preventDefault();
       });
       $('#anc-hiveform, #anc-hiveform input, #anc-hiveform select').on("keyup", function (event) {
-        if (event.keyCode == 27) { // ESC
+        if (event.keyCode === 27) { // ESC
           event.stopPropagation();
           event.preventDefault();
           $('#anc-hiveform').remove();
-        } else if (event.keyCode == 13) { // ENTER
+        } else if (event.keyCode === 13) { // ENTER
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
