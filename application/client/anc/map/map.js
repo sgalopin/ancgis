@@ -3,7 +3,6 @@ require('../../ol/interaction/editproperties');
 require('../../ol/interaction/removefeatures');
 require('../../ol/interaction/modifyfeature');
 require('../../ol/control/periodswitcher');
-require('./const');
 
 /**
  * Map builder.
@@ -12,6 +11,8 @@ module.exports = (function() {
 
 	var zoneDAO = require('../dao/zone');
 	var hiveDAO = require('../dao/hive');
+	var zoneForm = require('../form/zone');
+	var hiveForm = require('../form/hive');
 
 	// Hives layer
 	var hivesLayerSource = new ol.source.Vector({
@@ -24,8 +25,8 @@ module.exports = (function() {
 	hivesLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: hivesLayerName,
-			featureType: anc.sig.const.featureType.HIVE,
-			dao: hiveDAO
+			dao: hiveDAO,
+			form: hiveForm
 		}, true);
 		if( e.feature.getId() === undefined ) {
 			hiveDAO.createFeature(e.feature);
@@ -73,8 +74,8 @@ module.exports = (function() {
 	vegetationsLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: vegetationsLayerName,
-			featureType: anc.sig.const.featureType.ZONE,
-			dao: zoneDAO
+			dao: zoneDAO,
+			form: zoneForm
 		}, true);
 		if( e.feature.getId() === undefined ) {
 			zoneDAO.createFeature(e.feature);

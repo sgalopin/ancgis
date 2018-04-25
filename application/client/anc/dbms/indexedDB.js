@@ -14,69 +14,66 @@ module.exports = (function() { // eslint-disable-line complexity
 		console.log("Your browser doesn't support a stable version of IndexedDB.")
 	}
 
-	var me = {
+	var me = {};
 
-		read : function (id) {
-			var scope = this;
- 			return new Promise(function(resolve, reject) {
-				var request = scope.db.transaction(["taxons"])
-				.objectStore("taxons")
-				.get(id);
-				request.onerror = function(event) {
-				   console.error(Error("Unable to retrieve data from database."));
-				};
-				request.onsuccess = function(event) {
-				   if (request.result) {
-						 	resolve(request.result);
-				   } else {
-						  reject(Error("Data not found in your database."));
-				   }
-				};
-			});
-		},
-
-		readAll : function () {
-			var scope = this;
-			return new Promise(function(resolve, reject) {
-				var data = [];
-				var objectStore = scope.db.transaction("taxons").objectStore("taxons");
-				objectStore.openCursor().onsuccess = function(event) {
-				   var cursor = event.target.result;
-				   if (cursor) {
-							data.push(cursor.value);
-				      cursor.continue();
-				   }
-				   else {
-						  // No more entries
-						 	resolve(data);
-				   }
-				}; // TODO: Add an 'onerror' handler ?
-			});
-		},
-
-		add : function (obj) { // TODO: Return a promise.
-			var request = this.db.transaction(["taxons"], "readwrite")
+	me.read = function (id) {
+		return new Promise(function(resolve, reject) {
+			var request = me.db.transaction(["taxons"])
 			.objectStore("taxons")
-			.add(obj);
-
-			request.onsuccess = function(event) {
-			   console.log("'" + obj._id + "' has been added to your database.");
-			};
-
+			.get(id);
 			request.onerror = function(event) {
-			   console.log("Unable to add data.");
-			}
-		},
-
-		remove : function (id) { // TODO: Return a promise.
-			var request = this.db.transaction(["taxons"], "readwrite")
-			.objectStore("taxons")
-			.delete(id);
-
-			request.onsuccess = function(event) {
-			   console.log("'" + id + "' entry has been removed from the database.");
+			   console.error(Error("Unable to retrieve data from database."));
 			};
+			request.onsuccess = function(event) {
+			   if (request.result) {
+					 	resolve(request.result);
+			   } else {
+					  reject(Error("Data not found in your database."));
+			   }
+			};
+		});
+	};
+
+	me.readAll = function () {
+		return new Promise(function(resolve, reject) {
+			var data = [];
+			var objectStore = me.db.transaction("taxons").objectStore("taxons");
+			objectStore.openCursor().onsuccess = function(event) {
+			   var cursor = event.target.result;
+			   if (cursor) {
+						data.push(cursor.value);
+			      cursor.continue();
+			   }
+			   else {
+					  // No more entries
+					 	resolve(data);
+			   }
+			}; // TODO: Add an 'onerror' handler ?
+		});
+	};
+
+	me.add = function (obj) { // TODO: Return a promise.
+		var request = this.db.transaction(["taxons"], "readwrite")
+		.objectStore("taxons")
+		.add(obj);
+
+		request.onsuccess = function(event) {
+		   console.log("'" + obj._id + "' has been added to your database.");
+		};
+
+		request.onerror = function(event) {
+		   console.log("Unable to add data.");
 		}
+	};
+
+	me.remove = function (id) { // TODO: Return a promise.
+		var request = this.db.transaction(["taxons"], "readwrite")
+		.objectStore("taxons")
+		.delete(id);
+
+		request.onsuccess = function(event) {
+		   console.log("'" + id + "' entry has been removed from the database.");
+		};
 	};
 
 	function addCollection (collectionName) {

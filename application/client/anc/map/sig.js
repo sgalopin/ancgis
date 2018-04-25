@@ -58,18 +58,7 @@ module.exports = (function() {
 	interactions.editproperties.on(
 		ol.interaction.EditProperties.EventType.SELECT,
 		function(e){
-			switch (e.feature.get('featureType')) {
-				case anc.sig.const.featureType.ZONE:
-					var zoneForm = require('../form/zone');
-					zoneForm.show(e.feature);
-					break;
-				case anc.sig.const.featureType.HIVE:
-					var hiveForm = require('../form/hive');
-					hiveForm.show(e.feature);
-					break;
-				default:
-					console.error('Unknow feature type.');
-			}
+			e.feature.getProperties().form.show(e.feature);
 		}
 	);
 

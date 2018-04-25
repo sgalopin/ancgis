@@ -3,7 +3,8 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
 
-// Define a namespace for the application.
-anc = window.anc ? anc : {};
-anc.idbms = require('./anc/dbms/indexedDB');
+// Open the database
+require('./anc/dbms/indexedDB');
+
+// Open the sig
 require('./anc/map/sig');
