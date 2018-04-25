@@ -1,3 +1,4 @@
+/*global db*/
 db.vegetationzones.drop();
 db.vegetationzones.insert([{
   // To set the "_id" use the ObjectId() function (ex: "_id": ObjectId("5a13f5bfc8c6de2d09c604da"))

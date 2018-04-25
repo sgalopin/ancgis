@@ -1,4 +1,4 @@
-/*global ol*/
+/*global ol goog*/
 goog.provide('ol.interaction.ModifyFeature');
 
 /**

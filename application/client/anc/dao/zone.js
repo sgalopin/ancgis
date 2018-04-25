@@ -1,3 +1,4 @@
+/*global ol*/
 /**
  * Zone's data access object.
  */

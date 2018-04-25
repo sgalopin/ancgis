@@ -1,3 +1,4 @@
+/*global db*/
 db.taxons.drop();
 db.taxons.insert([ // TAXREF v10.0
 	{ "_id":1, "name": "Abies alba", "vernacularName": "Sapin", "periods": ["E"], "potential": 25, "wikipediaUrl":"https://fr.wikipedia.org/wiki/Abies_alba" },

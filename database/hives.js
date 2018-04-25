@@ -1,3 +1,4 @@
+/*global db*/
 db.hives.drop();
 db.hives.insert([{
   "type": "Feature",

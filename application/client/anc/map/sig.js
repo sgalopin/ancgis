@@ -1,3 +1,4 @@
+/*global ol*/
 /**
  * Sig builder.
  */

@@ -1,7 +1,7 @@
 var express = require('express');
 
 module.exports = function (Model, populatePath, returnGeoJson) {
-  var router = express.Router();
+  var router = express.Router(); // eslint-disable-line new-cap
   var returnGeoJson_ = returnGeoJson ? returnGeoJson : false;
 
   router.route('/')

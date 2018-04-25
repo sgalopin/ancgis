@@ -1,3 +1,4 @@
+/*global ol goog*/
 goog.provide('ol.control.PeriodSwitcher');
 
 goog.require('ol');
@@ -9,7 +10,7 @@ goog.require('ol.css');
 
 /**
  * @classdesc
- * Some control buttons which, when pressed, 
+ * Some control buttons which, when pressed,
  * changes the current period layer on the map.
  *
  * @constructor
@@ -98,8 +99,7 @@ ol.control.PeriodSwitcher = function(opt_options) {
   span.setAttribute('data-placement', 'top');
 
   // DIV
-  var className = options.className !== undefined ? options.className :
-    'ol-periodswitcher';
+  var className = options.className ? options.className : 'ol-periodswitcher';
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
   var element = document.createElement('div');

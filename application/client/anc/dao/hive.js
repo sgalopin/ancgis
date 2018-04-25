@@ -1,3 +1,4 @@
+/*global ol*/
 /**
  * Hive's data access object.
  */
@@ -27,5 +28,5 @@ module.exports = (function() {
       };
     }
   }, require('../dao/crud'));
-  
+
 })();
