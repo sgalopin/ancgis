@@ -10,7 +10,8 @@ require('./const');
  */
 module.exports = (function() {
 
-	var dao = require('../dao/abstract');
+	var zoneDAO = require('../dao/zone');
+	var hiveDAO = require('../dao/hive');
 
 	// Hives layer
 	var hivesLayerSource = new ol.source.Vector({
@@ -23,10 +24,11 @@ module.exports = (function() {
 	hivesLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: hivesLayerName,
-			featureType: anc.sig.const.featureType.HIVE
+			featureType: anc.sig.const.featureType.HIVE,
+			dao: hiveDAO
 		}, true);
 		if( e.feature.getId() === undefined ) {
-			dao.updateFeature(e.feature);
+			hiveDAO.createFeature(e.feature);
 		}
 	});
 	var hivesLayer = new ol.layer.Vector({
@@ -71,10 +73,11 @@ module.exports = (function() {
 	vegetationsLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
 		e.feature.setProperties({
 			layerName: vegetationsLayerName,
-			featureType: anc.sig.const.featureType.ZONE
+			featureType: anc.sig.const.featureType.ZONE,
+			dao: zoneDAO
 		}, true);
 		if( e.feature.getId() === undefined ) {
-			dao.updateFeature(e.feature);
+			zoneDAO.createFeature(e.feature);
 		}
 	});
 	var vegetationsLayer = new ol.layer.Vector({

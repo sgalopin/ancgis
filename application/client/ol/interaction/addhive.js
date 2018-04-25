@@ -19,7 +19,7 @@ goog.require('ol.math');
  * @param {olx.interaction.AddHiveOptions=} opt_options Options.
  * @api
  */
-ol.interaction.AddHive = function(opt_options) {
+ol.interaction.AddHive = function(opt_options) { // eslint-disable-line complexity
 
   ol.interaction.Interaction.call(this, {
   handleEvent: ol.interaction.AddHive.handleEvent
@@ -76,7 +76,7 @@ ol.inherits(ol.interaction.AddHive, ol.interaction.Interaction);
  * @this {ol.interaction.AddHive}
  * @api
  */
-ol.interaction.AddHive.handleEvent = function(mapBrowserEvent) {
+ol.interaction.AddHive.handleEvent = function(mapBrowserEvent) { // eslint-disable-line complexity
   var type = mapBrowserEvent.type;
   var overlaySource = this.overlay_.getSource();
 

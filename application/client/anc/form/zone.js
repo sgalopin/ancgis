@@ -29,8 +29,8 @@ module.exports = (function() {
         // remove the new species from the local properties object
         const id = Number($(this).parent().attr("data-id"));
         const speciesIndex = newPpts.flore.findIndex(function(species) {
-    			return species.taxon.id === id;
-    		});
+          return species.taxon.id === id;
+        });
         if (speciesIndex !== -1) {
           newPpts.flore.splice(speciesIndex,1);
           // Update the view
@@ -63,7 +63,12 @@ module.exports = (function() {
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
-          zoneDAO.updateFeature(feature);
+          zoneDAO.updateFeature(feature)
+          .done(function(response) {
+            if (response.status === 'success') {
+              $('#anc-zoneform').remove();
+            }
+          });
         }
       });
 
@@ -111,7 +116,12 @@ module.exports = (function() {
       $("#anc-zoneform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
-        zoneDAO.updateFeature(feature);
+        zoneDAO.updateFeature(feature)
+        .done(function(response) {
+          if (response.status === 'success') {
+            $('#anc-zoneform').remove();
+          }
+        });
       });
     }
   }

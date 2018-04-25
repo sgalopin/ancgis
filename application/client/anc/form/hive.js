@@ -39,7 +39,12 @@ module.exports = (function() {
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
-          hiveDAO.updateFeature(feature);
+          hiveDAO.updateFeature(feature)
+          .done(function(response) {
+            if (response.status === 'success') {
+              $('#anc-hiveform').remove();
+            }
+          });
         }
       });
 
@@ -68,7 +73,12 @@ module.exports = (function() {
       $("#anc-hiveform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
-        hiveDAO.updateFeature(feature);
+        hiveDAO.updateFeature(feature)
+        .done(function(response) {
+          if (response.status === 'success') {
+            $('#anc-hiveform').remove();
+          }
+        });
       });
     }
   }

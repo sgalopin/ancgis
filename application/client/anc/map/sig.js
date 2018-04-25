@@ -3,7 +3,6 @@
  */
 module.exports = (function() {
 	var map = require('./map');
-	var dao = require('../dao/abstract');
   var interactions = {
     // Add Hive Button Control
     addhive : new ol.interaction.AddHive({
@@ -36,7 +35,7 @@ module.exports = (function() {
 		ol.interaction.TranslateEventType.TRANSLATEEND,
 		function(e){
 			e.features.forEach(function(feature){
-				dao.updateFeature(feature);
+				feature.getProperties().dao.updateFeature(feature);
 			}, this);
 		}
 	);
@@ -44,7 +43,7 @@ module.exports = (function() {
 		ol.interaction.ModifyEventType.MODIFYFEATURES,
 		function(e){
 			e.features.forEach(function(feature){
-				dao.updateFeature(feature);
+				feature.getProperties().dao.updateFeature(feature);
 			}, this);
 		}
 	);
@@ -52,7 +51,7 @@ module.exports = (function() {
 		ol.interaction.Select.EventType_.REMOVE,
 		function(e){
 			e.selected.forEach(function(feature){
-				dao.removeFeature(feature);
+				feature.getProperties().dao.removeFeature(feature);
 			}, this);
 		}
 	);

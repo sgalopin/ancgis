@@ -1,7 +1,7 @@
 /**
  * IndexedDB builder.
  */
-module.exports = (function() {
+module.exports = (function() { // eslint-disable-line complexity
 
 	//prefixes of implementation that we want to test
 	window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
