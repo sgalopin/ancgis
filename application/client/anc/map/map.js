@@ -133,8 +133,8 @@ module.exports = (function() {
 	var maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
 
 	for (var i = 0; i < 18; i++) {
-		matrixIds[i] = i.toString(); // eslint-disable-line detect-object-injection
-		resolutions[i] = maxResolution / Math.pow(2, i); // eslint-disable-line detect-object-injection
+		matrixIds[i] = i.toString(); // eslint-disable-line security/detect-object-injection
+		resolutions[i] = maxResolution / Math.pow(2, i); // eslint-disable-line security/detect-object-injection
 	}
 
 	var tileGrid = new ol.tilegrid.WMTS({

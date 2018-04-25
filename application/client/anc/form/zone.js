@@ -20,9 +20,9 @@ module.exports = (function() {
         const tbody = $('.anc-form-florefields>table>tbody');
         tbody.empty();
         tbody.append(floreLineTemplate({species: ppts.flore}));
-        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick);
+        $('.anc-form-removespecies>span').click(onRemoveSpeciesClick); // eslint-disable-line no-use-before-define
       }
-      
+
       // Remove buttons handler function
       function onRemoveSpeciesClick(event) {
         event.stopPropagation();
