@@ -83,7 +83,7 @@ module.exports = (function() {
     }
   });
   // Keep the editproperties on the top of the map's interactions
-  window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+  window.addEventListener("contextmenu", function(e) { e.preventDefault(); });
   map.addInteraction(interactions.editproperties);
   $("#anc-map").on("interactionAdded", function(event) {
     event.stopPropagation();
@@ -91,8 +91,5 @@ module.exports = (function() {
     map.addInteraction(interactions.editproperties);
   });
 
-  return {
-		map: map,
-		interactions: interactions
-	}
-})();
+  return { map, interactions };
+}());

@@ -8,7 +8,7 @@ module.exports = (function() { // eslint-disable-line complexity
 
   //prefixes of window.IDB objects
   window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
-  window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
+  window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
   if (!window.indexedDB) {
     console.log("Your browser doesn't support a stable version of IndexedDB.");
@@ -63,7 +63,7 @@ module.exports = (function() { // eslint-disable-line complexity
 
     request.onerror = function(event) {
        console.log("Unable to add data.");
-    }
+    };
   };
 
   me.remove = function (id) { // TODO: Return a promise.
@@ -113,4 +113,4 @@ module.exports = (function() { // eslint-disable-line complexity
   };
 
   return me;
-})();
+}());

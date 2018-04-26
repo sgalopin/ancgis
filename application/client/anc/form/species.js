@@ -4,7 +4,7 @@
 module.exports = (function() {
 
   return {
-    show: function (feature) {
+    show(feature) {
       // Requirements
       var speciesFormTemplate = require("../../../views/partials/form/species.hbs");
       var idbms = require("../dbms/indexedDB");
@@ -24,10 +24,7 @@ module.exports = (function() {
           idbms.read(Number($("#anc-speciesform-taxonfield").val()))
           .then(function(taxon) {
             // Fire the end event
-            $("#anc-zoneform").trigger("speciesFormValidated", {
-              taxon: taxon,
-              recovery: recovery
-            });
+            $("#anc-zoneform").trigger("speciesFormValidated", { taxon, recovery });
             $("#anc-speciesform").remove();
             $("#anc-zoneform").show( 0, function() {
               $("#anc-zoneform").focus();
@@ -42,7 +39,7 @@ module.exports = (function() {
       idbms.readAll()
       .then(function(taxons) {
         // HTML builds
-        var speciesFormHtml = speciesFormTemplate({taxons: taxons});
+        var speciesFormHtml = speciesFormTemplate({ taxons });
         $("body").append(speciesFormHtml);
         $("#anc-speciesform [data-toggle=\"tooltip\"]").tooltip();
         $("#anc-speciesform").focus();
@@ -90,5 +87,5 @@ module.exports = (function() {
         console.error(err);
       });
     }
-  }
-})();
+  };
+}());

@@ -4,7 +4,7 @@
 module.exports = (function() {
 
   return {
-    show: function (feature) {
+    show(feature) {
       // Requirements
       var zoneFormTemplate = require("../../../views/partials/form/zone.hbs");
       var floreLineTemplate = require("../../../views/partials/form/flore-line.hbs");
@@ -124,5 +124,5 @@ module.exports = (function() {
         });
       });
     }
-  }
-})();
+  };
+}());

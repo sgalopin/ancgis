@@ -7,12 +7,12 @@ goog.provide("ol.interaction.EditProperties");
  *
  * @constructor
  * @extends {ol.interaction.Interaction}
- * @param {olx.interaction.EditPropertiesOptions=} opt_options Options.
+ * @param {olx.interaction.EditPropertiesOptions=} optOptions Options.
  * @api
  */
-ol.interaction.EditProperties = function(opt_options) {
+ol.interaction.EditProperties = function(optOptions) {
 
-  var options = opt_options || {};
+  var options = optOptions || {};
   options.handleEvent = ol.interaction.EditProperties.prototype.handleEvent;
 
   ol.interaction.Interaction.call(this, options);
@@ -39,7 +39,7 @@ ol.interaction.EditProperties.prototype.handleEvent = function(evt) {
       function(feature, layer) {
           return feature;
       },{
-        layerFilter : function(layerCandidate){
+        layerFilter(layerCandidate) {
           // Checks if the layer has a name (Avoids the selection of the drawing layers).
           if (layerCandidate.getProperties().hasOwnProperty("name")) {
             return true;

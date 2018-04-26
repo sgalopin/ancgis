@@ -36,7 +36,7 @@ module.exports = (function() {
   var hivesLayer = new ol.layer.Vector({
     name: hivesLayerName,
     source: hivesLayerSource,
-    style: function(feature) {
+    style(feature) {
       var ppts = feature.getProperties();
       return new ol.style.Style({
         fill: new ol.style.Fill({
@@ -58,7 +58,7 @@ module.exports = (function() {
   ol.format.GeoJSON.GEOMETRY_READERS_["Circle"] = function(object) {
     return new ol.geom.Circle(object.coordinates, object.radius);
   };
-  ol.format.GeoJSON.GEOMETRY_WRITERS_["Circle"] = function(geometry, opt_options) {
+  ol.format.GeoJSON.GEOMETRY_WRITERS_["Circle"] = function(geometry, optOptions) {
     return ({
       type: "Circle",
       coordinates: geometry.getCenter(),
@@ -122,9 +122,7 @@ module.exports = (function() {
           + species.taxon.periods + "\n"
           + species.recovery + "%";
         });
-        text = new ol.style.Text({
-          text: text
-        });
+        text = new ol.style.Text({ text });
         styles.Polygon.setText(text);
         styles.Circle.setText(text);
       }
@@ -146,20 +144,20 @@ module.exports = (function() {
 
   var tileGrid = new ol.tilegrid.WMTS({
     origin: [-20037508, 20037508],
-    resolutions: resolutions,
-    matrixIds: matrixIds
+    resolutions,
+    matrixIds
   });
 
   var key = "7wbodpc2qweqkultejkb47zv";
 
-  var ign_source = new ol.source.WMTS({
+  var ignSource = new ol.source.WMTS({
     url: "http://wxs.ign.fr/" + key + "/wmts",
     //layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
     layer: "ORTHOIMAGERY.ORTHOPHOTOS",
     matrixSet: "PM",
     format: "image/jpeg",
     projection: "EPSG:3857",
-    tileGrid: tileGrid,
+    tileGrid,
     style: "normal",
     attributions: [new ol.Attribution({
       html: "<a href=\"http://www.geoportail.fr/\" target=\"_blank\">" +
@@ -170,7 +168,7 @@ module.exports = (function() {
 
   var bdorthoLayer = new ol.layer.Tile({
     name: "bdorthoLayer",
-    source: ign_source
+    source: ignSource
   });
 
   ol.Map.prototype.getLayerByName = function(layerName) {
@@ -191,7 +189,7 @@ module.exports = (function() {
         new ol.control.MousePosition({
           className:"",
           target:document.getElementById("anc-mapstatus-mouseposition"),
-          coordinateFormat :function(coords){
+          coordinateFormat(coords) {
             var template = "X: {x} - Y: {y} ";
             return ol.coordinate.format(coords, template);
         }})
@@ -202,4 +200,4 @@ module.exports = (function() {
         center: [308555, 6121070] // Chez Didier
       })
     });
-})();
+}());

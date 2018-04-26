@@ -14,12 +14,12 @@ ol.interaction.Select.EventType_.REMOVE = "remove";
  *
  * @constructor
  * @extends {ol.interaction.Select}
- * @param {olx.interaction.RemoveFeaturesOptions=} opt_options Options.
+ * @param {olx.interaction.RemoveFeaturesOptions=} optOptions Options.
  * @api
  */
-ol.interaction.RemoveFeatures = function(opt_options) {
+ol.interaction.RemoveFeatures = function(optOptions) {
 
-  var options = opt_options || {};
+  var options = optOptions || {};
   options.toggleCondition = options.toggleCondition ? options.toggleCondition : ol.events.condition.platformModifierKeyOnly;
   options.handleEvent = ol.interaction.RemoveFeatures.prototype.handleEvent;
 

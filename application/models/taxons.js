@@ -13,7 +13,7 @@ module.exports = mongoose.model("Taxon", new mongoose.Schema({
   toJSON: {
     virtuals: true, // return the virtual auto assigned id (http://mongoosejs.com/docs/guide.html#id)
     versionKey: false, // remove the "__v" field
-    transform: function (doc, ret) {
+    transform(doc, ret) {
 			delete ret._id;
 			ret.id = Number(ret.id);
 		} // remove the "_id" field

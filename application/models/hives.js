@@ -17,6 +17,6 @@ module.exports = mongoose.model("Hive", new mongoose.Schema({
   toJSON: {
     virtuals: true, // return the virtual auto assigned id field (http://mongoosejs.com/docs/guide.html#id)
     versionKey: false, // remove the "__v" field
-    transform: function (doc, ret) { delete ret._id  } // remove the "_id" field
+    transform(doc, ret) { delete ret._id;  } // remove the "_id" field
   }
 }));

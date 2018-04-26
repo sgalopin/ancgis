@@ -7,12 +7,12 @@ module.exports = (function() {
   return jQuery.extend({
 
     // Returns the url
-    getUrl: function () {
+    getUrl() {
       return "/rest/hives/";
     },
 
     // Returns the data
-    getData: function (feature) {
+    getData(feature) {
       // Setup the geojsonPpts var
       var ppts = feature.getProperties();
       const format = new ol.format.GeoJSON();
@@ -29,4 +29,4 @@ module.exports = (function() {
     }
   }, require("../dao/crud"));
 
-})();
+}());

@@ -14,12 +14,12 @@ ol.interaction.ModifyEventType.MODIFYFEATURES = "modifyfeatures";
  *
  * @constructor
  * @extends {ol.interaction.Modify}
- * @param {olx.interaction.ModifyFeatureOptions=} opt_options Options.
+ * @param {olx.interaction.ModifyFeatureOptions=} optOptions Options.
  * @api
  */
-ol.interaction.ModifyFeature = function(opt_options) {
+ol.interaction.ModifyFeature = function(optOptions) {
 
-  var options = opt_options || {};
+  var options = optOptions || {};
   options.deleteCondition = options.deleteCondition ? options.deleteCondition : function(mapBrowserEvent) {
     return ol.events.condition.platformModifierKeyOnly(mapBrowserEvent) &&
       ol.events.condition.singleClick(mapBrowserEvent);
@@ -69,5 +69,5 @@ ol.interaction.ModifyFeature.prototype.onModifyStart_ = function(event) {
  * @private
  */
 ol.interaction.ModifyFeature.prototype.addChangedFeature_ = function(e) {
-  this.changedFeatures_.push(e.target)
+  this.changedFeatures_.push(e.target);
 };

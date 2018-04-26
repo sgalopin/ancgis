@@ -5,7 +5,7 @@ module.exports = (function() {
 
   // Display a confirm modal box
   return {
-      confirm: function (message) {
+    confirm(message) {
       return new Promise(function(resolve, reject) {
         // Adds the message to the box body
         $("#anc-confirm .modal-body").text(message);
@@ -32,5 +32,5 @@ module.exports = (function() {
         });
       });
     }
-  }
-})();
+  };
+}());

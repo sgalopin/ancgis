@@ -10,7 +10,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       Model.find()
       .populate(populatePath)
       .exec(function (err, docs) {
-        if (err) return console.error(err);
+        if (err) { return console.error(err); }
         if (returnGeoJson_) {
           res.json({
             "type": "FeatureCollection",
@@ -36,7 +36,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       })
       .catch(function(err) {
         res.status(400).json({"status": "fail", "error": err});
-      })
+      });
     });
 
   router.route("/:id")
@@ -53,7 +53,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     .put(function(req, res, next) {
       Model.update({_id: req.params.id}, req.body)
       .exec(function (err, writeOpResult) {
-        if (err) return res.status(400).json({"status": "fail", "error": err});
+        if (err) { return res.status(400).json({"status": "fail", "error": err}); }
         res.json({"status": "success", "data": writeOpResult});
       });
     })

@@ -16,16 +16,16 @@ goog.require("ol.math");
  *
  * @constructor
  * @extends {ol.interaction.Interaction}
- * @param {olx.interaction.AddHiveOptions=} opt_options Options.
+ * @param {olx.interaction.AddHiveOptions=} optOptions Options.
  * @api
  */
-ol.interaction.AddHive = function(opt_options) { // eslint-disable-line complexity
+ol.interaction.AddHive = function(optOptions) { // eslint-disable-line complexity
 
   ol.interaction.Interaction.call(this, {
   handleEvent: ol.interaction.AddHive.handleEvent
   });
 
-    var options = opt_options || {};
+    var options = optOptions || {};
 
   /**
    * Rotation angle in radians.

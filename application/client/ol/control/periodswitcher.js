@@ -15,11 +15,11 @@ goog.require("ol.css");
  *
  * @constructor
  * @extends {ol.control.Control}
- * @param {olx.control.PeriodSwitcherOptions=} opt_options Options.
+ * @param {olx.control.PeriodSwitcherOptions=} optOptions Options.
  * @api
  */
-ol.control.PeriodSwitcher = function(opt_options) {
-  var options = opt_options ? opt_options : {};
+ol.control.PeriodSwitcher = function(optOptions) {
+  var options = optOptions ? optOptions : {};
 
   var btnsOptions = [{
     period: "T1",
