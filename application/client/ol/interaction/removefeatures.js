@@ -1,12 +1,12 @@
 /*global ol goog*/
-goog.provide('ol.interaction.RemoveFeatures');
+goog.provide("ol.interaction.RemoveFeatures");
 
 /**
  * Triggered when feature(s) has been removed.
  * @event ol.interaction.Select.Event#remove
  * @api
  */
-ol.interaction.Select.EventType_.REMOVE = 'remove';
+ol.interaction.Select.EventType_.REMOVE = "remove";
 
 /**
  * @classdesc
@@ -26,13 +26,13 @@ ol.interaction.RemoveFeatures = function(opt_options) {
   ol.interaction.Select.call(this, options);
 
   /**
-   * True if a listener on the 'keyup' event has been added.
+   * True if a listener on the "keyup" event has been added.
    * @private
    * @type {boolean}
    */
   this.keyuplistening_ = false;
 
-  this.on('select', this.onFeatureSelect_);
+  this.on("select", this.onFeatureSelect_);
 
 };
 ol.inherits(ol.interaction.RemoveFeatures, ol.interaction.Select);
@@ -43,8 +43,8 @@ ol.inherits(ol.interaction.RemoveFeatures, ol.interaction.Select);
  */
 ol.interaction.RemoveFeatures.prototype.removeFeatures_ = function(event) {
   // TODO: don't use anc lib here...
-  var ancTool = require('../../anc/tool/modal');
-  ancTool.confirm('Confirmez-vous la suppression ?').then(
+  var ancTool = require("../../anc/tool/modal");
+  ancTool.confirm("Confirmez-vous la suppression ?").then(
     $.proxy( function (e) {
       this.getFeatures().forEach(function(feature){
         this.getLayer(feature).getSource().removeFeature(feature);
@@ -66,7 +66,7 @@ ol.interaction.RemoveFeatures.prototype.removeFeatures_ = function(event) {
 };
 
 /**
- * Manages the 'select' event.
+ * Manages the "select" event.
  * @private
  */
 ol.interaction.RemoveFeatures.prototype.onFeatureSelect_ = function(event) {
@@ -75,7 +75,7 @@ ol.interaction.RemoveFeatures.prototype.onFeatureSelect_ = function(event) {
   } else { // Ctrl key pressed
     if (!this.keyuplistening_) {
       // TODO: use ol event listener to avoid to use JQuery
-      $(document).one('keyup', $.proxy(function(e) {
+      $(document).one("keyup", $.proxy(function(e) {
         if (e.keyCode === 17) { // Control key
           this.keyuplistening_ = false;
           this.removeFeatures_(event);

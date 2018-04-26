@@ -1,5 +1,5 @@
 /*global ol goog*/
-goog.provide('ol.interaction.EditProperties');
+goog.provide("ol.interaction.EditProperties");
 
 /**
  * @classdesc
@@ -41,7 +41,7 @@ ol.interaction.EditProperties.prototype.handleEvent = function(evt) {
       },{
         layerFilter : function(layerCandidate){
           // Checks if the layer has a name (Avoids the selection of the drawing layers).
-          if (layerCandidate.getProperties().hasOwnProperty('name')) {
+          if (layerCandidate.getProperties().hasOwnProperty("name")) {
             return true;
           } else {
             return false;
@@ -109,5 +109,5 @@ ol.interaction.EditProperties.EventType = {
    * @event ol.interaction.EditProperties.Event#select
    * @api
    */
-  SELECT: 'select'
+  SELECT: "select"
 };

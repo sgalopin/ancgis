@@ -1,13 +1,13 @@
 /*global ol goog*/
-goog.provide('ol.interaction.AddHive');
+goog.provide("ol.interaction.AddHive");
 
-goog.require('ol');
-goog.require('ol.ViewHint');
-goog.require('ol.easing');
-goog.require('ol.events.EventType');
-goog.require('ol.has');
-goog.require('ol.interaction.Interaction');
-goog.require('ol.math');
+goog.require("ol");
+goog.require("ol.ViewHint");
+goog.require("ol.easing");
+goog.require("ol.events.EventType");
+goog.require("ol.has");
+goog.require("ol.interaction.Interaction");
+goog.require("ol.math");
 
 
 /**
@@ -55,7 +55,7 @@ ol.interaction.AddHive = function(opt_options) { // eslint-disable-line complexi
   this.source_ = options.source ? options.source : null;
 
   /**
-   * The condition to rotate the polygon (default:'ol.events.condition.platformModifierKeyOnly')
+   * The condition to rotate the polygon (default:"ol.events.condition.platformModifierKeyOnly")
    * @private
    * @type {ol.EventsConditionType}
    */

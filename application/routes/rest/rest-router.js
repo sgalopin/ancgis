@@ -1,10 +1,10 @@
-var express = require('express');
+var express = require("express");
 
 module.exports = function (Model, populatePath, returnGeoJson) {
   var router = express.Router(); // eslint-disable-line new-cap
   var returnGeoJson_ = returnGeoJson ? returnGeoJson : false;
 
-  router.route('/')
+  router.route("/")
     // READ ALL
     .get(function(req, res, next) {
       Model.find()
@@ -32,14 +32,14 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       var doc = new Model(req.body);
       doc.save()
       .then(function (doc) {
-        res.json({'status': 'success', 'data': doc});
+        res.json({"status": "success", "data": doc});
       })
       .catch(function(err) {
-        res.status(400).json({'status': 'fail', 'error': err});
+        res.status(400).json({"status": "fail", "error": err});
       })
     });
 
-  router.route('/:id')
+  router.route("/:id")
     // READ
     .get(function(req, res, next) {
       Model.findOne({_id: req.params.id})
@@ -53,16 +53,16 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     .put(function(req, res, next) {
       Model.update({_id: req.params.id}, req.body)
       .exec(function (err, writeOpResult) {
-        if (err) return res.status(400).json({'status': 'fail', 'error': err});
-        res.json({'status': 'success', 'data': writeOpResult});
+        if (err) return res.status(400).json({"status": "fail", "error": err});
+        res.json({"status": "success", "data": writeOpResult});
       });
     })
     // DELETE
     .delete(function(req, res, next) {
       Model.findByIdAndRemove(req.params.id)
       .exec(function (err, doc) {
-        if (err) return res.status(400).json({'status': 'fail', 'error': err});
-        res.json({'status': 'success', 'data': doc});
+        if (err) return res.status(400).json({"status": "fail", "error": err});
+        res.json({"status": "success", "data": doc});
       });
     });
 

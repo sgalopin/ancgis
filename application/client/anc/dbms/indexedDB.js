@@ -81,7 +81,7 @@ module.exports = (function() { // eslint-disable-line complexity
     // Get the collection
     jQuery.getJSON({
       url: "./rest/" + collectionName,
-      dataType: 'json'
+      dataType: "json"
     })
     .then(function(data, statusText, xhrObj) {
       // Add the data to the db

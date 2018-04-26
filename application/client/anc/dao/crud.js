@@ -10,7 +10,7 @@ module.exports = (function() {
   me.createFeature = function (feature) {
     return me.createFeatureRemotly_(feature)
     .done(function(response) {
-      if (response.status === 'success') {
+      if (response.status === "success") {
         if (!feature.getId()) {
           feature.setId(response.data.id);
         }
@@ -36,10 +36,10 @@ module.exports = (function() {
     var dao = feature.getProperties().dao;
     return jQuery.ajax({
       url: dao.getUrl(),
-      type: 'POST',
+      type: "POST",
       data: JSON.stringify(dao.getData(feature)),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json'
+      contentType: "application/json; charset=utf-8",
+      dataType: "json"
     });
   };
 
@@ -49,7 +49,7 @@ module.exports = (function() {
   me.updateFeature = function (feature) {
     return me.updateFeatureRemotly_(feature)
     .done(function(response) {
-      if (response.status === 'success') {
+      if (response.status === "success") {
         if (!feature.getId()) {
           feature.setId(response.data.id);
         }
@@ -75,10 +75,10 @@ module.exports = (function() {
     var dao = feature.getProperties().dao;
     return jQuery.ajax({
       url: dao.getUrl() + feature.getId(),
-      type: 'PUT',
+      type: "PUT",
       data: JSON.stringify(dao.getData(feature)),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json'
+      contentType: "application/json; charset=utf-8",
+      dataType: "json"
     });
   };
 
@@ -86,7 +86,7 @@ module.exports = (function() {
   me.removeFeature = function (feature) {
     return me.removeFeatureRemotly_(feature)
     .done(function(response) {
-      if (response.status === 'success') {
+      if (response.status === "success") {
         // TODO: Save locally into indexDB (sync = true)
         // TODO: Add a confirmation message popup
       } else {
@@ -107,8 +107,8 @@ module.exports = (function() {
   me.removeFeatureRemotly_ = function (feature) {
     return jQuery.ajax({
       url: feature.getProperties().dao.getUrl() + feature.getId(),
-      type: 'DELETE',
-      contentType: 'application/json; charset=utf-8'
+      type: "DELETE",
+      contentType: "application/json; charset=utf-8"
     });
   };
 

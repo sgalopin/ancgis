@@ -3,27 +3,27 @@
  * Sig builder.
  */
 module.exports = (function() {
-	var map = require('./map');
+	var map = require("./map");
   var interactions = {
     // Add Hive Button Control
     addhive : new ol.interaction.AddHive({
-      source: map.getLayerByName('hivesLayer').getSource()
+      source: map.getLayerByName("hivesLayer").getSource()
     }),
     // Draw Polygon Button Control
     drawpolygon : new ol.interaction.Draw({
-      source: map.getLayerByName('vegetationsLayer').getSource(),
-      type: 'Polygon'
+      source: map.getLayerByName("vegetationsLayer").getSource(),
+      type: "Polygon"
     }),
     // Draw Circle Button Control
     drawcircle : new ol.interaction.Draw({
-      source: map.getLayerByName('vegetationsLayer').getSource(),
-      type: 'Circle'
+      source: map.getLayerByName("vegetationsLayer").getSource(),
+      type: "Circle"
     }),
 		// Translate Button Control
 		translate : new ol.interaction.Translate(),
 		// Modify Button Control
 		modify : new ol.interaction.ModifyFeature({
-			source: map.getLayerByName('vegetationsLayer').getSource()
+			source: map.getLayerByName("vegetationsLayer").getSource()
 		}),
 		// Erase Button Control
 		erase : new ol.interaction.RemoveFeatures(),
@@ -64,28 +64,28 @@ module.exports = (function() {
 	);
 
 	// Management of the toggling of the interactions
-  $('#anc-mapcontrol-tbar>button').click(function(){
+  $("#anc-mapcontrol-tbar>button").click(function(){
     event.stopPropagation();
-    $(this).toggleClass('active');
-    if($(this).is('.active')){
-      $('#anc-mapcontrol-tbar>button[id!="'+ $(this).attr('id') +'"]').trigger('controlChange');
+    $(this).toggleClass("active");
+    if($(this).is(".active")){
+      $("#anc-mapcontrol-tbar>button[id!=\""+ $(this).attr("id") +"\"]").trigger("controlChange");
       map.addInteraction(interactions[$(this)[0].dataset.shortid]);
-      $('#anc-map').trigger('interactionAdded');
+      $("#anc-map").trigger("interactionAdded");
     } else {
       map.removeInteraction(interactions[$(this)[0].dataset.shortid]);
     }
   });
-  $('#anc-mapcontrol-tbar>button').on('controlChange', function(event) {
+  $("#anc-mapcontrol-tbar>button").on("controlChange", function(event) {
     event.stopPropagation();
-    if($(this).is('.active')){
-      $(this).toggleClass('active');
+    if($(this).is(".active")){
+      $(this).toggleClass("active");
       map.removeInteraction(interactions[$(this)[0].dataset.shortid]);
     }
   });
   // Keep the editproperties on the top of the map's interactions
   window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
   map.addInteraction(interactions.editproperties);
-  $('#anc-map').on('interactionAdded', function(event) {
+  $("#anc-map").on("interactionAdded", function(event) {
     event.stopPropagation();
     map.removeInteraction(interactions.editproperties);
     map.addInteraction(interactions.editproperties);

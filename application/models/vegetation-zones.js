@@ -1,14 +1,14 @@
 // Requirements
-var mongoose = require('mongoose');
-var Taxon = require('./taxons');
+var mongoose = require("mongoose");
+var Taxon = require("./taxons");
 
 // Model's declaration
-module.exports = mongoose.model('VegetationZone', new mongoose.Schema({
+module.exports = mongoose.model("VegetationZone", new mongoose.Schema({
   "type": {type: String, required: true},
   "properties": {
     "type": {type: String},
     "flore": [{
-      "taxon": {type: Number, ref: 'Taxon'},
+      "taxon": {type: Number, ref: "Taxon"},
       "recovery": {type: Number}
     }]
   },
@@ -20,7 +20,7 @@ module.exports = mongoose.model('VegetationZone', new mongoose.Schema({
 }, {
   toJSON: {
     virtuals: true, // return the virtual auto assigned id (http://mongoosejs.com/docs/guide.html#id)
-    versionKey: false, // remove the '__v' field
+    versionKey: false, // remove the "__v" field
     transform: function (doc, ret) {
       delete ret._id;
       if (ret.properties.flore) {
@@ -28,6 +28,6 @@ module.exports = mongoose.model('VegetationZone', new mongoose.Schema({
           delete element._id;
         });
       }
-    } // remove the '_id' fields
+    } // remove the "_id" fields
   }
 }));

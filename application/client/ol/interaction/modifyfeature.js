@@ -1,12 +1,12 @@
 /*global ol goog*/
-goog.provide('ol.interaction.ModifyFeature');
+goog.provide("ol.interaction.ModifyFeature");
 
 /**
  * Triggered upon feature modification end
  * @event ol.interaction.Modify.Event#modifyfeatures
  * @api
  */
-ol.interaction.ModifyEventType.MODIFYFEATURES = 'modifyfeatures';
+ol.interaction.ModifyEventType.MODIFYFEATURES = "modifyfeatures";
 
 /**
  * @classdesc
@@ -41,8 +41,8 @@ ol.interaction.ModifyFeature = function(opt_options) {
 ol.inherits(ol.interaction.ModifyFeature, ol.interaction.Modify);
 
 /**
- * Manages the 'modifyend' event.
- * NOTE: The returned 'modifyend' event features contains all the features.
+ * Manages the "modifyend" event.
+ * NOTE: The returned "modifyend" event features contains all the features.
  * We have to create an other event returning only the modified features.
  * @private
  */
@@ -54,7 +54,7 @@ ol.interaction.ModifyFeature.prototype.onModifyEnd_ = function(event) {
 };
 
 /**
- * Manages the 'modifystart' event.
+ * Manages the "modifystart" event.
  * @private
  */
 ol.interaction.ModifyFeature.prototype.onModifyStart_ = function(event) {
@@ -65,7 +65,7 @@ ol.interaction.ModifyFeature.prototype.onModifyStart_ = function(event) {
 };
 
 /**
- * Add the changed feature to the 'changedFeatures_' collection.
+ * Add the changed feature to the "changedFeatures_" collection.
  * @private
  */
 ol.interaction.ModifyFeature.prototype.addChangedFeature_ = function(e) {

@@ -1,6 +1,6 @@
 /*global ol*/
 /**
- * Hive's data access object.
+ * Hive"s data access object.
  */
 module.exports = (function() {
 
@@ -8,7 +8,7 @@ module.exports = (function() {
 
     // Returns the url
     getUrl: function () {
-      return '/rest/hives/';
+      return "/rest/hives/";
     },
 
     // Returns the data
@@ -27,6 +27,6 @@ module.exports = (function() {
         geometry: format.writeGeometryObject(ppts.geometry)
       };
     }
-  }, require('../dao/crud'));
+  }, require("../dao/crud"));
 
 })();

@@ -4,7 +4,7 @@
 module.exports = (function() {
 
   return {
-    show: function (feature) {
+    show(feature) {
       // Requirements
       var hiveFormTemplate = require("../../../views/partials/form/hive.hbs");
       var hiveDAO = require('../dao/hive');
