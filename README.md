@@ -2,10 +2,20 @@
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
 [![Build Status](https://travis-ci.org/sgalopin/anc.svg?branch=master)](https://travis-ci.org/sgalopin/anc)
+[![Codacy branch grade](https://img.shields.io/codacy/grade/caee637378424c5c8f2ace41dec04e66/master.svg)](https://www.codacy.com/app/sgalopin/anc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgalopin/anc&amp;utm_campaign=Badge_Grade)
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/caee637378424c5c8f2ace41dec04e66)](https://www.codacy.com/app/sgalopin/anc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgalopin/anc&amp;utm_campaign=Badge_Grade)
-[![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/anc/all.svg)](https://github.com/sgalopin/anc)
+[![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/anc/all.svg)](https://github.com/sgalopin/anc/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/sgalopin/anc/total.svg)](https://github.com/sgalopin/anc)
 [![AGPLv3 License](https://img.shields.io/github/license/sgalopin/anc.svg)](https://github.com/sgalopin/anc/blob/master/LICENSE)
+
+
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
+
+![GitHub language count](https://img.shields.io/github/languages/count/badges/shields.svg)
+
+![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
+
 
 ## Installation
 
