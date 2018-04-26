@@ -107,7 +107,7 @@ module.exports = (function() { // eslint-disable-line complexity
   request.onupgradeneeded = function(event) {
     me.db = event.target.result;
     addCollection("taxons");
-  }
+  };
   request.onsuccess = function(event) {
       me.db = event.target.result;
   };

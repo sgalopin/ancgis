@@ -85,7 +85,7 @@ module.exports = (function() {
   var vegetationsLayer = new ol.layer.Vector({
     name: vegetationsLayerName,
     source: vegetationsLayerSource,
-    style: function(feature) {
+    style(feature) {
       var ppts = feature.getProperties();
 
       // Style stroke and fill

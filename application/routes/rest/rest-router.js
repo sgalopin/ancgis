@@ -45,7 +45,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       Model.findOne({_id: req.params.id})
       .populate(populatePath)
       .exec(function (err, doc) {
-        if (err) return console.error(err);
+        if (err) { return console.error(err); }
         res.json(doc);
       });
     })
@@ -61,7 +61,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     .delete(function(req, res, next) {
       Model.findByIdAndRemove(req.params.id)
       .exec(function (err, doc) {
-        if (err) return res.status(400).json({"status": "fail", "error": err});
+        if (err) { return res.status(400).json({"status": "fail", "error": err}); }
         res.json({"status": "success", "data": doc});
       });
     });

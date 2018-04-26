@@ -108,7 +108,7 @@ ol.control.PeriodSwitcher = function(optOptions) {
   element.appendChild(list);
 
   ol.control.Control.call(this, {
-    element: element,
+    element,
     target: options.target
   });
 };
