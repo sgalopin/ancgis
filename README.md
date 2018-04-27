@@ -3,12 +3,9 @@ SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
 [![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/anc/all.svg)](https://github.com/sgalopin/anc/releases)
 [![AGPLv3 License](https://img.shields.io/github/license/sgalopin/anc.svg)](https://github.com/sgalopin/anc/blob/master/LICENSE)
-
-[![Build Status](https://travis-ci.org/sgalopin/anc.svg?branch=master)](https://travis-ci.org/sgalopin/anc)
+&nbsp;&nbsp; [![Build Status](https://travis-ci.org/sgalopin/anc.svg?branch=master)](https://travis-ci.org/sgalopin/anc)
 [![Codacy branch grade](https://img.shields.io/codacy/grade/caee637378424c5c8f2ace41dec04e66/master.svg)](https://www.codacy.com/app/sgalopin/anc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgalopin/anc&amp;utm_campaign=Badge_Grade)
-
-![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
-![GitHub language count](https://img.shields.io/github/languages/count/badges/shields.svg)
+&nbsp;&nbsp; ![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
 
 ## Installation

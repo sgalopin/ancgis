@@ -107,28 +107,33 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
 
     ########################
     # Packages and Sources #
     ########################
     # apt update and upgrade
-    sudo apt-get update
-    sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
     # Node and npm (npm is distributed with Node.js)
-    sudo apt-get install -y curl
-    sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+    apt-get install -y curl
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    apt-get install -y nodejs
     # To compile and install native addons from npm you may also need to install build tools
-    sudo apt-get install -y build-essential
+    apt-get install -y build-essential
     # Port 80 requires elevated privileges
     # https://docs.requarks.io/wiki/troubleshooting#error-listening-on-port-xx-requires-elevated-privileges
-    sudo apt-get install -y libcap2-bin
-    sudo setcap 'cap_net_bind_service=+ep' `which node`
+    apt-get install -y libcap2-bin
+    setcap 'cap_net_bind_service=+ep' `which node`
     # MongoDB
-    sudo apt-get install -y mongodb
-    sudo sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
-    sudo service mongodb restart
+    apt-get install -y mongodb
+    sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
+    service mongodb restart
+    # Chrome (for UI testing)
+    # wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    # echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+    # apt-get update
+    # apt-get install -y google-chrome-stable
 
     # Node modules dir issue (creation of symlinks with 'npm install')
     # mkdir /var/tmp/node_modules_anc

@@ -7,4 +7,4 @@ $(document).ready(function(){
 require("./anc/dbms/indexedDB");
 
 // Open the sig
-require("./anc/map/sig");
+window.anc = require("./anc/map/sig");
