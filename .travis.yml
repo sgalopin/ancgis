@@ -6,6 +6,7 @@ notifications:
 before_install: cd application
 before_script:
   - /bin/bash ../shell/setup-vm.sh
+  - sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
   - cd ../database && /bin/bash ../shell/populate-db.sh
 script: cd ../application && npm run start && npm test
 sudo: required
