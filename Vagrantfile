@@ -54,6 +54,13 @@ Vagrant.configure("2") do |config|
     group: "vagrant",
     type: "rsync",
     rsync__args: ["--archive", "--delete", "-z"]
+    # Sync the database dir
+  config.vm.synced_folder "./shell", "/var/tmp/anc/shell",
+    create: true,
+    owner: "vagrant",
+    group: "vagrant",
+    type: "rsync",
+    rsync__args: ["--archive", "--delete", "-z"]
   # Sync the application dir
   # On Windows, rsync installed with Cygwin or MinGW will be detected by Vagrant and works well.
   config.vm.synced_folder "./application", "/var/www/anc",
@@ -152,7 +159,9 @@ Vagrant.configure("2") do |config|
   SHELL
 
   # Provision "populate-db"
-  config.vm.provision "populate-db", type: "shell", privileged: false, path: "./shell/populate-db.sh"
+  config.vm.provision "populate-db", type: "shell", privileged: false, inline: <<-SHELL
+    cd /var/tmp/anc/database && /bin/bash /var/tmp/anc/shell/populate-db.sh
+  SHELL
 
   # The following provisions are only run when called explicitly
   if ARGV.include? '--provision-with'
