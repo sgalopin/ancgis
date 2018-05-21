@@ -152,7 +152,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   # Provision "populate-db"
-  config.vm.provision "populate-db", type: "shell", privileged: false, path: "./vagrant-shell/populate-db.sh"
+  config.vm.provision "populate-db", type: "shell", privileged: false, path: "./shell/populate-db.sh"
 
   # The following provisions are only run when called explicitly
   if ARGV.include? '--provision-with'

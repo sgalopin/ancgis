@@ -1,8 +1,7 @@
 language: node_js
 node_js:
   - "node"
-  - "10"
 notifications:
   email: false
 before_install: cd application
-before_script: sh ../shell/setup-vm.sh
+before_script: /bin/bash ../shell/setup-vm.sh
