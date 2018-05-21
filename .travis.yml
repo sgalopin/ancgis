@@ -6,7 +6,7 @@ notifications:
 before_install: cd application
 before_script:
   - /bin/bash ../shell/setup-vm.sh
-  - cd ../database
-  - /bin/bash ../shell/populate-db.sh
+  - cd ../database && /bin/bash ../shell/populate-db.sh
+script: cd ../application && make test
 sudo: required
 services: mongodb
