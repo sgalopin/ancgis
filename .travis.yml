@@ -8,6 +8,7 @@ before_script:
   - /bin/bash ../shell/setup-vm.sh
   - sudo apt-get install -y locate
   - sudo updatedb && sudo locate node
+  - echo `which node`
   - sudo setcap cap_net_bind_service=+ep /usr/bin/nodejs
   - cd ../database && /bin/bash ../shell/populate-db.sh
 script: cd ../application && npm run start && npm test
