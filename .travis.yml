@@ -6,7 +6,6 @@ notifications:
 before_install: cd application
 before_script:
   - /bin/bash ../shell/setup-vm.sh
-  - sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
   - cd ../database && /bin/bash ../shell/populate-db.sh
 script: cd ../application && npm run start && npm test
 sudo: required
