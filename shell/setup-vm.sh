@@ -9,7 +9,7 @@ echo "--------------------------------------------------"
 echo "-- Port 80 requires elevated privileges "
 # https://docs.requarks.io/wiki/troubleshooting#error-listening-on-port-xx-requires-elevated-privileges
 #sudo apt-get install -y libcap2-bin
-sudo setcap 'cap_net_bind_service=+ep' `which node`
+#sudo setcap 'cap_net_bind_service=+ep' `which node`
 
 echo "-- MongoDB "
 #sudo apt-get install -y mongodb
