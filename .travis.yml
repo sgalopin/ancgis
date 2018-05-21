@@ -5,3 +5,4 @@ node_js:
 notifications:
   email: false
 before_install: cd application
+before_script: sh ../setup-vm.sh

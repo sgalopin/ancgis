@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -e
+set -o pipefail
+
 echo "--------------------------------------------------"
 echo " Populate DB "
 echo "--------------------------------------------------"
