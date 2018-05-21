@@ -6,10 +6,7 @@ notifications:
 before_install: cd application
 before_script:
   - /bin/bash ../shell/setup-vm.sh
-  - echo `which node`
-  - sudo apt-get install -y locate
-  - sudo updatedb && sudo locate node
-  - sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
+  - sudo setcap cap_net_bind_service=+ep /home/travis/.nvm/versions/node/v10.1.0/bin/node
   - cd ../database && /bin/bash ../shell/populate-db.sh
 script: cd ../application && npm run start && npm test
 sudo: required
