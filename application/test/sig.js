@@ -9,7 +9,7 @@ describe('sig tests', function () {
     // set the viewport so we know the dimensions of the screen
     const viewportSize = { width: 1280, height: 1024 };
     await page.setViewport(viewportSize);
-    await page.goto('http://127.0.0.1');
+    await page.goto('http://localhost:3000');
     page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
     // Add few test functions to the page
