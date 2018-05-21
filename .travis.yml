@@ -6,10 +6,10 @@ notifications:
 before_install: cd application
 before_script:
   - /bin/bash ../shell/setup-vm.sh
+  - echo `which node`
   - sudo apt-get install -y locate
   - sudo updatedb && sudo locate node
-  - echo `which node`
-  - sudo setcap cap_net_bind_service=+ep /usr/bin/nodejs
+  - sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
   - cd ../database && /bin/bash ../shell/populate-db.sh
 script: cd ../application && npm run start && npm test
 sudo: required
