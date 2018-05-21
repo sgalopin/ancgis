@@ -17,4 +17,4 @@ sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
 service mongodb restart
 
 # Setup the database
-sh ./shell/populate-db.sh
+sh ./populate-db.sh
