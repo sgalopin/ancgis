@@ -1,6 +1,6 @@
 #!/bin/bash
-set -e
-set -o pipefail
+#set -e
+#set -o pipefail
 
 echo "--------------------------------------------------"
 echo " Setup the VM "
