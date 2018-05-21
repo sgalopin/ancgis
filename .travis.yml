@@ -9,6 +9,6 @@ before_script:
   - sudo setcap cap_net_bind_service=+ep /home/travis/.nvm/versions/node/v10.1.0/bin/node
   - cd ../database && /bin/bash ../shell/populate-db.sh
   - cd ../application && npm run start &
-script: npm test
+script: cd ../application && npm test
 sudo: required
 services: mongodb
