@@ -4,5 +4,8 @@ node_js:
 notifications:
   email: false
 before_install: cd application
-before_script: /bin/bash ../shell/setup-vm.sh
+before_script:
+  - /bin/bash ../shell/setup-vm.sh
+  - /bin/bash ../shell/populate-db.sh
 sudo: required
+services: mongodb
