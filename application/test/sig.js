@@ -1,4 +1,5 @@
-describe('sig tests', function () {
+/*global browser anc ol*/
+describe("sig tests", function () {
   let page;
 
   before (async function () {
@@ -9,8 +10,8 @@ describe('sig tests', function () {
     // set the viewport so we know the dimensions of the screen
     const viewportSize = { width: 1280, height: 1024 };
     await page.setViewport(viewportSize);
-    await page.goto('http://localhost');
-    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    await page.goto("http://localhost");
+    page.on("console", msg => console.log("PAGE LOG:", msg.text()));
 
     // Add few test functions to the page
     await page.evaluate(viewportSize => {
@@ -22,17 +23,17 @@ describe('sig tests', function () {
        * @param {string} type Event type.
        * @param {number} x Horizontal offset from map center.
        * @param {number} y Vertical offset from map center.
-       * @param {boolean=} opt_shiftKey Shift key is pressed.
+       * @param {boolean=} optShiftKey Shift key is pressed.
        */
-      anc.test.simulateEvent = function(type, x, y, opt_shiftKey) {
+      anc.test.simulateEvent = function(type, x, y, optShiftKey) {
         var viewport = anc.map.getViewport();
         // calculated in case body has top < 0 (test runner with small window)
         var position = viewport.getBoundingClientRect();
-        var shiftKey = opt_shiftKey !== undefined ? opt_shiftKey : false;
+        var shiftKey = optShiftKey !== undefined ? optShiftKey : false;
         var event = new ol.pointer.PointerEvent(type, {
           clientX: position.left + x + viewportSize.width / 2,
           clientY: position.top + y + viewportSize.height / 2,
-          shiftKey: shiftKey
+          shiftKey
         });
         anc.map.handleMapBrowserEvent(new ol.MapBrowserPointerEvent(type, anc.map, event));
       };
@@ -42,27 +43,27 @@ describe('sig tests', function () {
 
   after (async function () {
     await page.close();
-  })
-
-  it('should have the correct page title', async function () {
-    expect(await page.title()).to.eql('Anc');
   });
 
-  it('should have a single map', async function () {
-    const BODY_SELECTOR = '.ol-viewport canvas';
+  it("should have the correct page title", async function () {
+    expect(await page.title()).to.eql("Anc");
+  });
+
+  it("should have a single map", async function () {
+    const BODY_SELECTOR = ".ol-viewport canvas";
 
     await page.waitFor(BODY_SELECTOR);
 
     expect(await page.$$(BODY_SELECTOR)).to.have.lengthOf(1);
   });
 
-  it('should active the hive interaction', async function () {
+  it("should active the hive interaction", async function () {
     const oldInteractionsCount = await page.evaluate(() => {
       return anc.map.getInteractions().getArray().length;
     });
 
     // click on the add hive button
-    await page.click('#anc-mapcontrol-addhive');
+    await page.click("#anc-mapcontrol-addhive");
 
     const newInteractionsCount = await page.evaluate(() => {
       return anc.map.getInteractions().getArray().length;
@@ -71,7 +72,7 @@ describe('sig tests', function () {
     expect(newInteractionsCount).to.eql(oldInteractionsCount + 1);
   });
 
-  it('should had a single hive', async function () {
+  it("should had a single hive", async function () {
 
     this.timeout(50000);
 
@@ -82,7 +83,7 @@ describe('sig tests', function () {
 
     const newHivesCount = await page.evaluate(() => {
       // click on the map to add a single hive
-      anc.test.simulateEvent('singleclick', 0, 0);
+      anc.test.simulateEvent("singleclick", 0, 0);
       var hivesLayer = anc.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
       return hivesLayer.getSource().getFeatures().length;
     });
