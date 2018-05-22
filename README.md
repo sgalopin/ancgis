@@ -1,6 +1,8 @@
 # anc
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
+![alt text](doc/img/home.png?raw=true "Page principale de l'application")
+
 [![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/anc/all.svg)](https://github.com/sgalopin/anc/releases)
 [![AGPLv3 License](https://img.shields.io/github/license/sgalopin/anc.svg)](https://github.com/sgalopin/anc/blob/master/LICENSE)
 &nbsp;&nbsp; [![Build Status](https://travis-ci.org/sgalopin/anc.svg?branch=master)](https://travis-ci.org/sgalopin/anc)
