@@ -11,10 +11,10 @@ describe("sig tests", function () {
     const viewportSize = { width: 1280, height: 1024 };
     await page.setViewport(viewportSize);
     await page.goto("http://localhost");
-    page.on("console", msg => console.log("PAGE LOG:", msg.text()));
+    page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
 
     // Add few test functions to the page
-    await page.evaluate(viewportSize => {
+    await page.evaluate( (viewportSize) => {
       anc.test = {};
       // See ol3/test/spec/ol/interaction/select.test.js
       /**
@@ -29,7 +29,7 @@ describe("sig tests", function () {
         var viewport = anc.map.getViewport();
         // calculated in case body has top < 0 (test runner with small window)
         var position = viewport.getBoundingClientRect();
-        var shiftKey = optShiftKey !== undefined ? optShiftKey : false;
+        var shiftKey = (typeof optShiftKey !== "undefined") ? optShiftKey : false;
         var event = new ol.pointer.PointerEvent(type, {
           clientX: position.left + x + viewportSize.width / 2,
           clientY: position.top + y + viewportSize.height / 2,
