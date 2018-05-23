@@ -1,4 +1,4 @@
-# anc
+# ANC
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
 ![alt text](doc/img/home.png?raw=true "Page principale de l'application")
