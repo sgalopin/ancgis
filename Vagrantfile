@@ -155,7 +155,7 @@ Vagrant.configure("2") do |config|
 
   # Provision "npm-install"
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
-    cd /var/www/anc/ && npm install
+    cd /var/www/anc && npm install
   SHELL
 
   # Provision "populate-db"
@@ -169,7 +169,7 @@ Vagrant.configure("2") do |config|
     # Provision "launch-app"
     config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
       # cd /var/www/anc/ && sudo DEBUG=app:* npm start
-      cd /var/www/anc/ && npm run start
+      cd /var/www/anc && npm run start
     SHELL
 
   end

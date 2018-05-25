@@ -13,6 +13,8 @@ ANCGIS est un outil permettant de :
 - Détecter des carences alimentaires (période et diversité),
 - Aider à la sélection de plantes mellifères.
 
+<br/>
+
 ![alt text](doc/img/home.png?raw=true "Page principale de l'application")
 
 ## Installation
