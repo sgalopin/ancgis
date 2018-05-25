@@ -179,7 +179,7 @@ module.exports = (function() {
 
   return new ol.Map ({ // Openlayers Map
       layers: [bdorthoLayer, hivesLayer, vegetationsLayer],
-      target: "anc-map",
+      target: "ancgis-map",
       keyboardEventTarget: document,
       controls: [
         new ol.control.PeriodSwitcher(),
@@ -188,7 +188,7 @@ module.exports = (function() {
         new ol.control.ScaleLine(),
         new ol.control.MousePosition({
           className:"",
-          target:document.getElementById("anc-mapstatus-mouseposition"),
+          target:document.getElementById("ancgis-mapstatus-mouseposition"),
           coordinateFormat(coords) {
             var template = "X: {x} - Y: {y} ";
             return ol.coordinate.format(coords, template);

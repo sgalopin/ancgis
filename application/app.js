@@ -29,7 +29,7 @@ app.use (
 );
 browserify.settings({ transform: ["hbsfy"] });
 app.get("/javascripts/bundle.js", browserify("./client/main.js"));
-var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/anc";
+var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString + "/taxons");
 if (app.get("env") === "development") {
   var browserSync = require("browser-sync");

@@ -17,10 +17,10 @@ module.exports = (function() {
 
       // Update the species lines
       function updateSpeciesLines(ppts) {
-        const tbody = $(".anc-form-florefields>table>tbody");
+        const tbody = $(".ancgis-form-florefields>table>tbody");
         tbody.empty();
         tbody.append(floreLineTemplate({species: ppts.flore}));
-        $(".anc-form-removespecies>span").click(onRemoveSpeciesClick); // eslint-disable-line no-use-before-define
+        $(".ancgis-form-removespecies>span").click(onRemoveSpeciesClick); // eslint-disable-line no-use-before-define
       }
 
       // Remove buttons handler function
@@ -42,23 +42,23 @@ module.exports = (function() {
       var zoneFormHtml = zoneFormTemplate();
       var floreLineHtml = floreLineTemplate({species: ppts.flore});
       $("body").append(zoneFormHtml);
-      $("#anc-zoneform-typefield").val(ppts.type);
-      $(".anc-form-florefields>table>tbody").append(floreLineHtml);
-      $("#anc-zoneform [data-toggle=\"tooltip\"]").tooltip();
-      $("#anc-zoneform").focus();
+      $("#ancgis-zoneform-typefield").val(ppts.type);
+      $(".ancgis-form-florefields>table>tbody").append(floreLineHtml);
+      $("#ancgis-zoneform [data-toggle=\"tooltip\"]").tooltip();
+      $("#ancgis-zoneform").focus();
 
       // keys handler
       // Note: 'keypress' doesn't seem to be handled consistently
       // between browsers whereas keyup is consistent.
-      $("#anc-zoneform-typefield").on("keypress", function (event) {
+      $("#ancgis-zoneform-typefield").on("keypress", function (event) {
           event.stopPropagation();
           event.preventDefault();
         });
-      $("#anc-zoneform, #anc-zoneform-typefield").on("keyup", function (event) {
+      $("#ancgis-zoneform, #ancgis-zoneform-typefield").on("keyup", function (event) {
         if (event.keyCode === 27) { // ESC
           event.stopPropagation();
           event.preventDefault();
-          $("#anc-zoneform").remove();
+          $("#ancgis-zoneform").remove();
         } else if (event.keyCode === 13) { // ENTER
           event.stopPropagation();
           event.preventDefault();
@@ -66,14 +66,14 @@ module.exports = (function() {
           zoneDAO.updateFeature(feature)
           .done(function(response) {
             if (response.status === "success") {
-              $("#anc-zoneform").remove();
+              $("#ancgis-zoneform").remove();
             }
           });
         }
       });
 
       // Manage the 'speciesFormValidated' event thrown by the species form
-      $("#anc-zoneform").on("speciesFormValidated", function(event, sfValues) {
+      $("#ancgis-zoneform").on("speciesFormValidated", function(event, sfValues) {
         event.stopPropagation();
         // Check the absence of the taxon
         if(!newPpts.flore.some(function(species) {
@@ -90,36 +90,36 @@ module.exports = (function() {
       });
 
       // Manage the 'change' event thrown by the type field
-      $("#anc-zoneform-typefield").change(function() {
-        newPpts.type = $("#anc-zoneform-typefield").val();
+      $("#ancgis-zoneform-typefield").change(function() {
+        newPpts.type = $("#ancgis-zoneform-typefield").val();
       });
 
       // Add species button handler
-      $("#anc-zoneform-addspeciesbtn").click(function(event) {
+      $("#ancgis-zoneform-addspeciesbtn").click(function(event) {
         event.stopPropagation();
-        $("#anc-zoneform").hide();
+        $("#ancgis-zoneform").hide();
         // Display the species form
         var speciesForm = require("./species");
         speciesForm.show();
       });
 
       // Remove buttons handler
-      $(".anc-form-removespecies>span").click(onRemoveSpeciesClick);
+      $(".ancgis-form-removespecies>span").click(onRemoveSpeciesClick);
 
       // Cancel button handler
-      $("#anc-zoneform-cancelbtn").click(function(event) {
+      $("#ancgis-zoneform-cancelbtn").click(function(event) {
         event.stopPropagation();
-        $("#anc-zoneform").remove();
+        $("#ancgis-zoneform").remove();
       });
 
       // Validate button handler
-      $("#anc-zoneform-validatebtn").click(function() {
+      $("#ancgis-zoneform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
         zoneDAO.updateFeature(feature)
         .done(function(response) {
           if (response.status === "success") {
-            $("#anc-zoneform").remove();
+            $("#ancgis-zoneform").remove();
           }
         });
       });

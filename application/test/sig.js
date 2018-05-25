@@ -1,4 +1,4 @@
-/*global browser anc ol*/
+/*global browser ancgis ol*/
 describe("sig tests", function () {
   let page;
 
@@ -15,7 +15,7 @@ describe("sig tests", function () {
 
     // Add few test functions to the page
     await page.evaluate( (viewportSize) => {
-      anc.test = {};
+      ancgis.test = {};
       // See ol3/test/spec/ol/interaction/select.test.js
       /**
        * Simulates a browser event on the map viewport.  The client x/y location
@@ -25,8 +25,8 @@ describe("sig tests", function () {
        * @param {number} y Vertical offset from map center.
        * @param {boolean=} optShiftKey Shift key is pressed.
        */
-      anc.test.simulateEvent = function(type, x, y, optShiftKey) {
-        var viewport = anc.map.getViewport();
+      ancgis.test.simulateEvent = function(type, x, y, optShiftKey) {
+        var viewport = ancgis.map.getViewport();
         // calculated in case body has top < 0 (test runner with small window)
         var position = viewport.getBoundingClientRect();
         var shiftKey = (typeof optShiftKey !== "undefined") ? optShiftKey : false;
@@ -35,7 +35,7 @@ describe("sig tests", function () {
           clientY: position.top + y + viewportSize.height / 2,
           shiftKey
         });
-        anc.map.handleMapBrowserEvent(new ol.MapBrowserPointerEvent(type, anc.map, event));
+        ancgis.map.handleMapBrowserEvent(new ol.MapBrowserPointerEvent(type, ancgis.map, event));
       };
       return;
     }, viewportSize);
@@ -46,7 +46,7 @@ describe("sig tests", function () {
   });
 
   it("should have the correct page title", async function () {
-    expect(await page.title()).to.eql("Anc");
+    expect(await page.title()).to.eql("AncSIG&trade;");
   });
 
   it("should have a single map", async function () {
@@ -59,14 +59,14 @@ describe("sig tests", function () {
 
   it("should active the hive interaction", async function () {
     const oldInteractionsCount = await page.evaluate(() => {
-      return anc.map.getInteractions().getArray().length;
+      return ancgis.map.getInteractions().getArray().length;
     });
 
     // click on the add hive button
-    await page.click("#anc-mapcontrol-addhive");
+    await page.click("#ancgis-mapcontrol-addhive");
 
     const newInteractionsCount = await page.evaluate(() => {
-      return anc.map.getInteractions().getArray().length;
+      return ancgis.map.getInteractions().getArray().length;
     });
 
     expect(newInteractionsCount).to.eql(oldInteractionsCount + 1);
@@ -77,14 +77,14 @@ describe("sig tests", function () {
     this.timeout(50000);
 
     const oldHivesCount = await page.evaluate(() => {
-      var hivesLayer = anc.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
+      var hivesLayer = ancgis.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
       return hivesLayer.getSource().getFeatures().length;
     });
 
     const newHivesCount = await page.evaluate(() => {
       // click on the map to add a single hive
-      anc.test.simulateEvent("singleclick", 0, 0);
-      var hivesLayer = anc.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
+      ancgis.test.simulateEvent("singleclick", 0, 0);
+      var hivesLayer = ancgis.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
       return hivesLayer.getSource().getFeatures().length;
     });
 

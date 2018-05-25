@@ -17,24 +17,24 @@ module.exports = (function() {
       // HTML builds
       var hiveFormHtml = hiveFormTemplate();
       $("body").append(hiveFormHtml);
-      $("#anc-hiveform-registrationNumberfield").val(ppts.registrationNumber);
-      $("#anc-hiveform-typefield").val(ppts.type);
-      $("#anc-hiveform-framesCountfield").val(ppts.framesCount);
-      $("#anc-hiveform [data-toggle=\"tooltip\"]").tooltip();
-      $("#anc-hiveform").focus();
+      $("#ancgis-hiveform-registrationNumberfield").val(ppts.registrationNumber);
+      $("#ancgis-hiveform-typefield").val(ppts.type);
+      $("#ancgis-hiveform-framesCountfield").val(ppts.framesCount);
+      $("#ancgis-hiveform [data-toggle=\"tooltip\"]").tooltip();
+      $("#ancgis-hiveform").focus();
 
       // keys handler
       // Note: "keypress" doesn't seem to be handled consistently
       // between browsers whereas keyup is consistent.
-      $("#anc-hiveform select").on("keypress", function (event) {
+      $("#ancgis-hiveform select").on("keypress", function (event) {
         event.stopPropagation();
         event.preventDefault();
       });
-      $("#anc-hiveform, #anc-hiveform input, #anc-hiveform select").on("keyup", function (event) {
+      $("#ancgis-hiveform, #ancgis-hiveform input, #ancgis-hiveform select").on("keyup", function (event) {
         if (event.keyCode === 27) { // ESC
           event.stopPropagation();
           event.preventDefault();
-          $("#anc-hiveform").remove();
+          $("#ancgis-hiveform").remove();
         } else if (event.keyCode === 13) { // ENTER
           event.stopPropagation();
           event.preventDefault();
@@ -42,41 +42,41 @@ module.exports = (function() {
           hiveDAO.updateFeature(feature)
           .done(function(response) {
             if (response.status === "success") {
-              $("#anc-hiveform").remove();
+              $("#ancgis-hiveform").remove();
             }
           });
         }
       });
 
       // Manage the "change" event thrown by the registrationNumber field
-      $("#anc-hiveform-registrationNumberfield").change(function() {
-        newPpts.registrationNumber = $("#anc-hiveform-registrationNumberfield").val();
+      $("#ancgis-hiveform-registrationNumberfield").change(function() {
+        newPpts.registrationNumber = $("#ancgis-hiveform-registrationNumberfield").val();
       });
 
       // Manage the "change" event thrown by the type field
-      $("#anc-hiveform-typefield").change(function() {
-        newPpts.type = $("#anc-hiveform-typefield").val();
+      $("#ancgis-hiveform-typefield").change(function() {
+        newPpts.type = $("#ancgis-hiveform-typefield").val();
       });
 
       // Manage the "change" event thrown by the framesCount field
-      $("#anc-hiveform-framesCountfield").change(function() {
-        newPpts.framesCount = $("#anc-hiveform-framesCountfield").val();
+      $("#ancgis-hiveform-framesCountfield").change(function() {
+        newPpts.framesCount = $("#ancgis-hiveform-framesCountfield").val();
       });
 
       // Cancel button handler
-      $("#anc-hiveform-cancelbtn").click(function(event) {
+      $("#ancgis-hiveform-cancelbtn").click(function(event) {
         event.stopPropagation();
-        $("#anc-hiveform").remove();
+        $("#ancgis-hiveform").remove();
       });
 
       // Validate button handler
-      $("#anc-hiveform-validatebtn").click(function() {
+      $("#ancgis-hiveform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
         hiveDAO.updateFeature(feature)
         .done(function(response) {
           if (response.status === "success") {
-            $("#anc-hiveform").remove();
+            $("#ancgis-hiveform").remove();
           }
         });
       });

@@ -5,10 +5,10 @@
 &nbsp;&nbsp; ![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
 
-# ANCGIS
+# AncGIS&trade;
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
-ANCGIS est un outil permettant de :
+AncGIS&trade; est un outil permettant de :
 - Relevé la végétation autour des ruchers,
 - Détecter des carences alimentaires (période et diversité),
 - Aider à la sélection de plantes mellifères.
@@ -32,12 +32,12 @@ Vagrant est utilisé pour instancier la machine virtuelle.
         - Installer [Cygwin](https://cygwin.com/install.html),
         - Dans le manageur cocher les packages 'rsync' et 'openssh',
         - Configurer [openssh](https://www.howtogeek.com/howto/41560/how-to-get-ssh-command-line-access-to-windows-7-using-cygwin/)
-- Cloner le dépôt sgalopin/anc:
+- Cloner le dépôt sgalopin/ancgis:
     - Ouvrir un Git Bash:
         - Se placer dans le répertoire dans lequel vous souhaitez installer le projet,
         - Cliquer sur le bouton droit de la souris,
         - Cliquer sur 'Git Bash',
-        - Taper la ligne de commande suivante: 'git clone https://github.com/sgalopin/anc.git'.
+        - Taper la ligne de commande suivante: 'git clone https://github.com/sgalopin/ancgis.git'.
 
 ### Lancer la VM et le serveur (NodeJS)
 
@@ -53,9 +53,9 @@ Lancer votre navigateur (Testé uniquement avec Chrome pour l'instant) et entrer
 ### Ajout de la résolution de l'hôte en local (Optionnel)
 Dans "C:\Windows\System32\drivers\etc\hosts" ajouter la ligne suivante:
 ```
-192.168.50.11 anc.dev.net
+192.168.50.11 ancgis.dev.net
 ```
-Vous pouvez maintenant accéder à l'application à l'adresse: http://anc.dev.net/.
+Vous pouvez maintenant accéder à l'application à l'adresse: http://ancgis.dev.net/.
 
 ## Désinstallation
 

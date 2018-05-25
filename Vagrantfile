@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "private_network", ip: "192.168.50.11"
-  config.vm.hostname = "anc.dev.net"
+  config.vm.hostname = "ancgis.dev.net"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -48,14 +48,14 @@ Vagrant.configure("2") do |config|
   # Disable the default root
   config.vm.synced_folder ".", "/vagrant", disabled: true
   # Sync the database dir
-  config.vm.synced_folder "./database", "/var/tmp/anc/database",
+  config.vm.synced_folder "./database", "/var/tmp/ancgis/database",
     create: true,
     owner: "vagrant",
     group: "vagrant",
     type: "rsync",
     rsync__args: ["--archive", "--delete", "-z"]
     # Sync the database dir
-  config.vm.synced_folder "./shell", "/var/tmp/anc/shell",
+  config.vm.synced_folder "./shell", "/var/tmp/ancgis/shell",
     create: true,
     owner: "vagrant",
     group: "vagrant",
@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
     rsync__args: ["--archive", "--delete", "-z"]
   # Sync the application dir
   # On Windows, rsync installed with Cygwin or MinGW will be detected by Vagrant and works well.
-  config.vm.synced_folder "./application", "/var/www/anc",
+  config.vm.synced_folder "./application", "/var/www/ancgis",
     create: true,
     owner: "vagrant",
     group: "vagrant",
@@ -97,7 +97,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 4096
     v.cpus = 2
-    v.name = "anc-server"
+    v.name = "ancgis-server"
   end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
@@ -143,24 +143,24 @@ Vagrant.configure("2") do |config|
     # apt-get install -y google-chrome-stable
 
     # Node modules dir issue (creation of symlinks with 'npm install')
-    # mkdir /var/tmp/node_modules_anc
-	  # mkdir -p /var/www/anc/node_modules
+    # mkdir /var/tmp/node_modules_ancgis
+	  # mkdir -p /var/www/ancgis/node_modules
 	  # The following line requires to launch the bash in administrator mode under windows (only for the creation of the box)
-    # ln -s /var/tmp/node_modules_anc /var/www/anc/node_modules
+    # ln -s /var/tmp/node_modules_ancgis /var/www/ancgis/node_modules
 	  # The following line is not working because vagrant erase this config when it etablish the synced folder (see sudo nano /proc/mounts)
-	  # echo '/var/tmp/node_modules_anc /var/www/anc/node_modules none bind' >> /etc/fstab
-    # sudo mount -o bind /var/tmp/node_modules_anc /var/www/anc/node_modules
+	  # echo '/var/tmp/node_modules_ancgis /var/www/ancgis/node_modules none bind' >> /etc/fstab
+    # sudo mount -o bind /var/tmp/node_modules_ancgis /var/www/ancgis/node_modules
 
   SHELL
 
   # Provision "npm-install"
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
-    cd /var/www/anc && npm install
+    cd /var/www/ancgis && npm install
   SHELL
 
   # Provision "populate-db"
   config.vm.provision "populate-db", type: "shell", privileged: false, inline: <<-SHELL
-    cd /var/tmp/anc/database && /bin/bash /var/tmp/anc/shell/populate-db.sh
+    cd /var/tmp/ancgis/database && /bin/bash /var/tmp/ancgis/shell/populate-db.sh
   SHELL
 
   # The following provisions are only run when called explicitly
@@ -168,8 +168,8 @@ Vagrant.configure("2") do |config|
 
     # Provision "launch-app"
     config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
-      # cd /var/www/anc/ && sudo DEBUG=app:* npm start
-      cd /var/www/anc && npm run start
+      # cd /var/www/ancgis/ && sudo DEBUG=app:* npm start
+      cd /var/www/ancgis && npm run start
     SHELL
 
   end

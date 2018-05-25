@@ -8,7 +8,7 @@ html, body, .container-fluid {
 .container-fluid {
     padding: 0 !important;
 }
-#anc-map {
+#ancgis-map {
     height: calc(100% - 55px);
 }
 
@@ -16,7 +16,7 @@ html, body, .container-fluid {
 /**   Map top toolbar   **/
 /*************************/
 
-#anc-mapcontrol-tbar {
+#ancgis-mapcontrol-tbar {
     background-color: #e1e1e1;
     border-bottom: solid 1px #999;
     font-size: 10px;
@@ -28,20 +28,20 @@ html, body, .container-fluid {
 /**   Map status bar    **/
 /*************************/
 
-#anc-mapstatus-tbar {
+#ancgis-mapstatus-tbar {
     background-color: #e1e1e1;
     border-top: solid 1px #999;
     font-size: 10px;
     width: 100%;
 }
-#anc-mapstatus-tbar>div {
+#ancgis-mapstatus-tbar>div {
     display: inline-block;
     padding: 4px 6px 4px 6px;
 }
-#anc-mapstatus-projection {
+#ancgis-mapstatus-projection {
 	border-right: solid 1px #999;
 }
-#anc-mapstatus-mouseposition {
+#ancgis-mapstatus-mouseposition {
 	text-align: center
 }
 
@@ -49,13 +49,13 @@ html, body, .container-fluid {
 /**       AppMessage    **/
 /*************************/
 
-#anc-appmessage {
+#ancgis-appmessage {
     position: absolute;
     top: 45px;
     z-index: 1000;
     margin-left: 5px;
 }
-#anc-appmessage>div {
+#ancgis-appmessage>div {
     padding: 5px;
     display: none;
 }
@@ -77,51 +77,51 @@ html, body, .container-fluid {
 /**      Glyphicons     **/
 /*************************/
 
-.anc-glyphicons-reducted {
+.ancgis-glyphicons-reducted {
     width: 10px;
     height: 10px;
 }
-.anc-glyphicons {
+.ancgis-glyphicons {
     width: 15px;
     height: 15px;
 }
-.anc-glyphicons-enlarged {
+.ancgis-glyphicons-enlarged {
     width: 20px;
     height: 20px;
 }
-.anc-glyphicons-reducted, .anc-glyphicons, .anc-glyphicons-enlarged {
+.ancgis-glyphicons-reducted, .ancgis-glyphicons, .ancgis-glyphicons-enlarged {
     display: block;
     background-size: contain;
     background-repeat: no-repeat;
 }
-.anc-glyphicons-kiosk {
+.ancgis-glyphicons-kiosk {
     background-image: url("../images/glyphicons/glyphicons-454-kiosk.png");
 }
-.anc-glyphicons-vectorpathpolygon {
+.ancgis-glyphicons-vectorpathpolygon {
     background-image: url("../images/glyphicons/glyphicons-97-vector-path-polygon.png");
 }
-.anc-glyphicons-vectorpathcircle {
+.ancgis-glyphicons-vectorpathcircle {
     background-image: url("../images/glyphicons/glyphicons-96-vector-path-circle.png");
 }
-.anc-glyphicons-191plussign {
+.ancgis-glyphicons-191plussign {
     background-image: url("../images/glyphicons/glyphicons-191-plus-sign.png");
 }
-.anc-glyphicons-193removesign {
+.ancgis-glyphicons-193removesign {
     background-image: url("../images/glyphicons/glyphicons-193-remove-sign.png");
 }
-.anc-glyphicons-194oksign {
+.ancgis-glyphicons-194oksign {
     background-image: url("../images/glyphicons/glyphicons-194-ok-sign.png");
 }
-.anc-glyphicons-208remove {
+.ancgis-glyphicons-208remove {
     background-image: url("../images/glyphicons/glyphicons-208-remove.png");
 }
-.anc-glyphicons-187move {
+.ancgis-glyphicons-187move {
     background-image: url("../images/glyphicons/glyphicons-187-move.png");
 }
-.anc-glyphicons-31pencil {
+.ancgis-glyphicons-31pencil {
     background-image: url("../images/glyphicons/glyphicons-31-pencil.png");
 }
-.anc-glyphicons-551erase {
+.ancgis-glyphicons-551erase {
     background-image: url("../images/glyphicons/glyphicons-551-erase.png");
 }
 
@@ -203,7 +203,7 @@ html, body, .container-fluid {
 /**       ZoneForm      **/
 /*************************/
 
-.anc-form {
+.ancgis-form {
   position: fixed;
   background-color: rgba(255,255,255,.9);
   border-width: 1px;
@@ -213,31 +213,31 @@ html, body, .container-fluid {
   border-radius: 5px;
   color: white;
 }
-#anc-hiveform {
+#ancgis-hiveform {
     width: 400px;
     height: 180px;
     top: calc(50% - 77px);
     left: calc(50% - 200px);
 }
-#anc-zoneform {
+#ancgis-zoneform {
     width: 400px;
     height: 300px;
     top: calc(50% - 150px);
     left: calc(50% - 200px);
 }
-#anc-speciesform {
+#ancgis-speciesform {
     width: 400px;
     height: 154px;
     top: calc(50% - 77px);
     left: calc(50% - 200px);
 }
-.anc-form:focus {
+.ancgis-form:focus {
   outline: none;
 }
-.anc-form button {
+.ancgis-form button {
     padding: 3px 9px;
 }
-.anc-form-title {
+.ancgis-form-title {
     width: 100%;
     padding: 5px;
     border-top-left-radius: 5px;
@@ -248,44 +248,44 @@ html, body, .container-fluid {
     border-color: rgb(221, 221, 221);
     border-image: initial;
 }
-.anc-form-fields {
+.ancgis-form-fields {
     padding: 10px 10px;
 }
-#anc-zoneform .anc-form-fields {
+#ancgis-zoneform .ancgis-form-fields {
     background-color: rgba(50,50,50,.3);
 }
-.anc-form-field {
+.ancgis-form-field {
     width: 100%;
     color: rgb(50,50,50);
     margin: 5px 0;
 }
-.anc-form-field>label {
+.ancgis-form-field>label {
     width: 200px;
     margin: 0;
 }
-.anc-form-field>input, .anc-form-field>select {
+.ancgis-form-field>input, .ancgis-form-field>select {
     width: 170px;
 }
-.anc-form-florefields {
+.ancgis-form-florefields {
     color: rgb(50,50,50);
     padding: 5px 10px;
 }
-.anc-form-floretable {
+.ancgis-form-floretable {
     width: 100%;
 }
-.anc-form-floretable thead {
+.ancgis-form-floretable thead {
     border-bottom: 1px solid rgb(50,50,50);
 }
-.anc-form-periodcolumn {
+.ancgis-form-periodcolumn {
     width: 80px;
 }
-.anc-form-recoverycolumn {
+.ancgis-form-recoverycolumn {
     width: 50px;
 }
-.anc-form-actioncolumn {
+.ancgis-form-actioncolumn {
     width: 20px;
 }
-.anc-form-removespecies {
+.ancgis-form-removespecies {
   text-align: center;
   span {
     display: inline-block;
@@ -294,7 +294,7 @@ html, body, .container-fluid {
     cursor: pointer;
   }
 }
-.anc-form-ttbar, .anc-form-btbar {
+.ancgis-form-ttbar, .ancgis-form-btbar {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -303,13 +303,13 @@ html, body, .container-fluid {
     border-color: rgb(221, 221, 221);
     border-image: initial;
 }
-.anc-form-ttbar {
+.ancgis-form-ttbar {
     justify-content: space-between;
     padding: 5px 10px;
     align-items: center;
     border-width: 1px 0;
 }
-.anc-form-btbar {
+.ancgis-form-btbar {
     justify-content: space-around;
     position: absolute;
     bottom: 0;
@@ -317,6 +317,6 @@ html, body, .container-fluid {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-.anc-form-title, .anc-form-ttbar, .anc-form-btbar {
+.ancgis-form-title, .ancgis-form-ttbar, .ancgis-form-btbar {
     background-color: rgb(100,100,100);
 }

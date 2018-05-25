@@ -42,8 +42,8 @@ ol.inherits(ol.interaction.RemoveFeatures, ol.interaction.Select);
  * @private
  */
 ol.interaction.RemoveFeatures.prototype.removeFeatures_ = function(event) {
-  // TODO: don't use anc lib here...
-  var ancTool = require("../../anc/tool/modal");
+  // TODO: don't use ancgis lib here...
+  var ancTool = require("../../ancgis/tool/modal");
   ancTool.confirm("Confirmez-vous la suppression ?").then(
     $.proxy( function (e) {
       this.getFeatures().forEach(function(feature){

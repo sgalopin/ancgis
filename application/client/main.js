@@ -4,7 +4,7 @@ $(document).ready(function(){
 });
 
 // Open the database
-require("./anc/dbms/indexedDB");
+require("./ancgis/dbms/indexedDB");
 
 // Open the sig
-window.anc = require("./anc/map/sig");
+window.ancgis = require("./ancgis/map/sig");

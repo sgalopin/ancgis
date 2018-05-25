@@ -5,11 +5,11 @@ echo " Populate DB "
 echo "--------------------------------------------------"
 
 echo "--- Populating of the taxons collection."
-mongo localhost/anc taxons.js
+mongo localhost/ancgis taxons.js
 echo "--- Populating done."
 echo "--- Populating of the vegetation zones collection."
-mongo localhost/anc vegetation-zones.js
+mongo localhost/ancgis vegetation-zones.js
 echo "--- Populating done."
 echo "--- Populating of the hives collection."
-mongo localhost/anc hives.js
+mongo localhost/ancgis hives.js
 echo "--- Populating done."

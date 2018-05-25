@@ -64,18 +64,18 @@ module.exports = (function() {
 	);
 
 	// Management of the toggling of the interactions
-  $("#anc-mapcontrol-tbar>button").click(function(){
+  $("#ancgis-mapcontrol-tbar>button").click(function(){
     event.stopPropagation();
     $(this).toggleClass("active");
     if($(this).is(".active")){
-      $("#anc-mapcontrol-tbar>button[id!=\""+ $(this).attr("id") +"\"]").trigger("controlChange");
+      $("#ancgis-mapcontrol-tbar>button[id!=\""+ $(this).attr("id") +"\"]").trigger("controlChange");
       map.addInteraction(interactions[$(this)[0].dataset.shortid]);
-      $("#anc-map").trigger("interactionAdded");
+      $("#ancgis-map").trigger("interactionAdded");
     } else {
       map.removeInteraction(interactions[$(this)[0].dataset.shortid]);
     }
   });
-  $("#anc-mapcontrol-tbar>button").on("controlChange", function(event) {
+  $("#ancgis-mapcontrol-tbar>button").on("controlChange", function(event) {
     event.stopPropagation();
     if($(this).is(".active")){
       $(this).toggleClass("active");
@@ -85,7 +85,7 @@ module.exports = (function() {
   // Keep the editproperties on the top of the map's interactions
   window.addEventListener("contextmenu", function(e) { e.preventDefault(); });
   map.addInteraction(interactions.editproperties);
-  $("#anc-map").on("interactionAdded", function(event) {
+  $("#ancgis-map").on("interactionAdded", function(event) {
     event.stopPropagation();
     map.removeInteraction(interactions.editproperties);
     map.addInteraction(interactions.editproperties);
