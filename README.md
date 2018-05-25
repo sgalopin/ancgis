@@ -8,10 +8,10 @@ ANCGIS est un outil permettant de :
 - Détecter des carences alimentaires (période et diversité),
 - Aider à la sélection de plantes mellifères.
 
-[![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/anc/all.svg)](https://github.com/sgalopin/anc/releases)
-[![AGPLv3 License](https://img.shields.io/github/license/sgalopin/anc.svg)](https://github.com/sgalopin/anc/blob/master/LICENSE)
-&nbsp;&nbsp; [![Build Status](https://travis-ci.org/sgalopin/anc.svg?branch=master)](https://travis-ci.org/sgalopin/anc)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/caee637378424c5c8f2ace41dec04e66/master.svg)](https://www.codacy.com/app/sgalopin/anc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgalopin/anc&amp;utm_campaign=Badge_Grade)
+[![GitHub (pre-)elease](https://img.shields.io/github/release/sgalopin/ancgis/all.svg)](https://github.com/sgalopin/ancgis/releases)
+[![AGPLv3 License](https://img.shields.io/github/license/sgalopin/ancgis.svg)](https://github.com/sgalopin/ancgis/blob/master/LICENSE)
+&nbsp;&nbsp; [![Build Status](https://travis-ci.org/sgalopin/ancsig.svg?branch=master)](https://travis-ci.org/sgalopin/ancsig)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/937f624be4a14ed9a53bb4346ed6ba16)](https://www.codacy.com/app/sgalopin/ancgis?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgalopin/ancgis&amp;utm_campaign=Badge_Grade)
 &nbsp;&nbsp; ![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
 

@@ -5,7 +5,8 @@ notifications:
   email: false
 before_install: cd application
 before_script:
-  - sudo setcap cap_net_bind_service=+ep /home/travis/.nvm/versions/node/v10.1.0/bin/node
+  - echo $TRAVIS_NODE_VERSION
+  - sudo setcap cap_net_bind_service=+ep /home/travis/.nvm/versions/node/v10.2.1/bin/node
   - cd ../database && /bin/bash ../shell/populate-db.sh && cd ../application
   - npm run start &
 script: npm test
