@@ -8,12 +8,12 @@
 # ANCGIS
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
-![alt text](doc/img/home.png?raw=true "Page principale de l'application")
-
 ANCGIS est un outil permettant de :
 - Relevé la végétation autour des ruchers,
 - Détecter des carences alimentaires (période et diversité),
 - Aider à la sélection de plantes mellifères.
+
+![alt text](doc/img/home.png?raw=true "Page principale de l'application")
 
 ## Installation
 
