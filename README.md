@@ -78,6 +78,6 @@ Vous pouvez maintenant accéder à l'application à l'adresse: http://ancgis.dev
 - **$ vagrant provision --provision-with launch-app**: Lance (avec node) le serveur SANS la possibilité de l'arrêter et de le redémarrer.
 
 ### Commandes serveur (via console ssh)
-- **vagrant@anc:~$ cd /var/www/anc && npm run start**: Lance (avec node) le serveur AVEC la possibilité de l'arrêter et de le redémarrer.
-- **vagrant@anc:~$ cd /var/www/anc && npm run dev**: Idem ci-dessus mais lancement fait avec nodemon (Redémarrage automatique du serveur après modification des sources).
-- **vagrant@anc:~$ cd /var/www/anc && npm test**: Lance une batterie de tests UI (puppeteer, mocha, chai).
+- **vagrant@ancgis:~$ cd /var/www/ancgis && npm run start**: Lance (avec node) le serveur AVEC la possibilité de l'arrêter et de le redémarrer.
+- **vagrant@ancgis:~$ cd /var/www/ancgis && npm run dev**: Idem ci-dessus mais lancement fait avec nodemon (Redémarrage automatique du serveur après modification des sources).
+- **vagrant@ancgis:~$ cd /var/www/ancgis && npm test**: Lance une batterie de tests UI (puppeteer, mocha, chai).

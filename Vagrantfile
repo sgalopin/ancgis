@@ -124,7 +124,7 @@ Vagrant.configure("2") do |config|
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
     # Node and npm (npm is distributed with Node.js)
     apt-get install -y curl
-    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     apt-get install -y nodejs
     # To compile and install native addons from npm you may also need to install build tools
     apt-get install -y build-essential
