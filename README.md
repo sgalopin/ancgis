@@ -81,3 +81,4 @@ Vous pouvez maintenant accéder à l'application à l'adresse: http://ancgis.dev
 - **vagrant@ancgis:~$ cd /var/www/ancgis && npm run start**: Lance (avec node) le serveur AVEC la possibilité de l'arrêter et de le redémarrer.
 - **vagrant@ancgis:~$ cd /var/www/ancgis && npm run dev**: Idem ci-dessus mais lancement fait avec nodemon (Redémarrage automatique du serveur après modification des sources).
 - **vagrant@ancgis:~$ cd /var/www/ancgis && npm test**: Lance une batterie de tests UI (puppeteer, mocha, chai).
+- **vagrant@ancgis:~$ cd /var/www/ancgis && npm run browserify**: Lance la construction du bundle javascript en mode debug.
