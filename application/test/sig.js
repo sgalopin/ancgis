@@ -46,7 +46,7 @@ describe("sig tests", function () {
   });
 
   it("should have the correct page title", async function () {
-    expect(await page.title()).to.eql("AncSIG&trade;");
+    expect(await page.title()).to.eql("AncSIG™");
   });
 
   it("should have a single map", async function () {
