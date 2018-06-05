@@ -9,9 +9,23 @@
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
 AncGIS&trade; est un outil permettant de :
-- Relevé la végétation autour des ruchers,
-- Détecter des carences alimentaires (période et diversité) ***- Version 2***,
-- Aider à la sélection de plantes mellifères ***- Version 3***.
+- Relever la végétation autour des ruchers, ***- Version 1***.
+- Révéler des périodes de carence alimentaire:
+  - via des relevés de végétations (quantité et qualité),
+  - via des balances automatiques (quantité).
+- Aider à la sélection de plantes mellifères (par rucher):
+  - via la description du sol,
+  - via la position (Latitude, Longitude, Altitude),
+  - via la sélection d'un climat type.
+- Aider à l'étude des ressources mellifères potentielles d’une zone,
+- Collecter des données apicoles:
+  - Fiches ruchers,
+  - Fiches colonies.
+- Partager de manière participative des données apicoles non sensibles afin de faire avancer la science,
+- Lancer des projets de recherche et d'étude:
+  - Simulation des relations entre ressources et pollinisateurs, en incluant les
+perturbations connues (routes, antennes GSM, pesticides…),
+  - Croisement de données cartographiques (Climat, sol, altitude...).
 
 <br/>
 
