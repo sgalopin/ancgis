@@ -5,11 +5,6 @@
 &nbsp;&nbsp; ![GitHub top language](https://img.shields.io/github/languages/top/badges/shields.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
 
-</br>
-<p align="center">
-  <img src="https://github.com/sgalopin/ancgis/wiki/img/Badge_AncGIS_200px.png">
-</p>
-
 # AncGIS&trade;
 SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 
@@ -17,3 +12,7 @@ SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
 - [Installation](https://github.com/sgalopin/ancgis/wiki/Installation)
 - [Développement](https://github.com/sgalopin/ancgis/wiki/D%C3%A9veloppement)
 - [Désinstallation](https://github.com/sgalopin/ancgis/wiki/D%C3%A9sinstallation)
+
+<p align="center">
+  <img src="https://github.com/sgalopin/ancgis/wiki/img/Badge_AncGIS_200px.png">
+</p>
