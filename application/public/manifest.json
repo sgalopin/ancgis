@@ -1,0 +1,20 @@
+{
+  "short_name": "AncGIS",
+  "name": "SIG web pour l'analyse des ressources mellifères.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "theme_color": "#AAAAAA"
+}
