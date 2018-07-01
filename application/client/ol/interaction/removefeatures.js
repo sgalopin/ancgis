@@ -49,6 +49,7 @@ ol.interaction.RemoveFeatures.prototype.removeFeatures_ = function(event) {
       this.getFeatures().forEach(function(feature){
         this.getLayer(feature).getSource().removeFeature(feature);
       }, this);
+      // Dispatch a remove event for remote deletion
       this.dispatchEvent(
         new ol.interaction.Select.Event(
           ol.interaction.Select.EventType_.REMOVE,

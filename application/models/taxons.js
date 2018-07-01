@@ -7,7 +7,8 @@ module.exports = mongoose.model("Taxon", new mongoose.Schema({
 	"name": {type: String, unique: true, required: true},
 	"vernacularName": {type: String, required: true},
 	"periods": {type: [String], required: true},
-	"potential": {type: Number, required: true},
+	"nectarPotential": {type: Number, required: true},
+	"pollenPotential": {type: Number, required: true},
 	"wikipediaUrl": {type: String, required: false}
 },{
   toJSON: {

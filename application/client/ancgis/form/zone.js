@@ -121,6 +121,7 @@ module.exports = (function() {
           if (response.status === "success") {
             $("#ancgis-zoneform").remove();
           }
+          require("../map/map").dispatchPeriodPotentialChangeEvent();
         });
       });
     }

@@ -3,6 +3,8 @@ require("../../ol/interaction/addhive");
 require("../../ol/interaction/editproperties");
 require("../../ol/interaction/removefeatures");
 require("../../ol/interaction/modifyfeature");
+require("../../ol/control/periodswitchereventtype");
+require("../../ol/control/periodswitcherevent");
 require("../../ol/control/periodswitcher");
 
 /**
@@ -79,8 +81,18 @@ module.exports = (function() {
       form: zoneForm
     }, true);
     if ( typeof e.feature.getId() === "undefined" ) {
-      zoneDAO.createFeature(e.feature);
+      zoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
+    } else {
+      // Initialize the histogram
+      require("./map").dispatchPeriodPotentialChangeEvent();
     }
+    // Note: The PeriodPotentialChangeEvent is also dispatched after the zone form validation.
+  });
+  vegetationsLayerSource.on(ol.source.VectorEventType.REMOVEFEATURE, function(e){
+    require("./map").dispatchPeriodPotentialChangeEvent();
+  });
+  vegetationsLayerSource.on(ol.source.VectorEventType.CHANGEFEATURE, function(e){
+    require("./map").dispatchPeriodPotentialChangeEvent();
   });
   var vegetationsLayer = new ol.layer.Vector({
     name: vegetationsLayerName,
@@ -176,6 +188,14 @@ module.exports = (function() {
       return layer.get("name") === layerName;
     });
   };
+
+  ol.Map.prototype.dispatchPeriodPotentialChangeEvent = function() {
+    this.dispatchEvent(new ol.control.PeriodSwitcherEvent (
+      ol.control.PeriodSwitcherEventType.PERIODPOTENTIALCHANGE,
+      this
+    ));
+  };
+
 
   return new ol.Map ({ // Openlayers Map
       layers: [bdorthoLayer, hivesLayer, vegetationsLayer],

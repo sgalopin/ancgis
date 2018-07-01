@@ -3,13 +3,13 @@
 /*************************/
 
 html, body, .container-fluid {
-    height: 100%;
+  height: 100%;
 }
 .container-fluid {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 #ancgis-map {
-    height: calc(100% - 55px);
+  height: calc(100% - 55px);
 }
 
 /*************************/
@@ -17,11 +17,11 @@ html, body, .container-fluid {
 /*************************/
 
 #ancgis-mapcontrol-tbar {
-    background-color: #e1e1e1;
-    border-bottom: solid 1px #999;
-    font-size: 10px;
-    width: 100%;
-	padding: 1px 1px 1px 5px;
+  background-color: #e1e1e1;
+  border-bottom: solid 1px #999;
+  font-size: 10px;
+  width: 100%;
+  padding: 1px 1px 1px 5px;
 }
 
 /*************************/
@@ -29,14 +29,14 @@ html, body, .container-fluid {
 /*************************/
 
 #ancgis-mapstatus-tbar {
-    background-color: #e1e1e1;
-    border-top: solid 1px #999;
-    font-size: 10px;
-    width: 100%;
+  background-color: #e1e1e1;
+  border-top: solid 1px #999;
+  font-size: 10px;
+  width: 100%;
 }
 #ancgis-mapstatus-tbar>div {
-    display: inline-block;
-    padding: 4px 6px 4px 6px;
+  display: inline-block;
+  padding: 4px 6px 4px 6px;
 }
 #ancgis-mapstatus-projection {
 	border-right: solid 1px #999;
@@ -50,14 +50,14 @@ html, body, .container-fluid {
 /*************************/
 
 #ancgis-appmessage {
-    position: absolute;
-    top: 45px;
-    z-index: 1000;
-    margin-left: 5px;
+  position: absolute;
+  top: 45px;
+  z-index: 1000;
+  margin-left: 5px;
 }
 #ancgis-appmessage>div {
-    padding: 5px;
-    display: none;
+  padding: 5px;
+  display: none;
 }
 
 /*************************/
@@ -65,12 +65,12 @@ html, body, .container-fluid {
 /*************************/
 // TODO: Use the less variables...
 .btn-primary {
-    background-color: #999;
-    border-color: #777;
+  background-color: #999;
+  border-color: #777;
 }
 .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
-    background-color: #777 !important;
-    border-color: #555 !important;
+  background-color: #777 !important;
+  border-color: #555 !important;
 }
 
 /*************************/
@@ -78,51 +78,51 @@ html, body, .container-fluid {
 /*************************/
 
 .ancgis-glyphicons-reducted {
-    width: 10px;
-    height: 10px;
+  width: 10px;
+  height: 10px;
 }
 .ancgis-glyphicons {
-    width: 15px;
-    height: 15px;
+  width: 15px;
+  height: 15px;
 }
 .ancgis-glyphicons-enlarged {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 .ancgis-glyphicons-reducted, .ancgis-glyphicons, .ancgis-glyphicons-enlarged {
-    display: block;
-    background-size: contain;
-    background-repeat: no-repeat;
+  display: block;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 .ancgis-glyphicons-kiosk {
-    background-image: url("../images/glyphicons/glyphicons-454-kiosk.png");
+  background-image: url("../images/glyphicons/glyphicons-454-kiosk.png");
 }
 .ancgis-glyphicons-vectorpathpolygon {
-    background-image: url("../images/glyphicons/glyphicons-97-vector-path-polygon.png");
+  background-image: url("../images/glyphicons/glyphicons-97-vector-path-polygon.png");
 }
 .ancgis-glyphicons-vectorpathcircle {
-    background-image: url("../images/glyphicons/glyphicons-96-vector-path-circle.png");
+  background-image: url("../images/glyphicons/glyphicons-96-vector-path-circle.png");
 }
 .ancgis-glyphicons-191plussign {
-    background-image: url("../images/glyphicons/glyphicons-191-plus-sign.png");
+  background-image: url("../images/glyphicons/glyphicons-191-plus-sign.png");
 }
 .ancgis-glyphicons-193removesign {
-    background-image: url("../images/glyphicons/glyphicons-193-remove-sign.png");
+  background-image: url("../images/glyphicons/glyphicons-193-remove-sign.png");
 }
 .ancgis-glyphicons-194oksign {
-    background-image: url("../images/glyphicons/glyphicons-194-ok-sign.png");
+  background-image: url("../images/glyphicons/glyphicons-194-ok-sign.png");
 }
 .ancgis-glyphicons-208remove {
-    background-image: url("../images/glyphicons/glyphicons-208-remove.png");
+  background-image: url("../images/glyphicons/glyphicons-208-remove.png");
 }
 .ancgis-glyphicons-187move {
-    background-image: url("../images/glyphicons/glyphicons-187-move.png");
+  background-image: url("../images/glyphicons/glyphicons-187-move.png");
 }
 .ancgis-glyphicons-31pencil {
-    background-image: url("../images/glyphicons/glyphicons-31-pencil.png");
+  background-image: url("../images/glyphicons/glyphicons-31-pencil.png");
 }
 .ancgis-glyphicons-551erase {
-    background-image: url("../images/glyphicons/glyphicons-551-erase.png");
+  background-image: url("../images/glyphicons/glyphicons-551-erase.png");
 }
 
 /*************************/
@@ -130,56 +130,103 @@ html, body, .container-fluid {
 /*************************/
 
 .ol-periodswitcher {
-    bottom: .5em;
-    width: 502px;
-    margin-left: calc(50% - 251px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    color: white;
-    font-size: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+  bottom: .5em;
+  width: 506px;
+  margin-left: calc(50% - 253px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
 }
 .ol-periodswitcher:hover {
-    background-color: rgba(255,255,255,.6);
-    color: black;
+  background-color: transparent;
+}
+.ol-periodswitcher-bottom {
+  padding:2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.ol-periodswitcher-bottom:hover {
+  background-color: rgba(255,255,255,.6);
+  color: black;
 }
 .ol-periodswitcher-title:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .ol-periodswitcher-buttonslist {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 0;
-    background-color: rgba(255,255,255,.4);
-    border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(255,255,255,.4);
+  border-radius: 5px;
 }
 .ol-periodswitcher-button {
-    color: white;
-    display: inline;
-    padding: 6px 12px;
-    text-decoration: none;
-    border-width: 1px 1px 1px 0;
-    border-style: solid;
-    border-color: rgb(221, 221, 221);
-    border-image: initial;
+  color: white;
+  display: inline;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-width: 1px 1px 1px 0;
+  border-style: solid;
+  border-color: rgb(221, 221, 221);
+  border-image: initial;
 }
 .ol-periodswitcher-button:first-child {
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    border-left-width: 1px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-left-width: 1px;
 }
 .ol-periodswitcher-button:last-child {
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    border-right-width: 1px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-right-width: 1px;
 }
 .ol-periodswitcher-button:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+.ol-periodswitcher-top {
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+.ol-periodswitcher-histogram {
+  position: absolute;
+  bottom: 0;
+  height: 0;
+  display: flex;
+  padding: 0;
+  margin-bottom: 5px;
+}
+.ol-periodswitcher-histo-column {
+  display: flex;
+  align-items: flex-end;
+  width: 18px;
+  margin: 0 2px;
+  border-bottom: solid 4px;
+  padding-bottom: 3px;
+}
+.ol-periodswitcher-histo-column:hover, .ol-periodswitcher-histo-column.hover{
+  border-color: white;
+}
+.ol-periodswitcher-nectar-column, .ol-periodswitcher-pollen-column {
+  margin: 0 1px;
+  width: 7px;
+}
+.ol-periodswitcher-nectar-column {
+  background-color: rgba(255,255,255,0.6);
+}
+.ol-periodswitcher-pollen-column {
+  background-color: rgba(255,215,0,0.6);
 }
 
 /*************************/
@@ -187,16 +234,16 @@ html, body, .container-fluid {
 /*************************/
 
 .ol-control button, .ol-periodswitcher-button {
-    background-color: rgba(50,50,50,.5);
+  background-color: rgba(50,50,50,.5);
 }
-.ol-control button:focus, .ol-control button:hover, .ol-periodswitcher-button:hover {
-    background-color: rgba(50,50,50,.7);
+.ol-control button:focus, .ol-control button:hover, .ol-periodswitcher-button:hover, .ol-periodswitcher-button.hover {
+  background-color: rgba(50,50,50,.7);
 }
 .ol-attribution.ol-control button {
-    margin: 0;
+  margin: 0;
 }
 .ol-scale-line {
-    background: rgba(50,50,50,.3);
+  background: rgba(50,50,50,.3);
 }
 
 /*************************/
@@ -214,76 +261,76 @@ html, body, .container-fluid {
   color: white;
 }
 #ancgis-hiveform {
-    width: 400px;
-    height: 180px;
-    top: calc(50% - 77px);
-    left: calc(50% - 200px);
+  width: 400px;
+  height: 180px;
+  top: calc(50% - 77px);
+  left: calc(50% - 200px);
 }
 #ancgis-zoneform {
-    width: 400px;
-    height: 300px;
-    top: calc(50% - 150px);
-    left: calc(50% - 200px);
+  width: 400px;
+  height: 300px;
+  top: calc(50% - 150px);
+  left: calc(50% - 200px);
 }
 #ancgis-speciesform {
-    width: 400px;
-    height: 154px;
-    top: calc(50% - 77px);
-    left: calc(50% - 200px);
+  width: 400px;
+  height: 154px;
+  top: calc(50% - 77px);
+  left: calc(50% - 200px);
 }
 .ancgis-form:focus {
   outline: none;
 }
 .ancgis-form button {
-    padding: 3px 9px;
+  padding: 3px 9px;
 }
 .ancgis-form-title {
-    width: 100%;
-    padding: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    text-align: center;
-    border-width: 0 0 1px 0;
-    border-style: solid;
-    border-color: rgb(221, 221, 221);
-    border-image: initial;
+  width: 100%;
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  text-align: center;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: rgb(221, 221, 221);
+  border-image: initial;
 }
 .ancgis-form-fields {
-    padding: 10px 10px;
+  padding: 10px 10px;
 }
 #ancgis-zoneform .ancgis-form-fields {
-    background-color: rgba(50,50,50,.3);
+  background-color: rgba(50,50,50,.3);
 }
 .ancgis-form-field {
-    width: 100%;
-    color: rgb(50,50,50);
-    margin: 5px 0;
+  width: 100%;
+  color: rgb(50,50,50);
+  margin: 5px 0;
 }
 .ancgis-form-field>label {
-    width: 200px;
-    margin: 0;
+  width: 200px;
+  margin: 0;
 }
 .ancgis-form-field>input, .ancgis-form-field>select {
-    width: 170px;
+  width: 170px;
 }
 .ancgis-form-florefields {
-    color: rgb(50,50,50);
-    padding: 5px 10px;
+  color: rgb(50,50,50);
+  padding: 5px 10px;
 }
 .ancgis-form-floretable {
-    width: 100%;
+  width: 100%;
 }
 .ancgis-form-floretable thead {
-    border-bottom: 1px solid rgb(50,50,50);
+  border-bottom: 1px solid rgb(50,50,50);
 }
 .ancgis-form-periodcolumn {
-    width: 80px;
+  width: 80px;
 }
 .ancgis-form-recoverycolumn {
-    width: 50px;
+  width: 50px;
 }
 .ancgis-form-actioncolumn {
-    width: 20px;
+  width: 20px;
 }
 .ancgis-form-removespecies {
   text-align: center;
@@ -295,28 +342,28 @@ html, body, .container-fluid {
   }
 }
 .ancgis-form-ttbar, .ancgis-form-btbar {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 5px;
-    border-style: solid;
-    border-color: rgb(221, 221, 221);
-    border-image: initial;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  border-style: solid;
+  border-color: rgb(221, 221, 221);
+  border-image: initial;
 }
 .ancgis-form-ttbar {
-    justify-content: space-between;
-    padding: 5px 10px;
-    align-items: center;
-    border-width: 1px 0;
+  justify-content: space-between;
+  padding: 5px 10px;
+  align-items: center;
+  border-width: 1px 0;
 }
 .ancgis-form-btbar {
-    justify-content: space-around;
-    position: absolute;
-    bottom: 0;
-    border-width: 1px 0 0 0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 0;
+  border-width: 1px 0 0 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .ancgis-form-title, .ancgis-form-ttbar, .ancgis-form-btbar {
-    background-color: rgb(100,100,100);
+  background-color: rgb(100,100,100);
 }
