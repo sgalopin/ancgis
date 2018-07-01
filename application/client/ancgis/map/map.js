@@ -163,7 +163,7 @@ module.exports = (function() {
   var key = "7wbodpc2qweqkultejkb47zv";
 
   var ignSource = new ol.source.WMTS({
-    url: "http://wxs.ign.fr/" + key + "/wmts",
+    url: "https://wxs.ign.fr/" + key + "/wmts",
     //layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
     layer: "ORTHOIMAGERY.ORTHOPHOTOS",
     matrixSet: "PM",

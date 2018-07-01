@@ -38,7 +38,11 @@ if (app.get("env") === "development") {
     logLevel: "debug",
     logSnippet: false,
     //reloadDelay: 3000,
-    reloadOnRestart: true
+    reloadOnRestart: true,
+    https: {
+        key: "encryption/ancgis.dev.net.key",
+        cert: "encryption/ancgis.dev.net.crt"
+    }
   };
   var bs = browserSync(config);
   app.use(require("connect-browser-sync")(bs));

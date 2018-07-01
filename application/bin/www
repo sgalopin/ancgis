@@ -3,36 +3,50 @@
 /**
  * Module dependencies.
  */
-
 var app = require("../app");
 var debug = require("debug")("app:server");
-var http = require("http");
 
 /**
  * Get port from environment and store in Express.
  */
-
-var port = normalizePort(process.env.PORT || "80");
+var port = normalizePort(process.env.PORT || "443");
 app.set("port", port);
 
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
-
-var server = http.createServer(app);
+var fs = require('fs');
+var options = {
+  key: fs.readFileSync('encryption/ancgis.dev.net.key'),
+  cert: fs.readFileSync( 'encryption/ancgis.dev.net.crt' )
+};
+var https = require('https');
+var https_server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
+https_server.listen(port);
+https_server.on("error", onError);
+https_server.on("listening", onListening);
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+/**
+ * Create HTTP server which runs alongside HTTPS and will redirect to it.
+ */
+var http = require('http');
+var http_server = http.createServer(app);
+http_server.listen(80);
+app.use(function(req, res, next) {
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+});
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -50,9 +64,8 @@ function normalizePort(val) {
 }
 
 /**
- * Event listener for HTTP server "error" event.
+ * Event listener for HTTPS server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== "listen") {
     throw error;
@@ -78,11 +91,10 @@ function onError(error) {
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * Event listener for HTTPS server "listening" event.
  */
-
 function onListening() {
-  var addr = server.address();
+  var addr = https_server.address();
   var bind = typeof addr === "string"
     ? "pipe " + addr
     : "port " + addr.port;
