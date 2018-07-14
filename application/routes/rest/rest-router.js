@@ -1,12 +1,20 @@
 var express = require("express");
+var passport = require('passport');
 
 module.exports = function (Model, populatePath, returnGeoJson) {
   var router = express.Router(); // eslint-disable-line new-cap
   var returnGeoJson_ = returnGeoJson ? returnGeoJson : false;
+  function loggedIn(req, res, next) {
+      if (req.isAuthenticated()) {
+          next();
+      } else {
+          res.redirect('/');
+      }
+  }
 
   router.route("/")
     // READ ALL
-    .get(function(req, res, next) {
+    .get(loggedIn, function(req, res, next) {
       Model.find()
       .populate(populatePath)
       .exec(function (err, docs) {
@@ -28,7 +36,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       });
     })
     // CREATE
-    .post(function(req, res, next) {
+    .post(loggedIn, function(req, res, next) {
       var doc = new Model(req.body);
       doc.save()
       .then(function (doc) {
@@ -41,7 +49,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
 
   router.route("/:id")
     // READ
-    .get(function(req, res, next) {
+    .get(loggedIn, function(req, res, next) {
       Model.findOne({_id: req.params.id})
       .populate(populatePath)
       .exec(function (err, doc) {
@@ -50,7 +58,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       });
     })
     // UPDATE
-    .put(function(req, res, next) {
+    .put(loggedIn, function(req, res, next) {
       Model.update({_id: req.params.id}, req.body)
       .exec(function (err, writeOpResult) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }
@@ -58,7 +66,7 @@ module.exports = function (Model, populatePath, returnGeoJson) {
       });
     })
     // DELETE
-    .delete(function(req, res, next) {
+    .delete(loggedIn, function(req, res, next) {
       Model.findByIdAndRemove(req.params.id)
       .exec(function (err, doc) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }

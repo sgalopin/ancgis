@@ -13,6 +13,69 @@ html, body, .container-fluid {
 }
 
 /*************************/
+/**        Index        **/
+/*************************/
+#ancgis-index-body {
+}
+
+#ancgis-index-menu {
+  padding: 20px;
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 300px;
+  margin-left: -150px; /* Cette valeur doit être la moitié négative de la valeur du width */
+  margin-top: -150px; /* Cette valeur doit être la moitié négative de la valeur du height */
+  background-color: #F3F3F3;
+  border-radius: 10px;
+  border: solid 1px gray;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  img {
+    display: block;
+    margin: 0px auto;
+  }
+  .btbar {
+    margin: 20px auto;
+    display: block;
+    width: 240px;
+    a {
+      width: 120px;
+    }
+  }
+  h1 {
+    font-size: xx-large;
+    font-family: serif;
+    margin: 20px auto;
+    text-align: center;
+  }
+  form {
+    margin: 20px auto;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    .form-btbar {
+      margin: 20px auto;
+    }
+  }
+}
+
+#ancgis-index-menu-shadow {
+  position:absolute;
+  top: 50%;
+  width: 100%;
+  height: 250px;
+  margin-top: -125px; /* Cette valeur doit être la moitié négative de la valeur du height */
+  background-color: #F8F8F8;
+  border-top: solid 1px gray;
+  border-bottom: solid 1px gray;
+}
+
+/*************************/
 /**   Map top toolbar   **/
 /*************************/
 

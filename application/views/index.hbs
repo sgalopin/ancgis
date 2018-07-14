@@ -1,3 +1,17 @@
-{{> confirm}}
-{{> app-message}}
-{{> sig}}
+{{#if user}}
+  {{> confirm}}
+  {{> app-message}}
+  {{> sig}}
+{{else}}
+  <div id="ancgis-index-body">
+    <div id="ancgis-index-menu-shadow"></div>
+    <div id="ancgis-index-menu">
+      <img src="images/BadgeAncGISCouleur-200px.png" alt="Logo AncGIS">
+      <div class="btbar btn-group">
+        <a href="/register" class="btn btn-default">S'enregistrer</a>
+        <a href="/login" class="btn btn-default">S'authentifier</a>
+      </div>
+    </div>
+  </div>
+{{/if}}
+

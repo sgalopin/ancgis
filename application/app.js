@@ -1,5 +1,7 @@
 var express = require("express");
+var session = require('express-session');
 var exphbs  = require("express-handlebars");
+var passport = require('passport');
 var mongoose = require("mongoose");
 var sassMiddleware = require("node-sass-middleware");
 var browserify = require("browserify-middleware");
@@ -8,12 +10,6 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-
-var index = require("./routes/index");
-var users = require("./routes/users");
-var taxons = require("./routes/rest/taxons");
-var vegetationZones = require("./routes/rest/vegetation-zones");
-var hives = require("./routes/rest/hives");
 
 var app = express();
 
@@ -30,11 +26,15 @@ app.use (
 browserify.settings({ transform: ["hbsfy"] });
 app.get("/javascripts/bundle.js", browserify("./client/main.js"));
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
-mongoose.connect(dbConnectionString + "/taxons");
+mongoose.connect(dbConnectionString + "/taxons", function(err) {
+  if (err) {
+    console.log('Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!');
+  }
+});
 if (app.get("env") === "development") {
   var browserSync = require("browser-sync");
   var config = {
-    files: ["public/**/*.{js,css}", "client/*.js", "sass/**/*.scss", "views/**/*.hbs"],
+   files: ["public/**/*.{js,css}", "client/*.js", "sass/**/*.scss", "views/**/*.hbs"],
     logLevel: "debug",
     logSnippet: false,
     //reloadDelay: 3000,
@@ -48,17 +48,47 @@ if (app.get("env") === "development") {
   app.use(require("connect-browser-sync")(bs));
 }
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
-app.use(logger("dev"));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(logger("dev"));
 
+// Session management
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: '0(*0q&7,g<)Zmn7vv~%JJS.VkWCyun4S',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
+// Passport
+// In a Express-based application, passport.initialize() middleware is required to initialize Passport.
+app.use(passport.initialize());
+// In application using persistent login sessions, passport.session() middleware must also be used.
+app.use(passport.session());
+// requires the model with Passport-Local Mongoose plugged in
+const Account = require('./models/account');
+// use static authenticate method of model in LocalStrategy
+const LocalStrategy = require('passport-local').Strategy;
+passport.use(new LocalStrategy(Account.authenticate()));
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+// Routes (must be declared after the session)
+var index = require("./routes/index");
 app.use("/", index);
-app.use("/users", users);
+app.use("/register", index);
+app.use("/login", index);
+app.use("/logout", index);
+var taxons = require("./routes/rest/taxons");
 app.use("/rest/taxons", taxons);
+var vegetationZones = require("./routes/rest/vegetation-zones");
 app.use("/rest/vegetation-zones", vegetationZones);
+var hives = require("./routes/rest/hives");
 app.use("/rest/hives", hives);
 
 // catch 404 and forward to error handler
