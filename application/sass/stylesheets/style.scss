@@ -12,21 +12,14 @@ html, body, .container-fluid {
   height: calc(100% - 55px);
 }
 
-/*************************/
-/**        Index        **/
-/*************************/
-#ancgis-index-body {
-}
-
-#ancgis-index-menu {
+/*******************************************/
+/**        Index / Login / Register       **/
+/*******************************************/
+#ancgis-index-menu, #ancgis-login-menu, #ancgis-register-menu, #ancgis-requirepwdreset-menu {
   padding: 20px;
   position:absolute;
   left: 50%;
   top: 50%;
-  width: 300px;
-  height: 300px;
-  margin-left: -150px; /* Cette valeur doit être la moitié négative de la valeur du width */
-  margin-top: -150px; /* Cette valeur doit être la moitié négative de la valeur du height */
   background-color: #F3F3F3;
   border-radius: 10px;
   border: solid 1px gray;
@@ -34,18 +27,26 @@ html, body, .container-fluid {
   -webkit-flex-direction: column;
   display: flex;
   flex-direction: column;
+}
+
+#ancgis-index-menu {
+  width: 350px;
+  height: 350px;
+  margin-left: -175px;
+  margin-top: -175px;
   img {
     display: block;
-    margin: 0px auto;
+    margin: 20px auto;
   }
   .btbar {
     margin: 20px auto;
     display: block;
     width: 240px;
-    a {
-      width: 120px;
-    }
+    text-align: center;
   }
+}
+
+#ancgis-login-menu, #ancgis-register-menu, #ancgis-requirepwdreset-menu, #ancgis-requirepwdreset-menu {
   h1 {
     font-size: xx-large;
     font-family: serif;
@@ -53,23 +54,37 @@ html, body, .container-fluid {
     text-align: center;
   }
   form {
-    margin: 20px auto;
-    display: -webkit-flex;
-    -webkit-flex-direction: column;
-    display: flex;
-    flex-direction: column;
-    .form-btbar {
-      margin: 20px auto;
-    }
+    margin: 20px 20px;
   }
 }
 
-#ancgis-index-menu-shadow {
+#ancgis-requirepwdreset-menu {
+  width: 350px;
+  height: 350px;
+  margin-left: -175px;
+  margin-top: -175px;
+}
+
+#ancgis-login-menu {
+  width: 350px;
+  height: 350px;
+  margin-left: -175px;
+  margin-top: -175px;
+}
+
+#ancgis-register-menu {
+  width: 500px;
+  height: 450px;
+  margin-left: -250px;
+  margin-top: -225px;
+}
+
+#ancgis-index-menu-shadow, #ancgis-login-menu-shadow, #ancgis-register-menu-shadow, #ancgis-requirepwdreset-menu-shadow {
   position:absolute;
   top: 50%;
   width: 100%;
   height: 250px;
-  margin-top: -125px; /* Cette valeur doit être la moitié négative de la valeur du height */
+  margin-top: -125px;
   background-color: #F8F8F8;
   border-top: solid 1px gray;
   border-bottom: solid 1px gray;

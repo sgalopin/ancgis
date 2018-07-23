@@ -7,12 +7,6 @@ var app = require("../app");
 var debug = require("debug")("app:server");
 
 /**
- * Get port from environment and store in Express.
- */
-var port = normalizePort(process.env.PORT || "443");
-app.set("port", port);
-
-/**
  * Create HTTPS server.
  */
 var fs = require('fs');
@@ -22,11 +16,7 @@ var options = {
 };
 var https = require('https');
 var https_server = https.createServer(options, app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-https_server.listen(port);
+https_server.listen(443);
 https_server.on("error", onError);
 https_server.on("listening", onListening);
 
@@ -36,32 +26,6 @@ https_server.on("listening", onListening);
 var http = require('http');
 var http_server = http.createServer(app);
 http_server.listen(80);
-app.use(function(req, res, next) {
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-});
-
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /**
  * Event listener for HTTPS server "error" event.

@@ -1,6 +1,5 @@
 var express = require("express");
 var passport = require('passport');
-var Account = require('../models/account');
 
 var router = express.Router(); // eslint-disable-line new-cap
 
@@ -8,49 +7,25 @@ router.get('/', function (req, res) {
   res.render('index', { user : req.user });
 });
 
-router.get('/register', function(req, res) {
-  if (req.isAuthenticated()) {
-    res.redirect('/');
-  } else {
-    res.render('register');
-  }
-});
-
-router.post('/register', function(req, res, next) {
-  Account.register(new Account({
-    username : req.body.username
-  }),
-  req.body.password,
-  function(err, account) {
-    if (err) {
-      return res.render('register', { error : err.message });
-    }
-    passport.authenticate('local')(req, res, function () {
-      req.session.save(function (err) {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
-      });
-    });
-  });
-});
-
 router.get('/login', function(req, res) {
   if (req.isAuthenticated()) {
     res.redirect('/');
   } else {
-    res.render('login', { user : req.user });
+    res.render('login');
   }
 });
 
 router.post('/login', function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
+  passport.authenticate('local', {
+    // The only default info.message from passport-local is 'Missing credentials'
+    // See: https://github.com/jaredhanson/passport-local/blob/master/lib/strategy.js
+    badRequestMessage: "Mot de passe ou nom d'utilisateur manquant."
+  }, function(err, user, info) {
     if (err) {
       return next(err); // will generate a 500 error
     }
     if (! user) {
-      return res.render('login', { error : info.message });
+      return res.render('login', { username : req.body.username, error: info.message });
     }
     // ***********************************************************************
     // "Note that when using a custom callback, it becomes the application's

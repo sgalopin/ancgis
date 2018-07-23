@@ -10,11 +10,18 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+var RateLimit = require('express-rate-limit');
 
 var app = express();
 
 // view engine setup
-app.engine("hbs", exphbs({extname: ".hbs", defaultLayout: "layout"}));
+const handlebarsHelpers = require('./helpers/handlebars');
+app.engine("hbs", exphbs({
+  extname: ".hbs",
+  defaultLayout: "layout",
+  layoutsDir: __dirname + '/views/layouts/',
+  helpers: handlebarsHelpers
+}));
 app.set("view engine", "hbs");
 app.use (
   sassMiddleware({
@@ -58,13 +65,13 @@ app.use(logger("dev"));
 // Session management
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: '0(*0q&7,g<)Zmn7vv~%JJS.VkWCyun4S',
+  secret: require('crypto').randomBytes(64).toString('hex'),
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
 }))
 
-// Passport
+// Authentication with Passport
 // In a Express-based application, passport.initialize() middleware is required to initialize Passport.
 app.use(passport.initialize());
 // In application using persistent login sessions, passport.session() middleware must also be used.
@@ -78,18 +85,48 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+// HTTP to HHTPS redirection
+app.use(function(req, res, next) {
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+});
+
+// Force brute protection middleware
+var loginIPLimiter = new RateLimit({
+  windowMs: 15*60*1000, // 15 minutes
+  max: 100,
+  delayMs: 0, // disabled
+  handler: function (req, res, /*next*/) {
+    return res.render('login', { error : "Trop de tentatives de connexion à partir de cette adresse IP, veuillez réessayer plus tard." });
+  }
+});
+var loginUserLimiter = new RateLimit({
+  windowMs: 15*60*1000, // 15 minutes
+  max: 10,
+  delayMs: 0, // disabled
+  handler: function (req, res, /*next*/) {
+    return res.render('login', { username : req.body.username, error : "Trop de tentatives de connexion pour cet utilisateur, veuillez réessayer plus tard." });
+  },
+  keyGenerator: function (req) {
+    return req.body.username;
+  }
+});
+//app.use("/login", loginUserLimiter);
+//app.use("/login", loginIPLimiter);
+
 // Routes (must be declared after the session)
 var index = require("./routes/index");
 app.use("/", index);
-app.use("/register", index);
 app.use("/login", index);
 app.use("/logout", index);
-var taxons = require("./routes/rest/taxons");
-app.use("/rest/taxons", taxons);
-var vegetationZones = require("./routes/rest/vegetation-zones");
-app.use("/rest/vegetation-zones", vegetationZones);
-var hives = require("./routes/rest/hives");
-app.use("/rest/hives", hives);
+app.use("/register", require("./routes/register"));
+app.use("/requirePwdReset", require("./routes/requirePwdReset"));
+app.use("/rest/taxons", require("./routes/rest/taxons"));
+app.use("/rest/vegetation-zones", require("./routes/rest/vegetation-zones"));
+app.use("/rest/hives", require("./routes/rest/hives"));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
