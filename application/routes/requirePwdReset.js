@@ -2,8 +2,6 @@ var router = require("express").Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var RateLimit = require('express-rate-limit');
-var nodemailer = require('nodemailer');
-var sgTransport = require('nodemailer-sendgrid-transport');
 var async = require('async');
 const { checkSchema, validationResult } = require('express-validator/check');
 
@@ -14,7 +12,8 @@ var iPLimiter = new RateLimit({
   delayMs: 0, // disabled
   skipFailedRequests: true,
   handler: function (req, res, /*next*/) {
-    return res.render('register', { error : "Trop de demandes faites simultanément à partir de cette adresse IP, veuillez réessayer plus tard." });
+    req.flash('error', "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
+    return res.render('requirePwdReset');
   }
 });
 //router.use(iPLimiter);
@@ -73,13 +72,16 @@ router.post('/', postCheckSchema, function(req, res, next) {
     },
     function(token, user, done) {
       const sgMail = require('@sendgrid/mail');
-      if(!process.env.SENDGRID_API_KEY){
+      if(!process.env.ANCGIS_SENDGRID_API_KEY){
         return errorRender (req, res, "SendGrid n'est pas correctement configuré, veuillez renseigner la clé de l'API.");
       }
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      sgMail.setApiKey(process.env.ANCGIS_SENDGRID_API_KEY);
       const msg = {
         to: user.email,
-        from: 'passwordreset@ancgis.dev.net',
+        from: {
+          name: 'AncGIS website',
+          email: 'password.reset@ancgis.dev.net',
+        },
         subject: 'Votre demande de changement de mot de passe',
         text: "Bonjour,\n\n" +
         "Vous (ou quelqu'un d'autre) avez demandé la réinitialisation de votre mot de passe pour votre compte AncGIS.\n\n" +
@@ -105,16 +107,15 @@ router.post('/', postCheckSchema, function(req, res, next) {
 
 // Render the form with error(s) message(s)
 function errorRender (req, res, message) {
+  req.flash('error', message);
   return res.render('requirePwdReset', {
-    email: req.body.email,
-    error : message
+    email: req.body.email
   });
 }
 // Render the form with a message
 function messageRender (req, res, message) {
-  return res.render('requirePwdReset', {
-    message : message
-  });
+  req.flash('info', message);
+  return res.render('requirePwdReset');
 }
 
 module.exports = router;

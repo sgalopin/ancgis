@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "start": "if-env NODE_ENV=production ?? npm run start:prod || npm run start:dev",
+    "start:prod": "NODE_ENV=production node ./bin/www",
+    "start:dev": "NODE_ENV=development nodemon ./bin/www",
     "test": "mocha test/bootstrap.js --recursive test",
     "browserify": "browserify client/main.js -o client/bundle-debug.js --debug --transform [\"hbsfy\"]"
   },
@@ -19,7 +20,9 @@
     "crypto": "^1.0.1",
     "cssify": "^1.0.3",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "express": "~4.15.5",
+    "express-flash": "0.0.2",
     "express-handlebars": "^3.0.0",
     "express-rate-limit": "^2.11.0",
     "express-session": "^1.15.6",

@@ -1,8 +1,6 @@
-{{#if error}}
-<div class="alert alert-warning">
-  {{{error}}}
+<div class="ancgis-appmessage">
+  {{> app-message}}
 </div>
-{{/if}}
 
 <div id="ancgis-register-menu-shadow"></div>
 <div id="ancgis-register-menu">
@@ -11,7 +9,7 @@
     <div class="form-group row">
       <label for="username" class="col-sm-4 col-form-label">Utilisateur</label>
       <div class="col-sm-8">
-        <input class="form-control" type='text' id="username" name="username" placeholder='mdupont' {{#if username}}value="{{username}}"{{/if}}>
+        <input class="form-control" type='text' id="username" name="username" placeholder='mdupont' {{#if username}}value="{{username}}"{{/if}} autofocus=true>
       </div>
     </div>
     <div class="form-group row">

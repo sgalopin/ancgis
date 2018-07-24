@@ -1,3 +1,6 @@
+const result = require('dotenv').config();
+if (result.error) { throw result.error; }
+
 var express = require("express");
 var session = require('express-session');
 var exphbs  = require("express-handlebars");
@@ -11,10 +14,12 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var RateLimit = require('express-rate-limit');
+var flash = require('express-flash');
 
 var app = express();
 
 // view engine setup
+app.use(flash());
 const handlebarsHelpers = require('./helpers/handlebars');
 app.engine("hbs", exphbs({
   extname: ".hbs",
@@ -23,6 +28,7 @@ app.engine("hbs", exphbs({
   helpers: handlebarsHelpers
 }));
 app.set("view engine", "hbs");
+// Note: you must place sass-middleware *before* `express.static` or else it will not work.
 app.use (
   sassMiddleware({
     src: __dirname + "/sass",
@@ -65,7 +71,7 @@ app.use(logger("dev"));
 // Session management
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: require('crypto').randomBytes(64).toString('hex'),
+  secret: process.env.ANCGIS_SESSION_SECRET ? process.env.ANCGIS_SESSION_SECRET : require('crypto').randomBytes(64).toString('hex'),
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
@@ -124,6 +130,7 @@ app.use("/login", index);
 app.use("/logout", index);
 app.use("/register", require("./routes/register"));
 app.use("/requirePwdReset", require("./routes/requirePwdReset"));
+app.use("/resetPwd", require("./routes/resetPwd"));
 app.use("/rest/taxons", require("./routes/rest/taxons"));
 app.use("/rest/vegetation-zones", require("./routes/rest/vegetation-zones"));
 app.use("/rest/hives", require("./routes/rest/hives"));

@@ -13,35 +13,13 @@ var iPLimiter = new RateLimit({
   skipFailedRequests: true,
   handler: function (req, res, /*next*/) {
     req.flash('error', "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
-    return res.render('register');
+    return res.render('resetPwd');
   }
 });
 //router.use(iPLimiter);
 
 // Schema Validation
 var postCheckSchema = checkSchema({
-  username: {
-    trim: {},
-    isLength: {
-      errorMessage: "Le nom d'utilisateur doit être supérieur à 5 lettres.",
-      options: { min: 5 }
-    },
-    isAlphanumeric: {
-      errorMessage: "Le nom d'utilisateur doit être de type alphanumérique.",
-      options: 'fr-FR'
-    }
-  },
-  email: {
-    isEmail: {
-      errorMessage: "Email incorrect."
-    }
-  },
-  profil: {
-    isIn: {
-      errorMessage: "Profil incorrect.",
-      options: [['Agriculteur', 'Apiculteur', 'Collectivité', 'Entomologiste', 'Semencier']]
-    }
-  },
   password: {
     not: {},
     isEmpty: {
@@ -53,7 +31,8 @@ var postCheckSchema = checkSchema({
     },
     custom: {
       options: (value, { req, location, path }) => {
-        var passwordScore = zxcvbn(value, user_inputs=[req.body.username, 'ancgis', 'anc', 'gis']).score;
+        // TODO: Add the req.user.username to the user_inputs like in register form
+        var passwordScore = zxcvbn(value, user_inputs=['ancgis', 'anc', 'gis']).score;
         if (passwordScore < 2) {
           throw new Error('Le mot de passe est trop faible. Si besoin, vous pouvez l\'améliorer <a href="https://lowe.github.io/tryzxcvbn/" target="_blank">ici</a>.');
         }
@@ -61,20 +40,33 @@ var postCheckSchema = checkSchema({
         return true;
       }
     }
-  }
+  },
+  confirmation: {
+      custom: {
+        options: (value, { req, location, path }) => {
+          if (value !== req.body.password) {
+            throw new Error('La confirmation du mot de passe ne correspond pas.');
+          }
+          // Bug of the v5.2 of express-validator (see: https://github.com/express-validator/express-validator/issues/593)
+          return true;
+        }
+      }
+    }
 });
 
-// Return the register form
-router.get('/', function(req, res) {
-  if (req.isAuthenticated()) {
-    res.redirect('/');
-  } else {
-    res.render('register');
-  }
+// Return the form
+router.get('/:token', function(req, res) {
+  Account.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+    if (!user) {
+      req.flash('error', 'Le jeton pour la réinitialisation du mot de passe est invalide ou a expiré.');
+      return res.redirect('/requirePwdReset');
+    }
+    res.render('resetPwd');
+  });
 });
 
-// Manage the register form submission
-router.post('/', postCheckSchema, function(req, res, next) {
+// Manage the form submission
+router.post('/:token', postCheckSchema, function(req, res, next) {
 
   // Finds the validation errors in this request
   const errors = validationResult(req);
@@ -86,36 +78,28 @@ router.post('/', postCheckSchema, function(req, res, next) {
     return errorRender(req, res, errorsMessage);
   }
 
-  // Register the new account
-  Account.register(new Account({
-    username : req.body.username,
-    email: req.body.email,
-    profil: req.body.profil,
-  }),
-  req.body.password,
-  function(err, account) {
-    if (err) {
-      return errorRender(req, res, err.message);
+  Account.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+    if (!user) {
+      req.flash('error', 'Le jeton pour la réinitialisation du mot de passe est invalide ou a expiré.');
+      return res.redirect('back');
     }
-    passport.authenticate('local')(req, res, function () {
-      req.session.save(function (err) {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    user.setPassword(req.body.password, function(){
+      user.save(function(err) {
+        req.logIn(user, function(err) {
+          req.flash('success', 'Votre mot de passe a été changé avec succès.');
+          res.redirect('/');
+        });
       });
     });
   });
 });
 
-// Render the register form with error(s) message(s)
+// Render the form with error(s) message(s)
 function errorRender (req, res, message) {
-  req.flash('warning', message);
-  return res.render('register', {
-    username : req.body.username,
-    email: req.body.email,
-    profil: req.body.profil
-  });
+  req.flash('error', message);
+  return res.render('resetPwd');
 }
 
 module.exports = router;

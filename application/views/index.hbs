@@ -1,6 +1,8 @@
 {{#if user}}
   {{> confirm}}
-  {{> app-message}}
+  <div class="ancgis-appmessage-onmap">
+    {{> app-message}}
+  </div>
   {{> sig}}
 {{else}}
   <div id="ancgis-index-menu-shadow"></div>

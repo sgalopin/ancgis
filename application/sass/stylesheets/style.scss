@@ -15,7 +15,11 @@ html, body, .container-fluid {
 /*******************************************/
 /**        Index / Login / Register       **/
 /*******************************************/
-#ancgis-index-menu, #ancgis-login-menu, #ancgis-register-menu, #ancgis-requirepwdreset-menu {
+#ancgis-index-menu,
+#ancgis-login-menu,
+#ancgis-register-menu,
+#ancgis-requirepwdreset-menu,
+#ancgis-resetpwd-menu {
   padding: 20px;
   position:absolute;
   left: 50%;
@@ -46,7 +50,11 @@ html, body, .container-fluid {
   }
 }
 
-#ancgis-login-menu, #ancgis-register-menu, #ancgis-requirepwdreset-menu, #ancgis-requirepwdreset-menu {
+#ancgis-login-menu,
+#ancgis-register-menu,
+#ancgis-requirepwdreset-menu,
+#ancgis-requirepwdreset-menu,
+#ancgis-resetpwd-menu {
   h1 {
     font-size: xx-large;
     font-family: serif;
@@ -58,14 +66,8 @@ html, body, .container-fluid {
   }
 }
 
+#ancgis-login-menu,
 #ancgis-requirepwdreset-menu {
-  width: 350px;
-  height: 350px;
-  margin-left: -175px;
-  margin-top: -175px;
-}
-
-#ancgis-login-menu {
   width: 350px;
   height: 350px;
   margin-left: -175px;
@@ -79,7 +81,18 @@ html, body, .container-fluid {
   margin-top: -225px;
 }
 
-#ancgis-index-menu-shadow, #ancgis-login-menu-shadow, #ancgis-register-menu-shadow, #ancgis-requirepwdreset-menu-shadow {
+#ancgis-resetpwd-menu {
+  width: 500px;
+  height: 320px;
+  margin-left: -250px;
+  margin-top: -160px;
+}
+
+#ancgis-index-menu-shadow,
+#ancgis-login-menu-shadow,
+#ancgis-register-menu-shadow,
+#ancgis-requirepwdreset-menu-shadow,
+#ancgis-resetpwd-menu-shadow {
   position:absolute;
   top: 50%;
   width: 100%;
@@ -127,15 +140,15 @@ html, body, .container-fluid {
 /**       AppMessage    **/
 /*************************/
 
-#ancgis-appmessage {
+.ancgis-appmessage-onmap {
   position: absolute;
-  top: 45px;
-  z-index: 1000;
+  top: 40px;
   margin-left: 5px;
 }
-#ancgis-appmessage>div {
-  padding: 5px;
-  display: none;
+
+.ancgis-appmessage>.alert,
+.ancgis-appmessage-onmap>.alert {
+  z-index: 1000;
 }
 
 /*************************/
