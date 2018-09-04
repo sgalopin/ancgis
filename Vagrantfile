@@ -140,6 +140,14 @@ Vagrant.configure("2") do |config|
     sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
     service mongodb restart
 
+    # AdminMongo
+    apt-get install -y git
+    cd /var/www
+    git clone https://github.com/mrvautin/adminMongo.git
+    cd adminMongo
+    npm install
+    cp /var/tmp/ancgis/database/admin/config.json /var/www/adminMongo/config/config.json
+
     # SendGrid
     echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
     echo "sendgrid.env" >> .gitignore
@@ -169,7 +177,7 @@ Vagrant.configure("2") do |config|
 
   # Provision "populate-db"
   config.vm.provision "populate-db", type: "shell", privileged: false, inline: <<-SHELL
-    cd /var/tmp/ancgis/database && /bin/bash /var/tmp/ancgis/shell/populate-db.sh
+    cd /var/tmp/ancgis/database/data && /bin/bash /var/tmp/ancgis/shell/populate-db.sh
   SHELL
 
   # The following provisions are only run when called explicitly
@@ -179,6 +187,11 @@ Vagrant.configure("2") do |config|
     config.vm.provision "launch-app", type: "shell", privileged: false, inline: <<-SHELL
       # cd /var/www/ancgis/ && sudo DEBUG=app:* npm start
       cd /var/www/ancgis && npm run start
+    SHELL
+
+    # Provision "launch-dba"
+    config.vm.provision "launch-dba", type: "shell", privileged: true, inline: <<-SHELL
+      cd /var/www/adminMongo && npm start
     SHELL
 
   end

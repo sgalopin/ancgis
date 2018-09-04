@@ -1,0 +1,8 @@
+{
+  "connections": {
+    "ancdb": {
+      "connection_string": "mongodb://localhost/ancgis",
+      "connection_options": {}
+    }
+  }
+}
