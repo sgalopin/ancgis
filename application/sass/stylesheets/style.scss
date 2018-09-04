@@ -159,9 +159,17 @@ html, body, .container-fluid {
   background-color: #999;
   border-color: #777;
 }
-.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary:hover, .btn-primary.active, .btn-primary:visited {
   background-color: #777 !important;
   border-color: #555 !important;
+}
+#ancgis-mapcontrol-tbar .btn-primary {
+    background-color: #EEE;
+}
+#ancgis-mapcontrol-tbar .btn-primary:hover,
+#ancgis-mapcontrol-tbar .btn-primary.active,
+#ancgis-mapcontrol-tbar .btn-primary:visited {
+  background-color: #BBB !important;
 }
 
 /*************************/
@@ -354,8 +362,8 @@ html, body, .container-fluid {
 }
 #ancgis-hiveform {
   width: 400px;
-  height: 180px;
-  top: calc(50% - 77px);
+  height: 200px;
+  top: calc(50% - 100px);
   left: calc(50% - 200px);
 }
 #ancgis-zoneform {
@@ -366,8 +374,8 @@ html, body, .container-fluid {
 }
 #ancgis-speciesform {
   width: 400px;
-  height: 154px;
-  top: calc(50% - 77px);
+  height: 170px;
+  top: calc(50% - 85px);
   left: calc(50% - 200px);
 }
 .ancgis-form:focus {

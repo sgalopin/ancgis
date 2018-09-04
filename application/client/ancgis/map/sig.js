@@ -1,4 +1,22 @@
 /*global ol*/
+
+// ol import
+import Draw from 'ol/interaction/Draw.js'
+import Translate from 'ol/interaction/Translate.js'
+
+// local import
+import EditPropertiesEventType from '../../ol/interaction/EditPropertiesEventType.js'
+import ModifyFeatureEventType from '../../ol/interaction/ModifyFeatureEventType.js'
+import RemoveFeaturesEventType from '../../ol/interaction/RemoveFeaturesEventType.js'
+import AddHive from '../../ol/interaction/AddHive.js'
+import ModifyFeature from '../../ol/interaction/ModifyFeature.js'
+import RemoveFeatures from '../../ol/interaction/RemoveFeatures.js'
+import EditProperties from '../../ol/interaction/EditProperties.js'
+//import map from './map'
+
+// Copied from ol/interaction/Translate.js
+const TRANSLATEEND = 'translateend';
+
 /**
  * Sig builder.
  */
@@ -6,34 +24,34 @@ module.exports = (function() {
 	var map = require("./map");
   var interactions = {
     // Add Hive Button Control
-    addhive : new ol.interaction.AddHive({
+    addhive : new AddHive({
       source: map.getLayerByName("hivesLayer").getSource()
     }),
     // Draw Polygon Button Control
-    drawpolygon : new ol.interaction.Draw({
+    drawpolygon : new Draw({
       source: map.getLayerByName("vegetationsLayer").getSource(),
       type: "Polygon"
     }),
     // Draw Circle Button Control
-    drawcircle : new ol.interaction.Draw({
+    drawcircle : new Draw({
       source: map.getLayerByName("vegetationsLayer").getSource(),
       type: "Circle"
     }),
 		// Translate Button Control
-		translate : new ol.interaction.Translate(),
+		translate : new Translate(),
 		// Modify Button Control
-		modify : new ol.interaction.ModifyFeature({
+		modify : new ModifyFeature({
 			source: map.getLayerByName("vegetationsLayer").getSource()
 		}),
 		// Erase Button Control
-		erase : new ol.interaction.RemoveFeatures(),
+		erase : new RemoveFeatures(),
     // Edit Zone Properties interaction
-		editproperties : new ol.interaction.EditProperties()
+		editproperties : new EditProperties()
   };
 
 	// Management of the interactions events
 	interactions.translate.on(
-		ol.interaction.TranslateEventType.TRANSLATEEND,
+		TRANSLATEEND,
 		function(e){
 			e.features.forEach(function(feature){
 				feature.getProperties().dao.updateFeature(feature);
@@ -41,7 +59,7 @@ module.exports = (function() {
 		}
 	);
 	interactions.modify.on(
-		ol.interaction.ModifyEventType.MODIFYFEATURES,
+		ModifyFeatureEventType.MODIFYFEATURES,
 		function(e){
 			e.features.forEach(function(feature){
 				feature.getProperties().dao.updateFeature(feature);
@@ -49,7 +67,7 @@ module.exports = (function() {
 		}
 	);
 	interactions.erase.on(
-		ol.interaction.Select.EventType_.REMOVE,
+		RemoveFeaturesEventType.REMOVE,
 		function(e){
 			e.selected.forEach(function(feature){
 				feature.getProperties().dao.removeFeature(feature);
@@ -57,7 +75,7 @@ module.exports = (function() {
 		}
 	);
 	interactions.editproperties.on(
-		ol.interaction.EditProperties.EventType.SELECT,
+		EditPropertiesEventType.SELECT,
 		function(e){
 			e.feature.getProperties().form.show(e.feature);
 		}

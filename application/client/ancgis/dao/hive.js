@@ -1,4 +1,7 @@
 /*global ol*/
+
+import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
+
 /**
  * Hive"s data access object.
  */
@@ -15,7 +18,7 @@ module.exports = (function() {
     getData(feature) {
       // Setup the geojsonPpts var
       var ppts = feature.getProperties();
-      const format = new ol.format.GeoJSON();
+      const format = new ExtendedGeoJSON();
 
       return {
         type: "Feature",

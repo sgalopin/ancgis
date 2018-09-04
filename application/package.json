@@ -7,7 +7,7 @@
     "start:prod": "NODE_ENV=production node ./bin/www",
     "start:dev": "NODE_ENV=development nodemon ./bin/www",
     "test": "mocha test/bootstrap.js --recursive test",
-    "browserify": "browserify client/main.js -o client/bundle-debug.js --debug --transform [\"hbsfy\"]"
+    "browserify": "mkdir -p public/javascript && browserify --debug -t [ hbsfy ] -g [ babelify --presets [ \"@babel/preset-env\" ] ] -g uglifyify --entry client/main.js > public/javascript/bundle.js"
   },
   "author": "Sylvain Galopin",
   "license": "GPLv3",
@@ -33,6 +33,7 @@
     "mongoose": "^4.13.4",
     "morgan": "~1.9.0",
     "node-sass-middleware": "^0.11.0",
+    "ol": "^5.2.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
@@ -40,12 +41,16 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babelify": "^9.0.0",
     "browser-sync": "^2.18.13",
     "chai": "^4.1.2",
     "connect-browser-sync": "^2.1.0",
     "lodash": "^4.17.10",
     "mocha": "^5.1.1",
     "nodemon": "^1.12.1",
-    "puppeteer": "^1.3.0"
+    "puppeteer": "^1.3.0",
+    "uglifyify": "^5.0.1"
   }
 }

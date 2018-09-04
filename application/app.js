@@ -19,7 +19,6 @@ var flash = require('express-flash');
 var app = express();
 
 // view engine setup
-app.use(flash());
 const handlebarsHelpers = require('./helpers/handlebars');
 app.engine("hbs", exphbs({
   extname: ".hbs",
@@ -36,7 +35,19 @@ app.use (
     debug: true,
   })
 );
-browserify.settings({ transform: ["hbsfy"] });
+
+browserify.settings({
+  transform: [
+    "hbsfy",
+    ["babelify", {
+      global: true, // required per openlayers
+      presets: ["@babel/preset-env"]
+    }],
+    ['uglifyify', {
+      global: true
+    }]
+  ]
+});
 app.get("/javascripts/bundle.js", browserify("./client/main.js"));
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString + "/taxons", function(err) {
@@ -76,6 +87,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }))
+app.use(flash()); // Flash requires sessions.
 
 // Authentication with Passport
 // In a Express-based application, passport.initialize() middleware is required to initialize Passport.

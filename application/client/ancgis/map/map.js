@@ -1,11 +1,32 @@
 /*global ol*/
-require("../../ol/interaction/addhive");
-require("../../ol/interaction/editproperties");
-require("../../ol/interaction/removefeatures");
-require("../../ol/interaction/modifyfeature");
-require("../../ol/control/periodswitchereventtype");
-require("../../ol/control/periodswitcherevent");
-require("../../ol/control/periodswitcher");
+
+// ol import
+import VectorSource from 'ol/source/Vector.js'
+import VectorEventType from 'ol/source/VectorEventType.js'
+import VectorLayer from 'ol/layer/Vector.js'
+import Style from 'ol/style/Style.js'
+import Fill from 'ol/style/Fill.js'
+import Stroke from 'ol/style/Stroke.js'
+import Text from 'ol/style/Text.js'
+import Circle from 'ol/geom/Circle.js'
+import WMTSTileGrid from 'ol/tilegrid/WMTS.js'
+import WMTSSource from 'ol/source/WMTS.js'
+import TileLayer from 'ol/layer/Tile.js'
+import Map from 'ol/Map.js'
+import Attribution from 'ol/control/Attribution.js'
+import ZoomSlider from 'ol/control/ZoomSlider.js'
+import ScaleLine from 'ol/control/ScaleLine.js'
+import MousePosition from 'ol/control/MousePosition.js'
+import {format as coordinateFormat} from 'ol/coordinate.js'
+import View from 'ol/View.js'
+import {get as olProjGet} from 'ol/proj.js'
+import {getWidth as olExtentGetWidth} from 'ol/extent.js'
+
+// Local import
+import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
+import PeriodSwitcher from '../../ol/control/PeriodSwitcher.js'
+import PeriodSwitcherEvent from '../../ol/control/PeriodSwitcherEvent.js'
+import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js'
 
 /**
  * Map builder.
@@ -18,14 +39,14 @@ module.exports = (function() {
   var hiveForm = require("../form/hive");
 
   // Hives layer
-  var hivesLayerSource = new ol.source.Vector({
+  var hivesLayerSource = new VectorSource({
     wrapX: false,
     url: "./rest/hives",
-      format: new ol.format.GeoJSON()
+    format: new ExtendedGeoJSON()
   });
   var hivesLayerName = "hivesLayer";
   // Set the default values and save the new hive
-  hivesLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
+  hivesLayerSource.on(VectorEventType.ADDFEATURE, function(e){
     e.feature.setProperties({
       layerName: hivesLayerName,
       dao: hiveDAO,
@@ -35,46 +56,34 @@ module.exports = (function() {
       hiveDAO.createFeature(e.feature);
     }
   });
-  var hivesLayer = new ol.layer.Vector({
+  var hivesLayer = new VectorLayer({
     name: hivesLayerName,
     source: hivesLayerSource,
     style(feature) {
       var ppts = feature.getProperties();
-      return new ol.style.Style({
-        fill: new ol.style.Fill({
+      return new Style({
+        fill: new Fill({
           color: "red"
         }),
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: "black",
           width: 2
         }),
-        text: new ol.style.Text({
+        text: new Text({
           text: "N°" + ppts.registrationNumber
         })
       });
     }
   });
 
-  // Draw layer
-  // Add the circle type to the GeoJSON (not supported yet)
-  ol.format.GeoJSON.GEOMETRY_READERS_["Circle"] = function(object) {
-    return new ol.geom.Circle(object.coordinates, object.radius);
-  };
-  ol.format.GeoJSON.GEOMETRY_WRITERS_["Circle"] = function(geometry, optOptions) {
-    return ({
-      type: "Circle",
-      coordinates: geometry.getCenter(),
-      radius: geometry.getRadius()
-    });
-  };
-  var vegetationsLayerSource = new ol.source.Vector({
+  var vegetationsLayerSource = new VectorSource({
     wrapX: false,
     url: "./rest/vegetation-zones",
-      format: new ol.format.GeoJSON()
+      format: new ExtendedGeoJSON()
   });
   var vegetationsLayerName = "vegetationsLayer";
   // Set the default values and save the new zone
-  vegetationsLayerSource.on(ol.source.VectorEventType.ADDFEATURE, function(e){
+  vegetationsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
     e.feature.setProperties({
       layerName: vegetationsLayerName,
       dao: zoneDAO,
@@ -88,13 +97,13 @@ module.exports = (function() {
     }
     // Note: The PeriodPotentialChangeEvent is also dispatched after the zone form validation.
   });
-  vegetationsLayerSource.on(ol.source.VectorEventType.REMOVEFEATURE, function(e){
+  vegetationsLayerSource.on(VectorEventType.REMOVEFEATURE, function(e){
     require("./map").dispatchPeriodPotentialChangeEvent();
   });
-  vegetationsLayerSource.on(ol.source.VectorEventType.CHANGEFEATURE, function(e){
+  vegetationsLayerSource.on(VectorEventType.CHANGEFEATURE, function(e){
     require("./map").dispatchPeriodPotentialChangeEvent();
   });
-  var vegetationsLayer = new ol.layer.Vector({
+  var vegetationsLayer = new VectorLayer({
     name: vegetationsLayerName,
     source: vegetationsLayerSource,
     style(feature) {
@@ -102,22 +111,22 @@ module.exports = (function() {
 
       // Style stroke and fill
       var styles = {
-        "Polygon": new ol.style.Style({
-          stroke: new ol.style.Stroke({
+        "Polygon": new Style({
+          stroke: new Stroke({
             color: "black",
             width: 2
           }),
-          fill: new ol.style.Fill({
+          fill: new Fill({
             color: "rgba(255, 255, 0, 0.1)"
           })
         }),
-        "Circle": new ol.style.Style({
-          stroke: new ol.style.Stroke({
+        "Circle": new Style({
+          stroke: new Stroke({
             color: "black",
             //lineDash: [4],
             width: 2
           }),
-          fill: new ol.style.Fill({
+          fill: new Fill({
             color: "rgba(0,255,0,0.1)"
           })
         })
@@ -134,7 +143,7 @@ module.exports = (function() {
           + species.taxon.periods + "\n"
           + species.recovery + "%";
         });
-        text = new ol.style.Text({ text });
+        text = new Text({ text });
         styles.Polygon.setText(text);
         styles.Circle.setText(text);
       }
@@ -146,15 +155,15 @@ module.exports = (function() {
   // BDORTHO layer
   var resolutions = [];
   var matrixIds = [];
-  var proj3857 = ol.proj.get("EPSG:3857");
-  var maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
+  var proj3857 = olProjGet("EPSG:3857");
+  var maxResolution = olExtentGetWidth(proj3857.getExtent()) / 256;
 
   for (var i = 0; i < 18; i++) {
     matrixIds[i] = i.toString(); // eslint-disable-line security/detect-object-injection
     resolutions[i] = maxResolution / Math.pow(2, i); // eslint-disable-line security/detect-object-injection
   }
 
-  var tileGrid = new ol.tilegrid.WMTS({
+  var tileGrid = new WMTSTileGrid({
     origin: [-20037508, 20037508],
     resolutions,
     matrixIds
@@ -162,7 +171,7 @@ module.exports = (function() {
 
   var key = "7wbodpc2qweqkultejkb47zv";
 
-  var ignSource = new ol.source.WMTS({
+  var ignSource = new WMTSSource({
     url: "https://wxs.ign.fr/" + key + "/wmts",
     //layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
     layer: "ORTHOIMAGERY.ORTHOPHOTOS",
@@ -170,51 +179,50 @@ module.exports = (function() {
     format: "image/jpeg",
     projection: "EPSG:3857",
     tileGrid,
-    style: "normal",
+    style: "normal"/*, TODO: update this to openlayers 5
     attributions: [new ol.Attribution({
       html: "<a href=\"http://www.geoportail.fr/\" target=\"_blank\">" +
         "<img src=\"https://api.ign.fr/geoportail/api/js/latest/" +
         "theme/geoportal/img/logo_gp.gif\"></a>"
-    })]
+    })]*/
   });
 
-  var bdorthoLayer = new ol.layer.Tile({
+  var bdorthoLayer = new TileLayer({
     name: "bdorthoLayer",
     source: ignSource
   });
 
-  ol.Map.prototype.getLayerByName = function(layerName) {
+  Map.prototype.getLayerByName = function(layerName) {
     return this.getLayers().getArray().find(function(layer) {
       return layer.get("name") === layerName;
     });
   };
 
-  ol.Map.prototype.dispatchPeriodPotentialChangeEvent = function() {
-    this.dispatchEvent(new ol.control.PeriodSwitcherEvent (
-      ol.control.PeriodSwitcherEventType.PERIODPOTENTIALCHANGE,
+  Map.prototype.dispatchPeriodPotentialChangeEvent = function() {
+    this.dispatchEvent(new PeriodSwitcherEvent (
+      PeriodSwitcherEventType.PERIODPOTENTIALCHANGE,
       this
     ));
   };
 
-
-  return new ol.Map ({ // Openlayers Map
+  return new Map ({ // Openlayers Map
       layers: [bdorthoLayer, hivesLayer, vegetationsLayer],
       target: "ancgis-map",
       keyboardEventTarget: document,
       controls: [
-        new ol.control.PeriodSwitcher(),
-        new ol.control.Attribution(),
-        new ol.control.ZoomSlider(),
-        new ol.control.ScaleLine(),
-        new ol.control.MousePosition({
+        new PeriodSwitcher(),
+        new Attribution(),
+        new ZoomSlider(),
+        new ScaleLine(),
+        new MousePosition({
           className:"",
           target:document.getElementById("ancgis-mapstatus-mouseposition"),
           coordinateFormat(coords) {
             var template = "X: {x} - Y: {y} ";
-            return ol.coordinate.format(coords, template);
+            return coordinateFormat(coords, template);
         }})
       ],
-      view: new ol.View({
+      view: new View({
         zoom: 20,
         //center: ol.proj.transform([5, 45], "EPSG:4326", "EPSG:3857")
         center: [308555, 6121070] // Chez Didier

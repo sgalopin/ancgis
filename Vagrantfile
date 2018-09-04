@@ -122,20 +122,29 @@ Vagrant.configure("2") do |config|
     # apt update and upgrade
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+
     # Node and npm (npm is distributed with Node.js)
     apt-get install -y curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     apt-get install -y nodejs
     # To compile and install native addons from npm you may also need to install build tools
     apt-get install -y build-essential
+
     # Port 80 requires elevated privileges
     # https://docs.requarks.io/wiki/troubleshooting#error-listening-on-port-xx-requires-elevated-privileges
     apt-get install -y libcap2-bin
     setcap 'cap_net_bind_service=+ep' `which node`
+
     # MongoDB
     apt-get install -y mongodb
     sed -i 's/bind_ip = 127.0.0.1/#bind_ip = 127.0.0.1/g' /etc/mongodb.conf
     service mongodb restart
+
+    # SendGrid
+    echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
+    echo "sendgrid.env" >> .gitignore
+    source ./sendgrid.env
+
     # Chrome (for UI testing)
     # wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     # echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
