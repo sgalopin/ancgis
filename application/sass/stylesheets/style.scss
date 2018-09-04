@@ -3,7 +3,7 @@
 /*************************/
 
 html, body, .container-fluid {
-  height: 100%;
+  height: calc(100% - 1px);
 }
 .container-fluid {
   padding: 0 !important;
@@ -107,12 +107,23 @@ html, body, .container-fluid {
 /**   Map top toolbar   **/
 /*************************/
 
-#ancgis-mapcontrol-tbar {
+#ancgis-map-ttbar {
   background-color: #e1e1e1;
   border-bottom: solid 1px #999;
   font-size: 10px;
   width: 100%;
-  padding: 1px 1px 1px 5px;
+  padding: 1px 5px 1px 5px;
+}
+#ancgis-topright-tbar {
+  float: right;
+}
+#ancgis-map-ttbar .btn-primary {
+    background-color: #EEE;
+}
+#ancgis-map-ttbar .btn-primary:hover,
+#ancgis-map-ttbar .btn-primary.active,
+#ancgis-map-ttbar .btn-primary:visited {
+  background-color: #BBB !important;
 }
 
 /*************************/
@@ -162,14 +173,6 @@ html, body, .container-fluid {
 .btn-primary:hover, .btn-primary.active, .btn-primary:visited {
   background-color: #777 !important;
   border-color: #555 !important;
-}
-#ancgis-mapcontrol-tbar .btn-primary {
-    background-color: #EEE;
-}
-#ancgis-mapcontrol-tbar .btn-primary:hover,
-#ancgis-mapcontrol-tbar .btn-primary.active,
-#ancgis-mapcontrol-tbar .btn-primary:visited {
-  background-color: #BBB !important;
 }
 
 /*************************/
@@ -222,6 +225,9 @@ html, body, .container-fluid {
 }
 .ancgis-glyphicons-551erase {
   background-image: url("../images/glyphicons/glyphicons-551-erase.png");
+}
+.ancgis-glyphicons-388logout {
+  background-image: url("../images/glyphicons/glyphicons-388-log-out.png");
 }
 
 /*************************/

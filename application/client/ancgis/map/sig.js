@@ -81,6 +81,11 @@ module.exports = (function() {
 		}
 	);
 
+    // Management of the top right button
+    $("#ancgis-topright-logout").click(function(){
+        document.location.href = "/logout";
+    });
+
 	// Management of the toggling of the interactions
   $("#ancgis-mapcontrol-tbar>button").click(function(){
     event.stopPropagation();
