@@ -5,7 +5,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "1",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Polygon",
@@ -16,7 +17,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "2",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Polygon",
@@ -27,7 +29,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "3",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Polygon",
@@ -38,7 +41,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "4",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Polygon",
@@ -49,7 +53,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "5",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Polygon",
@@ -60,7 +65,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "6",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",
@@ -71,7 +77,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "7",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",
@@ -82,7 +89,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "8",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",
@@ -93,7 +101,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "9",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",
@@ -104,7 +113,8 @@ db.hives.insert([{
   "properties": {
     "registrationNumber": "10",
     "type": "dadant",
-    "framesCount": 10
+    "framesCount": 10,
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",

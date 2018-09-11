@@ -1,9 +1,10 @@
 var express = require("express");
 var passport = require('passport');
 
-module.exports = function (Model, populatePath, returnGeoJson) {
+module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
   var router = express.Router(); // eslint-disable-line new-cap
   var returnGeoJson_ = returnGeoJson ? returnGeoJson : false;
+  var isPrivate_ = isPrivate ? isPrivate : false;
   function loggedIn(req, res, next) {
       if (req.isAuthenticated()) {
           next();
@@ -15,7 +16,9 @@ module.exports = function (Model, populatePath, returnGeoJson) {
   router.route("/")
     // READ ALL
     .get(loggedIn, function(req, res, next) {
-      Model.find()
+      // For security, returns only the objects of the current account
+      const query = isPrivate_ ? { "properties.account": req.user._id } : {};
+      Model.find(query)
       .populate(populatePath)
       .exec(function (err, docs) {
         if (err) { return console.error(err); }
@@ -38,6 +41,10 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     // CREATE
     .post(loggedIn, function(req, res, next) {
       var doc = new Model(req.body);
+      // For security, sets the account parameter to the current account
+      if (isPrivate_) {
+        doc.set({ "properties.account": req.user._id });
+      }
       doc.save()
       .then(function (doc) {
         res.json({"status": "success", "data": doc});
@@ -50,7 +57,9 @@ module.exports = function (Model, populatePath, returnGeoJson) {
   router.route("/:id")
     // READ
     .get(loggedIn, function(req, res, next) {
-      Model.findOne({_id: req.params.id})
+      // For security, returns only the object of the current account
+      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id } : { _id: req.params.id };
+      Model.findOne(query)
       .populate(populatePath)
       .exec(function (err, doc) {
         if (err) { return console.error(err); }
@@ -59,7 +68,11 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     })
     // UPDATE
     .put(loggedIn, function(req, res, next) {
-      Model.update({_id: req.params.id}, req.body)
+      // For security, sets the account parameter to the current account
+      if (isPrivate_) {
+        Object.assign(req.body.properties, { "account": req.user._id });
+      }
+      Model.update({_id: req.params.id}, req.body )
       .exec(function (err, writeOpResult) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }
         res.json({"status": "success", "data": writeOpResult});
@@ -67,7 +80,9 @@ module.exports = function (Model, populatePath, returnGeoJson) {
     })
     // DELETE
     .delete(loggedIn, function(req, res, next) {
-      Model.findByIdAndRemove(req.params.id)
+      // For security, clears only the object of the current account
+      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id } : { _id: req.params.id };
+      Model.deleteOne(query)
       .exec(function (err, doc) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }
         res.json({"status": "success", "data": doc});

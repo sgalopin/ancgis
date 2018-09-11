@@ -10,7 +10,8 @@ module.exports = mongoose.model("VegetationZone", new mongoose.Schema({
     "flore": [{
       "taxon": {type: Number, ref: "Taxon"},
       "recovery": {type: Number}
-    }]
+    }],
+    "account": {type: String}
   },
   "geometry": {
     "type": {type: String, required: true},

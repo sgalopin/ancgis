@@ -8,7 +8,8 @@ db.vegetationzones.insert([{
     "flore": [{
       "taxon": 1 ,
       "recovery": 75
-    }]
+    }],
+    "account": "5b939503845b75060d79c7da"
   },
   "geometry": {
     "type": "Circle",
@@ -25,7 +26,8 @@ db.vegetationzones.insert([{
     },{
       "taxon": 22,
       "recovery": 100
-    }]
+    }],
+    "account": "5b939503845b75060d79c7daXX"
   },
   "geometry": {
     "type": "Polygon",

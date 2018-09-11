@@ -7,7 +7,8 @@ module.exports = mongoose.model("Hive", new mongoose.Schema({
   "properties": {
     "registrationNumber": {type: String},
     "type": {type: String},
-    "framesCount": {type: Number}
+    "framesCount": {type: Number},
+    "account": {type: String}
   },
   "geometry": {
     "type": {type: String, required: true, default: "Polygon"},
