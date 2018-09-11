@@ -1,19 +1,5 @@
-{{#if user}}
-  {{> confirm}}
-  <div class="ancgis-appmessage-onmap">
-    {{> app-message}}
-  </div>
-  {{> sig}}
-{{else}}
-  <div id="ancgis-index-menu-shadow"></div>
-  <div id="ancgis-index-menu">
-    <img src="images/BadgeAncGISCouleur-200px.png" alt="Logo AncGIS">
-    <div class="btbar">
-      <div class="btn-group" role="group">
-        <a href="/register" class="btn btn-primary">S'enregistrer</a>
-        <a href="/login" class="btn btn-primary">S'authentifier</a>
-      </div>
-    </div>
-  </div>
-{{/if}}
-
+{{> confirm}}
+<div class="ancgis-appmessage-onmap">
+  {{> app-message}}
+</div>
+{{> sig}}

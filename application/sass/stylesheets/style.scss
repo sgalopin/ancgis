@@ -15,7 +15,6 @@ html, body, .container-fluid {
 /*******************************************/
 /**        Index / Login / Register       **/
 /*******************************************/
-#ancgis-index-menu,
 #ancgis-login-menu,
 #ancgis-register-menu,
 #ancgis-requirepwdreset-menu,
@@ -31,23 +30,6 @@ html, body, .container-fluid {
   -webkit-flex-direction: column;
   display: flex;
   flex-direction: column;
-}
-
-#ancgis-index-menu {
-  width: 350px;
-  height: 350px;
-  margin-left: -175px;
-  margin-top: -175px;
-  img {
-    display: block;
-    margin: 20px auto;
-  }
-  .btbar {
-    margin: 20px auto;
-    display: block;
-    width: 240px;
-    text-align: center;
-  }
 }
 
 #ancgis-login-menu,
@@ -88,7 +70,6 @@ html, body, .container-fluid {
   margin-top: -160px;
 }
 
-#ancgis-index-menu-shadow,
 #ancgis-login-menu-shadow,
 #ancgis-register-menu-shadow,
 #ancgis-requirepwdreset-menu-shadow,

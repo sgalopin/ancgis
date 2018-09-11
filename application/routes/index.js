@@ -3,16 +3,20 @@ var passport = require('passport');
 
 var router = express.Router(); // eslint-disable-line new-cap
 
-router.get('/', function (req, res) {
-  res.render('index', { user : req.user });
+function loggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
+router.get('/', loggedIn, function (req, res) {
+  res.render('index');
 });
 
 router.get('/login', function(req, res) {
-  if (req.isAuthenticated()) {
-    res.redirect('/');
-  } else {
-    res.render('login');
-  }
+  res.render('login');
 });
 
 router.post('/login', function(req, res, next) {
