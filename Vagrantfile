@@ -172,7 +172,7 @@ Vagrant.configure("2") do |config|
 
   # Provision "npm-install"
   config.vm.provision "npm-install", type: "shell", privileged: false,  inline: <<-SHELL
-    cd /var/www/ancgis && npm install
+    cd /var/www/ancgis && npm install && npm run build
   SHELL
 
   # Provision "populate-db"

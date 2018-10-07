@@ -1,8 +1,10 @@
 // Requirements
 var mongoose = require("mongoose");
+const uuidv1 = require('uuid/v1');
 
 // Model's declaration
 module.exports = mongoose.model("Hive", new mongoose.Schema({
+  "_id": { type: String, default: uuidv1() },
   "type": {type: String, required: true, default: "Feature"},
   "properties": {
     "registrationNumber": {type: String},

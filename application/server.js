@@ -3,28 +3,28 @@
 /**
  * Module dependencies.
  */
-var app = require("../app");
-var debug = require("debug")("app:server");
+let app = require("./app");
+const debug = require("debug")("app:server");
 
 /**
  * Create HTTPS server.
  */
-var fs = require('fs');
-var options = {
+const fs = require('fs');
+const spdy = require('spdy');
+const options = {
   key: fs.readFileSync('encryption/ancgis.dev.net.key'),
   cert: fs.readFileSync( 'encryption/ancgis.dev.net.crt' )
 };
-var https = require('https');
-var https_server = https.createServer(options, app);
-https_server.listen(443);
-https_server.on("error", onError);
-https_server.on("listening", onListening);
+let http2_server = spdy.createServer(options, app);
+http2_server.listen(443);
+http2_server.on("error", onError);
+http2_server.on("listening", onListening);
 
 /**
  * Create HTTP server which runs alongside HTTPS and will redirect to it.
  */
-var http = require('http');
-var http_server = http.createServer(app);
+const http = require('http');
+let http_server = http.createServer(app);
 http_server.listen(80);
 
 /**
@@ -34,10 +34,13 @@ function onError(error) {
   if (error.syscall !== "listen") {
     throw error;
   }
-
-  var bind = typeof port === "string"
+  /*
+  const addr = http2_server.address();
+  const port = addr.port;
+  const bind = typeof port === "string"
     ? "Pipe " + port
-    : "Port " + port;
+    : "Port " + port;*/
+    const bind = "";
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -58,9 +61,10 @@ function onError(error) {
  * Event listener for HTTPS server "listening" event.
  */
 function onListening() {
-  var addr = https_server.address();
-  var bind = typeof addr === "string"
+  /*const addr = http2_server.address();
+  const bind = typeof addr === "string"
     ? "pipe " + addr
-    : "port " + addr.port;
+    : "port " + addr.port;*/
+  const bind = "";
   debug("Listening on " + bind);
 }

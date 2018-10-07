@@ -12,7 +12,6 @@ import Circle from 'ol/geom/Circle.js'
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js'
 import WMTSSource from 'ol/source/WMTS.js'
 import TileLayer from 'ol/layer/Tile.js'
-import Map from 'ol/Map.js'
 import Attribution from 'ol/control/Attribution.js'
 import ZoomSlider from 'ol/control/ZoomSlider.js'
 import ScaleLine from 'ol/control/ScaleLine.js'
@@ -23,26 +22,46 @@ import {get as olProjGet} from 'ol/proj.js'
 import {getWidth as olExtentGetWidth} from 'ol/extent.js'
 
 // Local import
+import Sidbm from "../dbms/SyncIdbManager.js"
+import ExtendedMap from '../../ol/ExtendedMap.js'
 import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
 import PeriodSwitcher from '../../ol/control/PeriodSwitcher.js'
 import PeriodSwitcherEvent from '../../ol/control/PeriodSwitcherEvent.js'
 import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js'
+import ZoneDAO from "../dao/ZoneDAO.js";
+import HiveDAO from "../dao/HiveDAO.js";
+import ZoneForm from "../form/zone.js";
+import HiveForm from "../form/hive.js";
 
 /**
  * Map builder.
  */
-module.exports = (function() {
+export default async function() {
 
-  var zoneDAO = require("../dao/zone");
-  var hiveDAO = require("../dao/hive");
-  var zoneForm = require("../form/zone");
-  var hiveForm = require("../form/hive");
+  let idbm = await Sidbm;
+  let zoneForm = await ZoneForm();
+  let hiveForm = await HiveForm();
+  let zoneDAO = new ZoneDAO(idbm);
+  let hiveDAO = new HiveDAO(idbm);
+  let extendedGeoJSON = new ExtendedGeoJSON();
+
+  async function featuresToGeoJson(collection) {
+      return extendedGeoJSON.readFeatures({
+        "type": "FeatureCollection",
+        "crs": {
+          "type": "name",
+          "properties": {
+            "name": "EPSG:3857"
+          }
+        },
+        "features": await idbm.readAll(collection)
+      });
+  }
 
   // Hives layer
   var hivesLayerSource = new VectorSource({
     wrapX: false,
-    url: "./rest/hives",
-    format: new ExtendedGeoJSON()
+    format: extendedGeoJSON
   });
   var hivesLayerName = "hivesLayer";
   // Set the default values and save the new hive
@@ -56,6 +75,8 @@ module.exports = (function() {
       hiveDAO.createFeature(e.feature);
     }
   });
+  // Add the features from the local database
+  hivesLayerSource.addFeatures(await featuresToGeoJson("hives"));
   var hivesLayer = new VectorLayer({
     name: hivesLayerName,
     source: hivesLayerSource,
@@ -78,31 +99,9 @@ module.exports = (function() {
 
   var vegetationsLayerSource = new VectorSource({
     wrapX: false,
-    url: "./rest/vegetation-zones",
-      format: new ExtendedGeoJSON()
+    format: extendedGeoJSON
   });
   var vegetationsLayerName = "vegetationsLayer";
-  // Set the default values and save the new zone
-  vegetationsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
-    e.feature.setProperties({
-      layerName: vegetationsLayerName,
-      dao: zoneDAO,
-      form: zoneForm
-    }, true);
-    if ( typeof e.feature.getId() === "undefined" ) {
-      zoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
-    } else {
-      // Initialize the histogram
-      require("./map").dispatchPeriodPotentialChangeEvent();
-    }
-    // Note: The PeriodPotentialChangeEvent is also dispatched after the zone form validation.
-  });
-  vegetationsLayerSource.on(VectorEventType.REMOVEFEATURE, function(e){
-    require("./map").dispatchPeriodPotentialChangeEvent();
-  });
-  vegetationsLayerSource.on(VectorEventType.CHANGEFEATURE, function(e){
-    require("./map").dispatchPeriodPotentialChangeEvent();
-  });
   var vegetationsLayer = new VectorLayer({
     name: vegetationsLayerName,
     source: vegetationsLayerSource,
@@ -192,20 +191,7 @@ module.exports = (function() {
     source: ignSource
   });
 
-  Map.prototype.getLayerByName = function(layerName) {
-    return this.getLayers().getArray().find(function(layer) {
-      return layer.get("name") === layerName;
-    });
-  };
-
-  Map.prototype.dispatchPeriodPotentialChangeEvent = function() {
-    this.dispatchEvent(new PeriodSwitcherEvent (
-      PeriodSwitcherEventType.PERIODPOTENTIALCHANGE,
-      this
-    ));
-  };
-
-  return new Map ({ // Openlayers Map
+  let map = new ExtendedMap ({ // Openlayers Map
       layers: [bdorthoLayer, hivesLayer, vegetationsLayer],
       target: "ancgis-map",
       keyboardEventTarget: document,
@@ -228,4 +214,30 @@ module.exports = (function() {
         center: [308555, 6121070] // Chez Didier
       })
     });
-}());
+
+    // Set the default values and save the new zone
+    vegetationsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
+      e.feature.setProperties({
+        layerName: vegetationsLayerName,
+        dao: zoneDAO,
+        form: zoneForm
+      }, true);
+      if ( typeof e.feature.getId() === "undefined" ) {
+        zoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
+      } else {
+        // Initialize the histogram
+        map.dispatchPeriodPotentialChangeEvent();
+      }
+      // Note: The PeriodPotentialChangeEvent is also dispatched after the zone form validation.
+    });
+    vegetationsLayerSource.on(VectorEventType.REMOVEFEATURE, function(e){
+      map.dispatchPeriodPotentialChangeEvent();
+    });
+    vegetationsLayerSource.on(VectorEventType.CHANGEFEATURE, function(e){
+      map.dispatchPeriodPotentialChangeEvent();
+    });
+    // Add the features from the local database
+    vegetationsLayerSource.addFeatures(await featuresToGeoJson("vegetation-zones"));
+
+    return map;
+};

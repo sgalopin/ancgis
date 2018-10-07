@@ -3,17 +3,30 @@ self.addEventListener('install', function(event) {
     caches.open("ancgis-statics-ressources").then(function(cache) {
       return cache.addAll(
         [
+          // Code
           '/',
           '/manifest.json',
-          './stylesheets/style.css',
-          '/login',
+          '/stylesheets/style.css',
           '/rest/taxons',
-          'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
-          'https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL',
-          'https://code.jquery.com/jquery-3.3.1.min.js',
-          'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
-          'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
-
+          '/javascripts/app.bundle.js',
+          '/javascripts/tools.bundle.js',
+          // Map's tiles
+          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66545&TileRow=45516',
+          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66545&TileRow=45515',
+          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66544&TileRow=45516',
+          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66544&TileRow=45515',
+          // Images
+          '/images/glyphicons/glyphicons-388-log-out.png',
+          '/images/glyphicons/glyphicons-551-erase.png',
+          '/images/glyphicons/glyphicons-31-pencil.png',
+          '/images/glyphicons/glyphicons-187-move.png',
+          '/images/glyphicons/glyphicons-96-vector-path-circle.png',
+          '/images/glyphicons/glyphicons-97-vector-path-polygon.png',
+          '/images/glyphicons/glyphicons-454-kiosk.png',
+          '/images/glyphicons/glyphicons-194-ok-sign.png',
+          '/images/glyphicons/glyphicons-193-remove-sign.png',
+          '/images/glyphicons/glyphicons-191-plus-sign.png',
+          '/images/glyphicons/glyphicons-208-remove.png'
         ]
       );
     })

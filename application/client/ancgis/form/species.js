@@ -1,13 +1,16 @@
+// Requirements
+import speciesFormTemplate from "../../../views/partials/form/species.hbs";
+import Sidbm from "../dbms/SyncIdbManager.js";
+
 /**
  * Species form builder.
  */
-module.exports = (function() {
+export default async function() {
+
+  let idbm = await Sidbm;
 
   return {
-    show(feature) {
-      // Requirements
-      var speciesFormTemplate = require("../../../views/partials/form/species.hbs");
-      var idbms = require("../dbms/indexedDB");
+    show() {
 
       // Manage the validation of the form
       function validateForm () {
@@ -20,8 +23,7 @@ module.exports = (function() {
           console.log(Error("Bad recovery value"));
         } else {
           // Get the taxon fields
-          var idbms = require("../dbms/indexedDB");
-          idbms.read(Number($("#ancgis-speciesform-taxonfield").val()))
+          idbm.read("taxons", Number($("#ancgis-speciesform-taxonfield").val()))
           .then(function(taxon) {
             // Fire the end event
             $("#ancgis-zoneform").trigger("speciesFormValidated", { taxon, recovery });
@@ -36,7 +38,7 @@ module.exports = (function() {
       }
 
       // Get the taxon fields
-      idbms.readAll()
+      idbm.readAll("taxons")
       .then(function(taxons) {
         // HTML builds
         var speciesFormHtml = speciesFormTemplate({ taxons });
@@ -88,4 +90,4 @@ module.exports = (function() {
       });
     }
   };
-}());
+};

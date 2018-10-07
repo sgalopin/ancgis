@@ -4,7 +4,9 @@
 var fs = require("fs");
 var browserify = require("browserify");
 var bundler = browserify("./client/main.js", {debug: true})
-  .transform("hbsfy")
+  .transform("hbsfy", {
+    traverse: true
+  })
   .transform("babelify", {
     global: true, // required per openlayers
     presets: ["@babel/preset-env"]

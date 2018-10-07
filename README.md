@@ -6,7 +6,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)
 
 # AncGIS&trade;
-SIG Web pour l'analyse des ressources mellifères autour d'un rucher.
+[SIG](https://fr.wikipedia.org/wiki/Syst%C3%A8me_d%27information_g%C3%A9ographique) Web pour l'analyse des ressources mellifères autour d'un rucher, de type [PWA](https://fr.wikipedia.org/wiki/Progressive_web_app) et [SPA](https://fr.wikipedia.org/wiki/Application_web_monopage).
 
 - [Accueil](https://github.com/sgalopin/ancgis/wiki)
 - [Installation](https://github.com/sgalopin/ancgis/wiki/Installation)

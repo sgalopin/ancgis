@@ -1,13 +1,13 @@
+// Requirements
+import hiveFormTemplate from "../../../views/partials/form/hive.hbs";
+
 /**
  * Hive form builder.
  */
-module.exports = (function() {
+export default async function() {
 
   return {
-    show(feature) {
-      // Requirements
-      var hiveFormTemplate = require("../../../views/partials/form/hive.hbs");
-      var hiveDAO = require("../dao/hive");
+    show(map, feature) {
 
       // Setup the local vars
       var ppts = feature.getProperties();
@@ -39,7 +39,7 @@ module.exports = (function() {
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
-          hiveDAO.updateFeature(feature)
+          feature.getProperties().dao.updateFeature(feature)
           .done(function(response) {
             if (response.status === "success") {
               $("#ancgis-hiveform").remove();
@@ -73,7 +73,7 @@ module.exports = (function() {
       $("#ancgis-hiveform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
-        hiveDAO.updateFeature(feature)
+        feature.getProperties().dao.updateFeature(feature)
         .done(function(response) {
           if (response.status === "success") {
             $("#ancgis-hiveform").remove();
@@ -82,4 +82,4 @@ module.exports = (function() {
       });
     }
   };
-}());
+};

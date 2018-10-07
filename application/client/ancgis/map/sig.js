@@ -1,6 +1,7 @@
 /*global ol*/
 
 // ol import
+import 'ol/ol.css'
 import Draw from 'ol/interaction/Draw.js'
 import Translate from 'ol/interaction/Translate.js'
 
@@ -12,7 +13,7 @@ import AddHive from '../../ol/interaction/AddHive.js'
 import ModifyFeature from '../../ol/interaction/ModifyFeature.js'
 import RemoveFeatures from '../../ol/interaction/RemoveFeatures.js'
 import EditProperties from '../../ol/interaction/EditProperties.js'
-//import map from './map'
+import Map from './map.js'
 
 // Copied from ol/interaction/Translate.js
 const TRANSLATEEND = 'translateend';
@@ -20,8 +21,10 @@ const TRANSLATEEND = 'translateend';
 /**
  * Sig builder.
  */
-module.exports = (function() {
-	var map = require("./map");
+export default async function() {
+
+  let map = await Map();
+
   var interactions = {
     // Add Hive Button Control
     addhive : new AddHive({
@@ -70,21 +73,16 @@ module.exports = (function() {
 		RemoveFeaturesEventType.REMOVE,
 		function(e){
 			e.selected.forEach(function(feature){
-				feature.getProperties().dao.removeFeature(feature);
+				feature.getProperties().dao.deleteFeature(feature);
 			}, this);
 		}
 	);
 	interactions.editproperties.on(
 		EditPropertiesEventType.SELECT,
 		function(e){
-			e.feature.getProperties().form.show(e.feature);
+			e.feature.getProperties().form.show(map, e.feature);
 		}
 	);
-
-    // Management of the top right button
-    $("#ancgis-topright-logout").click(function(){
-        document.location.href = "/logout";
-    });
 
 	// Management of the toggling of the interactions
   $("#ancgis-mapcontrol-tbar>button").click(function(){
@@ -115,4 +113,4 @@ module.exports = (function() {
   });
 
   return { map, interactions };
-}());
+};

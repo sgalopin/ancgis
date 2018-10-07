@@ -1,14 +1,17 @@
+// Requirements
+import zoneFormTemplate from "../../../views/partials/form/zone.hbs";
+import floreLineTemplate from "../../../views/partials/form/flore-line.hbs";
+import SpeciesForm from "./species.js";
+
 /**
  * Zone form builder.
  */
-module.exports = (function() {
+export default async function() {
+
+  let speciesForm = await SpeciesForm();
 
   return {
-    show(feature) {
-      // Requirements
-      var zoneFormTemplate = require("../../../views/partials/form/zone.hbs");
-      var floreLineTemplate = require("../../../views/partials/form/flore-line.hbs");
-      var zoneDAO = require("../dao/zone");
+    show(map, feature) {
 
       // Setup the local vars
       var ppts = feature.getProperties();
@@ -63,7 +66,7 @@ module.exports = (function() {
           event.stopPropagation();
           event.preventDefault();
           feature.setProperties(newPpts);
-          zoneDAO.updateFeature(feature)
+          feature.getProperties().dao.updateFeature(feature)
           .done(function(response) {
             if (response.status === "success") {
               $("#ancgis-zoneform").remove();
@@ -99,7 +102,6 @@ module.exports = (function() {
         event.stopPropagation();
         $("#ancgis-zoneform").hide();
         // Display the species form
-        var speciesForm = require("./species");
         speciesForm.show();
       });
 
@@ -116,14 +118,14 @@ module.exports = (function() {
       $("#ancgis-zoneform-validatebtn").click(function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
-        zoneDAO.updateFeature(feature)
+        feature.getProperties().dao.updateFeature(feature)
         .done(function(response) {
           if (response.status === "success") {
             $("#ancgis-zoneform").remove();
           }
-          require("../map/map").dispatchPeriodPotentialChangeEvent();
+          map.dispatchPeriodPotentialChangeEvent();
         });
       });
     }
   };
-}());
+};

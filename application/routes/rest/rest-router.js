@@ -9,7 +9,7 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
       if (req.isAuthenticated()) {
           next();
       } else {
-          res.redirect('/login');
+          res.redirect('/');
       }
   }
 

@@ -5,6 +5,7 @@ import RemoveFeatureEventType from './RemoveFeaturesEventType.js'
 import Select from 'ol/interaction/Select.js';
 import {platformModifierKeyOnly} from 'ol/events/condition.js';
 import Event from 'ol/events/Event.js';
+import {confirm} from "../../ancgis/tool/modal.js";
 
 /**
  * @classdesc
@@ -79,8 +80,7 @@ class RemoveFeatures extends Select {
    */
   removeFeatures_(event) {
     // TODO: don't use ancgis lib here...
-    var ancTool = require("../../ancgis/tool/modal");
-    ancTool.confirm("Confirmez-vous la suppression ?").then(
+    confirm("Confirmez-vous la suppression ?").then(
       $.proxy( function (e) {
         var me = this;
         this.getFeatures().forEach(function(feature){

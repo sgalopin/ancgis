@@ -1,5 +1,7 @@
 var express = require("express");
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
+var fs = require("fs");
 
 var router = express.Router(); // eslint-disable-line new-cap
 
@@ -7,16 +9,17 @@ function loggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 }
 
-router.get('/', loggedIn, function (req, res) {
+router.get('/', function (req, res) {
   res.render('index');
 });
 
-router.get('/login', function(req, res) {
-  res.render('login');
+router.get('/jwks.json', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(require("../encryption/jwks.json"));
 });
 
 router.post('/login', function(req, res, next) {
@@ -42,7 +45,22 @@ router.post('/login', function(req, res, next) {
       if (loginErr) {
         return next(loginErr);
       }
-      res.redirect('/');
+
+      // create an asymmetric token
+      // Note: readFileSync returns a buffer if no encoding is specified.
+      var cert = fs.readFileSync(__dirname + '/../encryption/ancgis.dev.net.key', 'utf8'); // get private key
+      var token = jwt.sign({ id: user._id }, cert, {
+        algorithm: 'RS256', // sign with RSA SHA256
+        expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)
+      });
+
+      // Set a new cookie
+      res.cookie('jwt', token, {
+        maxAge: 365 * 24 * 60 * 60 * 1000, // expires in 1 year (in ms)
+        httpOnly: false,
+        secure: true
+      });
+      res.status(200).send({ success: true});
     });
   })(req, res, next);
 });
@@ -50,11 +68,14 @@ router.post('/login', function(req, res, next) {
 router.get('/logout', function(req, res) {
   if (req.isAuthenticated()) {
     req.logout();
-    res.redirect('/');
+    // Options must be identicals to those given to res.cookie(), excluding expires and maxAge.
+    res.clearCookie('jwt', {
+      httpOnly: false,
+      secure: true,
+      signed: true
+    });
   }
-  else {
-    res.redirect('/')
-  }
+  res.status(200).send({ success: true});
 });
 
 module.exports = router;

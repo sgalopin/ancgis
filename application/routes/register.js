@@ -4,6 +4,8 @@ var zxcvbn = require('zxcvbn');
 var Account = require('../models/account');
 var RateLimit = require('express-rate-limit');
 const { checkSchema, validationResult } = require('express-validator/check');
+var jwt = require('jsonwebtoken');
+var fs = require("fs");
 
 // Force brute protection middleware
 var iPLimiter = new RateLimit({
@@ -102,6 +104,23 @@ router.post('/', postCheckSchema, function(req, res, next) {
         if (err) {
           return next(err);
         }
+
+        // create an asymmetric token
+        // TODO: Make a function to create the token and the cookie
+        // Note: readFileSync returns a buffer if no encoding is specified.
+        var cert = fs.readFileSync(__dirname + '/../encryption/ancgis.dev.net.key', 'utf8'); // get private key
+        var token = jwt.sign({ id: user._id }, cert, {
+          algorithm: 'RS256', // sign with RSA SHA256
+          expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)
+        });
+
+        // Set a new cookie
+        res.cookie('jwt', token, {
+          maxAge: 365 * 24 * 60 * 60 * 1000, // expires in 1 year (in ms)
+          httpOnly: false,
+          secure: true
+        });
+
         res.redirect('/');
       });
     });

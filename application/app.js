@@ -7,7 +7,6 @@ var exphbs  = require("express-handlebars");
 var passport = require('passport');
 var mongoose = require("mongoose");
 var sassMiddleware = require("node-sass-middleware");
-var browserify = require("browserify-middleware");
 var path = require("path");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
@@ -18,13 +17,25 @@ var flash = require('express-flash');
 
 var app = express();
 
+// HTTP to HHTPS redirection
+app.use(function(req, res, next) {
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+});
+
 // view engine setup
 const handlebarsHelpers = require('./helpers/handlebars');
 app.engine("hbs", exphbs({
   extname: ".hbs",
   defaultLayout: "layout",
   layoutsDir: __dirname + '/views/layouts/',
-  helpers: handlebarsHelpers
+  helpers: handlebarsHelpers,
+  partialsDir: [
+    __dirname + '/views/partials/'
+  ]
 }));
 app.set("view engine", "hbs");
 // Note: you must place sass-middleware *before* `express.static` or else it will not work.
@@ -36,19 +47,6 @@ app.use (
   })
 );
 
-browserify.settings({
-  transform: [
-    "hbsfy",
-    ["babelify", {
-      global: true, // required per openlayers
-      presets: ["@babel/preset-env"]
-    }],
-    ['uglifyify', {
-      global: true
-    }]
-  ]
-});
-app.get("/javascripts/bundle.js", browserify("./client/main.js"));
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString + "/taxons", function(err) {
   if (err) {
@@ -56,9 +54,22 @@ mongoose.connect(dbConnectionString + "/taxons", function(err) {
   }
 });
 if (app.get("env") === "development") {
-  var browserSync = require("browser-sync");
-  var config = {
-   files: ["public/**/*.{js,css}", "client/*.js", "sass/**/*.scss", "views/**/*.hbs"],
+  // webpack-dev-middleware
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackConfig = require('./webpack.config.js');
+  const compiler = webpack(webpackConfig);
+  // Tell express to use the webpack-dev-middleware and use the webpack.config.js
+  // configuration file as a base.
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: false,
+    publicPath: webpackConfig.output.publicPath,
+    writeToDisk: true
+  }));
+  // BrowserSync
+  const browserSync = require("browser-sync");
+  const browserSyncConfig = {
+   files: [webpackConfig.output.path + "/*.bundle.js", "sass/**/*.scss"],
     logLevel: "debug",
     logSnippet: false,
     //reloadDelay: 3000,
@@ -66,9 +77,10 @@ if (app.get("env") === "development") {
     https: {
         key: "encryption/ancgis.dev.net.key",
         cert: "encryption/ancgis.dev.net.crt"
-    }
+    },
+    online: false
   };
-  var bs = browserSync(config);
+  const bs = browserSync(browserSyncConfig);
   app.use(require("connect-browser-sync")(bs));
 }
 
@@ -89,7 +101,7 @@ app.use(session({
 }))
 app.use(flash()); // Flash requires sessions.
 
-// Authentication with Passport
+// Authentication with Passport (local)
 // In a Express-based application, passport.initialize() middleware is required to initialize Passport.
 app.use(passport.initialize());
 // In application using persistent login sessions, passport.session() middleware must also be used.
@@ -102,15 +114,6 @@ passport.use(new LocalStrategy(Account.authenticate()));
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-
-// HTTP to HHTPS redirection
-app.use(function(req, res, next) {
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-});
 
 // Force brute protection middleware
 var loginIPLimiter = new RateLimit({

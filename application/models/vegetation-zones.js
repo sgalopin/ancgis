@@ -1,9 +1,11 @@
 // Requirements
 var mongoose = require("mongoose");
 var Taxon = require("./taxons");
+const uuidv1 = require('uuid/v1');
 
 // Model's declaration
 module.exports = mongoose.model("VegetationZone", new mongoose.Schema({
+  "_id": { type: String, default: uuidv1() },
   "type": {type: String, required: true},
   "properties": {
     "type": {type: String},
