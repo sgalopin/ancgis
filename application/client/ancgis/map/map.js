@@ -2,7 +2,6 @@
 
 // ol import
 import VectorSource from 'ol/source/Vector.js'
-import VectorEventType from 'ol/source/VectorEventType.js'
 import VectorLayer from 'ol/layer/Vector.js'
 import Style from 'ol/style/Style.js'
 import Fill from 'ol/style/Fill.js'
@@ -22,61 +21,24 @@ import {get as olProjGet} from 'ol/proj.js'
 import {getWidth as olExtentGetWidth} from 'ol/extent.js'
 
 // Local import
-import Sidbm from "../dbms/SyncIdbManager.js"
 import ExtendedMap from '../../ol/ExtendedMap.js'
 import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
 import PeriodSwitcher from '../../ol/control/PeriodSwitcher.js'
 import PeriodSwitcherEvent from '../../ol/control/PeriodSwitcherEvent.js'
 import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js'
-import ZoneDAO from "../dao/ZoneDAO.js";
-import HiveDAO from "../dao/HiveDAO.js";
-import ZoneForm from "../form/zone.js";
-import HiveForm from "../form/hive.js";
 
 /**
  * Map builder.
  */
-export default async function() {
+export default async function(hivesLayerName, vegetationsLayerName) {
 
-  let idbm = await Sidbm;
-  let zoneForm = await ZoneForm();
-  let hiveForm = await HiveForm();
-  let zoneDAO = new ZoneDAO(idbm);
-  let hiveDAO = new HiveDAO(idbm);
   let extendedGeoJSON = new ExtendedGeoJSON();
-
-  async function featuresToGeoJson(collection) {
-      return extendedGeoJSON.readFeatures({
-        "type": "FeatureCollection",
-        "crs": {
-          "type": "name",
-          "properties": {
-            "name": "EPSG:3857"
-          }
-        },
-        "features": await idbm.readAll(collection)
-      });
-  }
 
   // Hives layer
   var hivesLayerSource = new VectorSource({
     wrapX: false,
     format: extendedGeoJSON
   });
-  var hivesLayerName = "hivesLayer";
-  // Set the default values and save the new hive
-  hivesLayerSource.on(VectorEventType.ADDFEATURE, function(e){
-    e.feature.setProperties({
-      layerName: hivesLayerName,
-      dao: hiveDAO,
-      form: hiveForm
-    }, true);
-    if ( typeof e.feature.getId() === "undefined" ) {
-      hiveDAO.createFeature(e.feature);
-    }
-  });
-  // Add the features from the local database
-  hivesLayerSource.addFeatures(await featuresToGeoJson("hives"));
   var hivesLayer = new VectorLayer({
     name: hivesLayerName,
     source: hivesLayerSource,
@@ -101,7 +63,6 @@ export default async function() {
     wrapX: false,
     format: extendedGeoJSON
   });
-  var vegetationsLayerName = "vegetationsLayer";
   var vegetationsLayer = new VectorLayer({
     name: vegetationsLayerName,
     source: vegetationsLayerSource,
@@ -191,7 +152,7 @@ export default async function() {
     source: ignSource
   });
 
-  let map = new ExtendedMap ({ // Openlayers Map
+  return new ExtendedMap ({ // Openlayers Map
       layers: [bdorthoLayer, hivesLayer, vegetationsLayer],
       target: "ancgis-map",
       keyboardEventTarget: document,
@@ -214,30 +175,4 @@ export default async function() {
         center: [308555, 6121070] // Chez Didier
       })
     });
-
-    // Set the default values and save the new zone
-    vegetationsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
-      e.feature.setProperties({
-        layerName: vegetationsLayerName,
-        dao: zoneDAO,
-        form: zoneForm
-      }, true);
-      if ( typeof e.feature.getId() === "undefined" ) {
-        zoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
-      } else {
-        // Initialize the histogram
-        map.dispatchPeriodPotentialChangeEvent();
-      }
-      // Note: The PeriodPotentialChangeEvent is also dispatched after the zone form validation.
-    });
-    vegetationsLayerSource.on(VectorEventType.REMOVEFEATURE, function(e){
-      map.dispatchPeriodPotentialChangeEvent();
-    });
-    vegetationsLayerSource.on(VectorEventType.CHANGEFEATURE, function(e){
-      map.dispatchPeriodPotentialChangeEvent();
-    });
-    // Add the features from the local database
-    vegetationsLayerSource.addFeatures(await featuresToGeoJson("vegetation-zones"));
-
-    return map;
 };

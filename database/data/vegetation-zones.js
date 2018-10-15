@@ -2,6 +2,7 @@
 db.vegetationzones.drop();
 db.vegetationzones.insert([{
   // To set the "_id" use the ObjectId() function (ex: "_id": ObjectId("5a13f5bfc8c6de2d09c604da"))
+  "_id": "82965630-cca9-11e8-813f-e5ced482ba7d",
   "type": "Feature",
   "properties": {
     "type": "forets",
@@ -9,7 +10,10 @@ db.vegetationzones.insert([{
       "taxon": 1 ,
       "recovery": 75
     }],
-    "account": "5b939503845b75060d79c7da"
+    "account": "5b939503845b75060d79c7da",
+    "metadata": {
+      "timestamp": 1475960555
+    }
   },
   "geometry": {
     "type": "Circle",
@@ -17,6 +21,7 @@ db.vegetationzones.insert([{
     "radius": 5
   }
 },{
+  "_id": "8b130920-cca9-11e8-813f-e5ced482ba7d",
   "type": "Feature",
   "properties": {
     "type": "cultures",
@@ -27,7 +32,10 @@ db.vegetationzones.insert([{
       "taxon": 22,
       "recovery": 100
     }],
-    "account": "5b939503845b75060d79c7daXX"
+    "account": "5b939503845b75060d79c7da",
+    "metadata": {
+      "timestamp": 1602176555
+    }
   },
   "geometry": {
     "type": "Polygon",

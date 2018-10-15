@@ -40,10 +40,8 @@ export default async function() {
           event.preventDefault();
           feature.setProperties(newPpts);
           feature.getProperties().dao.updateFeature(feature)
-          .done(function(response) {
-            if (response.status === "success") {
-              $("#ancgis-hiveform").remove();
-            }
+          .then(function(response) {
+            $("#ancgis-hiveform").remove();
           });
         }
       });
@@ -74,10 +72,8 @@ export default async function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
         feature.getProperties().dao.updateFeature(feature)
-        .done(function(response) {
-          if (response.status === "success") {
-            $("#ancgis-hiveform").remove();
-          }
+        .then(function(response) {
+          $("#ancgis-hiveform").remove();
         });
       });
     }

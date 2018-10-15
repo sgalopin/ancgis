@@ -137,14 +137,39 @@ html, body, .container-fluid {
 /*************************/
 
 #ancgis-map-ttbar {
+  display: flex;
+  flex-direction: row;
   background-color: #e1e1e1;
   border-bottom: solid 1px #999;
   font-size: 10px;
   width: 100%;
   padding: 1px 5px 1px 5px;
 }
-#ancgis-topright-tbar {
-  float: right;
+#ancgis-info-tbar, #ancgis-syncinfo-tbar {
+  margin: auto 0;
+  font-family: cursive;
+  vertical-align: middle;
+  .label {
+    margin-left: 10px;
+  }
+}
+#ancgis-info-tbar {
+  flex: 1;
+  font-size: larger;
+  margin-left: 10px;
+  .info {
+    font-weight: 700;
+  }
+}
+#ancgis-syncinfo-tbar {
+  margin-right: 10px;
+  font-size: large;
+  .warning {
+    display: inline-block;
+    background-image: url("../images/warning.png");
+    height: 16px;
+    width: 16px;
+  }
 }
 #ancgis-map-ttbar .btn-primary {
     background-color: #EEE;
@@ -258,8 +283,11 @@ html, body, .container-fluid {
 .ancgis-glyphicons-388logout {
   background-image: url("../images/glyphicons/glyphicons-388-log-out.png");
 }
-.ancgis-glyphicons-748synchronization {
-  background-image: url("../images/glyphicons/glyphicons-748-synchronization.png");
+.ancgis-glyphicons-201download {
+  background-image: url("../images/glyphicons/glyphicons-201-download.png");
+}
+.ancgis-glyphicons-202upload {
+  background-image: url("../images/glyphicons/glyphicons-202-upload.png");
 }
 
 /*************************/

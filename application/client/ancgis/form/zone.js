@@ -6,9 +6,9 @@ import SpeciesForm from "./species.js";
 /**
  * Zone form builder.
  */
-export default async function() {
+export default async function(idbm) {
 
-  let speciesForm = await SpeciesForm();
+  let speciesForm = await SpeciesForm(idbm);
 
   return {
     show(map, feature) {
@@ -67,10 +67,8 @@ export default async function() {
           event.preventDefault();
           feature.setProperties(newPpts);
           feature.getProperties().dao.updateFeature(feature)
-          .done(function(response) {
-            if (response.status === "success") {
-              $("#ancgis-zoneform").remove();
-            }
+          .then(function(response) {
+            $("#ancgis-zoneform").remove();
           });
         }
       });
@@ -119,10 +117,8 @@ export default async function() {
         event.stopPropagation();
         feature.setProperties(newPpts);
         feature.getProperties().dao.updateFeature(feature)
-        .done(function(response) {
-          if (response.status === "success") {
-            $("#ancgis-zoneform").remove();
-          }
+        .then(function(response) {
+          $("#ancgis-zoneform").remove();
           map.dispatchPeriodPotentialChangeEvent();
         });
       });

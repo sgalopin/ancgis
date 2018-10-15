@@ -17,11 +17,11 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
     // READ ALL
     .get(loggedIn, function(req, res, next) {
       // For security, returns only the objects of the current account
-      const query = isPrivate_ ? { "properties.account": req.user._id } : {};
+      const query = isPrivate_ ? { "properties.account": req.user._id.toString() } : {};
       Model.find(query)
       .populate(populatePath)
       .exec(function (err, docs) {
-        if (err) { return console.error(err); }
+        if (err) { return res.status(400).json({"status": "fail", "error": err}); }
         if (returnGeoJson_) {
           res.json({
             "type": "FeatureCollection",
@@ -41,9 +41,11 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
     // CREATE
     .post(loggedIn, function(req, res, next) {
       var doc = new Model(req.body);
-      // For security, sets the account parameter to the current account
+      // For security, compares the submitted account parameter to the current account
       if (isPrivate_) {
-        doc.set({ "properties.account": req.user._id });
+        if (!doc.properties || doc.properties.account !== req.user._id.toString()) {
+          return res.status(403).json({"status": "fail", "error": "Création impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
+        }
       }
       doc.save()
       .then(function (doc) {
@@ -58,34 +60,62 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
     // READ
     .get(loggedIn, function(req, res, next) {
       // For security, returns only the object of the current account
-      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id } : { _id: req.params.id };
+      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id.toString() } : { _id: req.params.id };
       Model.findOne(query)
       .populate(populatePath)
       .exec(function (err, doc) {
-        if (err) { return console.error(err); }
+        if (err) { return res.status(400).json({"status": "fail", "error": err}); }
+        if (!doc) { return res.status(400).json({"status": "fail", "error": "Aucune donnée trouvée."}); }
         res.json(doc);
       });
     })
     // UPDATE
     .put(loggedIn, function(req, res, next) {
-      // For security, sets the account parameter to the current account
+      // For security, compares the submitted account parameter to the current account
       if (isPrivate_) {
-        Object.assign(req.body.properties, { "account": req.user._id });
+        if (!req.body.properties || req.body.properties.account !== req.user._id.toString()) {
+          return res.status(403).json({"status": "fail", "error": "Mise à jour impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
+        }
       }
-      Model.update({_id: req.params.id}, req.body )
-      .exec(function (err, writeOpResult) {
+      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id.toString() } : { _id: req.params.id };
+      Model.findOne(query)
+      .exec(function (err, doc) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }
-        res.json({"status": "success", "data": writeOpResult});
+        if (!doc) { return res.status(400).json({"status": "fail", "error": "Aucune donnée trouvée."}); }
+        // For integrity, compares the submitted timestamp parameter to the timestamp present in the database
+        if (!req.body.properties || !req.body.properties.metadata || isNaN(req.body.properties.metadata.timestamp) || req.body.properties.metadata.timestamp <= doc.properties.metadata.timestamp) {
+          return res.status(403).json({"status": "fail", "error": "Mise à jour impossible. La donnée soumise est non datée ou plus ancienne que la donnée en base."});
+        }
+        Model.update({_id: req.params.id}, req.body )
+        .exec(function (err, writeOpResult) {
+          if (err) { return res.status(400).json({"status": "fail", "error": err}); }
+          res.json({"status": "success", "data": writeOpResult});
+        });
       });
     })
     // DELETE
     .delete(loggedIn, function(req, res, next) {
-      // For security, clears only the object of the current account
-      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id } : { _id: req.params.id };
-      Model.deleteOne(query)
+      // For security, compares the submitted account parameter to the current account
+      if (isPrivate_) {
+        if (!req.body.properties || req.body.properties.account !== req.user._id.toString()) {
+          return res.status(403).json({"status": "fail", "error": "Suppression impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
+        }
+      }
+      const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id.toString() } : { _id: req.params.id };
+      Model.findOne(query)
       .exec(function (err, doc) {
         if (err) { return res.status(400).json({"status": "fail", "error": err}); }
-        res.json({"status": "success", "data": doc});
+        if (!doc) { return res.status(400).json({"status": "fail", "error": "Aucune donnée trouvée."}); }
+        // For integrity, compares the submitted timestamp parameter to the timestamp present in the database
+        if (!req.body.properties || !req.body.properties.metadata || isNaN(req.body.properties.metadata.timestamp) || req.body.properties.metadata.timestamp <= doc.properties.metadata.timestamp) {
+          return res.status(403).json({"status": "fail", "error": "Mise à jour impossible. La donnée soumise est non datée ou plus ancienne que la donnée en base."});
+        }
+        // For security, clears only the object of the current account
+        Model.deleteOne(query)
+        .exec(function (err, doc) {
+          if (err) { return res.status(400).json({"status": "fail", "error": err}); }
+          res.json({"status": "success", "data": doc});
+        });
       });
     });
 

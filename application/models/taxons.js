@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 
 // Model's declaration
 module.exports = mongoose.model("Taxon", new mongoose.Schema({
-	"_id": {type: Number, required: true},
+	"_id": {type: Number, required: true, alias: 'id'},
 	"name": {type: String, unique: true, required: true},
 	"vernacularName": {type: String, required: true},
 	"periods": {type: [String], required: true},

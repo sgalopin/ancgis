@@ -26,7 +26,10 @@ self.addEventListener('install', function(event) {
           '/images/glyphicons/glyphicons-194-ok-sign.png',
           '/images/glyphicons/glyphicons-193-remove-sign.png',
           '/images/glyphicons/glyphicons-191-plus-sign.png',
-          '/images/glyphicons/glyphicons-208-remove.png'
+          '/images/glyphicons/glyphicons-208-remove.png',
+          '/images/glyphicons/glyphicons-201-download.png',
+          '/images/glyphicons/glyphicons-202-upload.png',
+          '/images/warning.png'
         ]
       );
     })

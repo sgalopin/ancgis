@@ -5,7 +5,7 @@ const uuidv1 = require('uuid/v1');
 
 // Model's declaration
 module.exports = mongoose.model("VegetationZone", new mongoose.Schema({
-  "_id": { type: String, default: uuidv1() },
+  "_id": { type: String, default: uuidv1(), alias: 'id' },
   "type": {type: String, required: true},
   "properties": {
     "type": {type: String},
@@ -13,7 +13,10 @@ module.exports = mongoose.model("VegetationZone", new mongoose.Schema({
       "taxon": {type: Number, ref: "Taxon"},
       "recovery": {type: Number}
     }],
-    "account": {type: String}
+    "account": {type: String},
+    "metadata": {
+      "timestamp": {type: Number}
+    }
   },
   "geometry": {
     "type": {type: String, required: true},

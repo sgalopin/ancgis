@@ -23,6 +23,10 @@ class ZoneDAO extends AbstractDAO {
     this.collection = "vegetation-zones";
   }
 
+  getDirtyDocumentsCount() {
+    return super.getDirtyDocumentsCount(this.collection);
+  }
+  
   // Returns the feature's JSON
   featureToJSON(feature) {
     // Setup the geojsonPpts var
@@ -60,6 +64,18 @@ class ZoneDAO extends AbstractDAO {
   // Delete function
   deleteFeature(feature) {
     return super.deleteFeature(this.collection, feature.getId());
+  }
+
+  downloadFeatures() {
+    return super.downloadFeatures(this.collection);
+  }
+
+  uploadFeatures() {
+    return super.uploadFeatures(this.collection);
+  }
+
+  featuresToGeoJson() {
+    return super.featuresToGeoJson(this.collection);
   }
 }
 

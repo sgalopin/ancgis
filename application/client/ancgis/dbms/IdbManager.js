@@ -35,12 +35,16 @@ class IdbManager {
       };
       request.onupgradeneeded = function(event) {
         self.db = event.target.result;
-        self.addCollection("taxons");
-        self.populateDataCollection("taxons");
-        self.addCollection("hives");
-        self.addCollection("vegetation-zones");
+        self.db.createObjectStore("taxons", {keyPath: "id"});
+        let hivesStore = self.db.createObjectStore("hives", {keyPath: "id"});
+        hivesStore.createIndex("dirty", "properties.metadata.dirty");
+        let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"})
+        zonesStore.createIndex("dirty", "properties.metadata.dirty");
         // Returns the db
-        resolve(self);
+        event.target.transaction.oncomplete = function(e) {
+          self.populateDataCollection("taxons"); // is Asynchrone
+          resolve(self);
+        }
       };
       request.onsuccess = function(event) {
           self.db = event.target.result;
@@ -56,10 +60,6 @@ class IdbManager {
       collectionsArray.push(stringList.item(i));
     }
     return collectionsArray;
-  }
-
-  addCollection (collectionName) {
-    this.db.createObjectStore(collectionName, {keyPath: "id"});
   }
 
   // Get the collection remotly
@@ -97,7 +97,7 @@ class IdbManager {
         resolve(doc);
       };
       request.onerror = function(event) {
-        reject(Error("Unable to add the data into the local database."));
+        reject(Error("Unable to add '" + doc.id + "' into the local database."));
       };
     });
   }
@@ -112,11 +112,11 @@ class IdbManager {
          if (request.result) {
              resolve(request.result);
          } else {
-            reject(Error("Data not found in your database."));
+            reject(Error("'" + id + "' not found in your database."));
          }
       };
       request.onerror = function(event) {
-        reject(Error("Unable to retrieve data from database."));
+        reject(Error("Unable to retrieve '" + id + "' from database."));
       };
     });
   }
@@ -154,7 +154,7 @@ class IdbManager {
         resolve(doc);
       };
       request.onerror = function(event) {
-        reject(Error("Unable to add the data into the local database."));
+        reject(Error("Unable to add '" + doc.id + "' into the local database."));
       };
     });
   }
@@ -171,7 +171,7 @@ class IdbManager {
         resolve(id);
       };
       request.onerror = function(event) {
-        reject(Error("Unable to remove the data."));
+        reject(Error("Unable to remove '" + id + "'."));
       };
     });
   }

@@ -1,11 +1,10 @@
-import {setCookie, getCookie, hasVerifiedJWT, deleteCookie} from './ancgis/tool/cookie.js'
+import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from './ancgis/tool/cookie.js'
 import sigPageTemplate from "../views/subpages/sig.hbs"
 import loginPageTemplate from "../views/subpages/login.hbs"
-import appMessageTemplate from "../views/partials/app-message.hbs"
 import Sig from "./ancgis/map/sig.js"
 import {confirm} from "./ancgis/tool/modal.js";
 import jwt from 'jsonwebtoken';
-import Sidbm from "./ancgis/dbms/SyncIdbManager.js"
+import {displayLoginMessage, displayFormatedLoginMessage} from "./ancgis/tool/message.js";
 
 $(document).ready(function(){
 
@@ -20,20 +19,12 @@ $(document).ready(function(){
     })
   }
 
-  function updatePage(pageTemplate) {
+  function updatePage(pageTemplate, data) {
     if ($(".page-container")) {
       $(".page-container").remove();
     }
-    $("#current-page").append(pageTemplate());
+    $("#current-page").append(pageTemplate(data));
     bootstrapSetup();
-  }
-
-  function displayMessage(message) {
-    const appMessageHTML = appMessageTemplate({messages:{error: message}});
-    if ($(".alert-dismissible")) {
-      $(".alert-dismissible").remove();
-    }
-    $(".ancgis-appmessage").append(appMessageHTML);
   }
 
   function disconnect() {
@@ -54,7 +45,7 @@ $(document).ready(function(){
 
   async function openSIGPage() {
     // Adds the sig page (static part)
-    updatePage(sigPageTemplate);
+    updatePage(sigPageTemplate, {user: getUserInfo()});
     // Adds the sig page (dynamic part)
     Sig();
 
@@ -69,17 +60,6 @@ $(document).ready(function(){
         disconnect();
       }
     });
-
-    // Management of the sync button
-    let idbm = await Sidbm;
-    $("#ancgis-topright-sync").click(function() {
-      if ( !navigator.onLine ) {
-        displayMessage("La synchronisation requiert une connexion.");
-      } else {
-        idbm.populateFeaturesCollection("hives");
-        idbm.populateFeaturesCollection("vegetation-zones");
-      }
-    });
   }
 
   function openLoginPage() {
@@ -89,7 +69,7 @@ $(document).ready(function(){
       e.preventDefault();
       // Authentification
       if ( !navigator.onLine ) {
-        displayMessage("L'authentification requiert une connexion.");
+        displayLoginMessage("L'authentification requiert une connexion.", 'error', true);
       } else {
         $.ajax({
           type: "POST",
@@ -110,7 +90,7 @@ $(document).ready(function(){
                 });
               }*/
             } else {
-              displayMessage(response.message);
+              displayFormatedLoginMessage(response.message, true);
             }
           }
         });

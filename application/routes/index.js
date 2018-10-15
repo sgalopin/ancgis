@@ -31,9 +31,11 @@ router.post('/login', function(req, res, next) {
     if (err) {
       return next(err); // will generate a 500 error
     }
-    if (! user) {
+    if (! user) { // TODO: Repair flash message
+      console.log('info.message: ',info.message);
       req.flash('error', info.message);
-      return res.render('login', { username : req.body.username });
+      //return res.render('login', { username : req.body.username });
+      return res.render('index');
     }
     // ***********************************************************************
     // "Note that when using a custom callback, it becomes the application's
@@ -49,7 +51,7 @@ router.post('/login', function(req, res, next) {
       // create an asymmetric token
       // Note: readFileSync returns a buffer if no encoding is specified.
       var cert = fs.readFileSync(__dirname + '/../encryption/ancgis.dev.net.key', 'utf8'); // get private key
-      var token = jwt.sign({ id: user._id }, cert, {
+      var token = jwt.sign({ id: user._id, username: user.username, profil: user.profil }, cert, {
         algorithm: 'RS256', // sign with RSA SHA256
         expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)
       });
@@ -71,8 +73,7 @@ router.get('/logout', function(req, res) {
     // Options must be identicals to those given to res.cookie(), excluding expires and maxAge.
     res.clearCookie('jwt', {
       httpOnly: false,
-      secure: true,
-      signed: true
+      secure: true
     });
   }
   res.status(200).send({ success: true});

@@ -13,8 +13,16 @@
       <button id="ancgis-mapcontrol-modify" class="btn btn-primary" alt="Modifier un élément cartographique" type="button" data-toggle="tooltip" data-placement="bottom" title="Modifier un élément cartographique. Un &#171; ctrl + clic &#187; permet de supprimer un sommet." data-shortid="modify"><span class="ancgis-glyphicons ancgis-glyphicons-31pencil"></span></button>
       <button id="ancgis-mapcontrol-erase" class="btn btn-primary" alt="Supprimer un élément cartographique" type="button" data-toggle="tooltip" data-placement="bottom" title="Supprimer un élément cartographique. Le maintien de la touche &#171; ctrl &#187; permet une suppression multiple." data-shortid="erase"><span class="ancgis-glyphicons ancgis-glyphicons-551erase"></span></button>
     </div>
+    <div id="ancgis-info-tbar">
+      <span class="label">Utilisateur: </span><span class="info">{{user.username}}</span>
+      <span class="label">Profil: </span><span class="info">{{user.profil}}</span>
+    </div>
+    <div id="ancgis-syncinfo-tbar">
+      {{> ../partials/sync-info.hbs}}
+    </div>
     <div id="ancgis-topright-tbar" class="btn-group">
-      <button id="ancgis-topright-sync" class="btn btn-primary" alt="Synchroniser" type="button" data-toggle="tooltip" data-placement="bottom" title="Synchroniser." data-shortid="sync"><span class="ancgis-glyphicons ancgis-glyphicons-748synchronization"></span></button>
+      <button id="ancgis-topright-download" class="btn btn-primary" alt="Récupération des données" type="button" data-toggle="tooltip" data-placement="bottom" title="Récupération des données." data-shortid="sync"><span class="ancgis-glyphicons ancgis-glyphicons-201download"></span></button>
+      <button id="ancgis-topright-upload" class="btn btn-primary" alt="Soumission des données" type="button" data-toggle="tooltip" data-placement="bottom" title="Soumission des données." data-shortid="sync"><span class="ancgis-glyphicons ancgis-glyphicons-202upload"></span></button>
       <button id="ancgis-topright-logout" class="btn btn-primary" alt="Se déconnecter" type="button" data-toggle="tooltip" data-placement="bottom" title="Se déconnecter." data-shortid="logout"><span class="ancgis-glyphicons ancgis-glyphicons-388logout"></span></button>
     </div>
   </div>

@@ -1,3 +1,6 @@
+/**
+ * Cookie tools
+ */
 import jwt from 'jsonwebtoken';
 import jwks from '../../../encryption/jwks.json';
 

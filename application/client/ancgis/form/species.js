@@ -1,13 +1,10 @@
 // Requirements
 import speciesFormTemplate from "../../../views/partials/form/species.hbs";
-import Sidbm from "../dbms/SyncIdbManager.js";
 
 /**
  * Species form builder.
  */
-export default async function() {
-
-  let idbm = await Sidbm;
+export default async function(idbm) {
 
   return {
     show() {

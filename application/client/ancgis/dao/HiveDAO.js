@@ -23,6 +23,10 @@ class HiveDAO extends AbstractDAO {
     this.collection = "hives";
   }
 
+  getDirtyDocumentsCount() {
+    return super.getDirtyDocumentsCount(this.collection);
+  }
+
   // Returns the feature's JSON
   featureToJSON(feature) {
     // Setup the geojsonPpts var
@@ -59,6 +63,18 @@ class HiveDAO extends AbstractDAO {
   // Delete function
   deleteFeature(feature) {
     return super.deleteFeature(this.collection, feature.getId());
+  }
+
+  downloadFeatures() {
+    return super.downloadFeatures(this.collection);
+  }
+
+  uploadFeatures() {
+    return super.uploadFeatures(this.collection);
+  }
+
+  featuresToGeoJson() {
+    return super.featuresToGeoJson(this.collection);
   }
 }
 
