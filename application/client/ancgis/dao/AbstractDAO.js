@@ -46,21 +46,24 @@ class AbstractDAO {
   }
 
   createFeature(collection, geoJsonFeature) {
-    return this.dbm.create(collection, geoJsonFeature)
-    .then(this.dispatchDirtyAddedEvent.bind(this))
+    let promise =  this.dbm.create(collection, geoJsonFeature)
     .catch(error => console.error(error));
+    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    return promise;
   }
 
   updateFeature(collection, geoJsonFeature) {
-    return this.dbm.update(collection, geoJsonFeature)
-    .then(this.dispatchDirtyAddedEvent.bind(this))
+    let promise = this.dbm.update(collection, geoJsonFeature)
     .catch(error => console.error(error));
+    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    return promise;
   }
 
   deleteFeature(collection, id) {
-    return this.dbm.delete(collection, id)
-    .then(this.dispatchDirtyAddedEvent.bind(this))
+    let promise = this.dbm.delete(collection, id)
     .catch(error => console.error(error));
+    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    return promise;
   }
 
   downloadFeatures(collection) {
