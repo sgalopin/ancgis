@@ -200,11 +200,17 @@ export default async function() {
       const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
       + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s).";
       displayMapMessage(msg, "success", true);
+      await sleep(2000); // TODO: To remove when the download will be done at once
+      updateSyncInfo();
     }
   });
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   // Management of the SyncInfo toolbar
-  async function updateSyncInfo() {console.log('ici');
+  async function updateSyncInfo() {
     let count = await zoneDAO.getDirtyDocumentsCount();
     count += await hiveDAO.getDirtyDocumentsCount();
     let syncInfoHtml = syncInfoTemplate({count: count});
