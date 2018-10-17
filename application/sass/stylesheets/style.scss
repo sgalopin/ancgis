@@ -147,7 +147,6 @@ html, body, .container-fluid {
 }
 #ancgis-info-tbar, #ancgis-syncinfo-tbar {
   margin: auto 0;
-  font-family: cursive;
   vertical-align: middle;
   .label {
     margin-left: 10px;
@@ -155,6 +154,7 @@ html, body, .container-fluid {
 }
 #ancgis-info-tbar {
   flex: 1;
+  font-family: cursive;
   font-size: larger;
   margin-left: 10px;
   .info {
@@ -163,12 +163,13 @@ html, body, .container-fluid {
 }
 #ancgis-syncinfo-tbar {
   margin-right: 10px;
+  font-family: serif;
   font-size: large;
   .warning {
-    display: inline-block;
-    background-image: url("../images/warning.png");
-    height: 16px;
-    width: 16px;
+    background-image: url(../images/warning.png);
+    background-repeat: no-repeat;
+    background-position: bottom 2.5px right 0px;
+    padding-right: 20px;
   }
 }
 #ancgis-map-ttbar .btn-primary {
