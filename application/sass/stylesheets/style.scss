@@ -145,7 +145,7 @@ html, body, .container-fluid {
   width: 100%;
   padding: 1px 5px 1px 5px;
 }
-#ancgis-info-tbar, #ancgis-syncinfo-tbar {
+#ancgis-info-tbar, #ancgis-uploadinfo-tbar {
   margin: auto 0;
   vertical-align: middle;
   .label {
@@ -161,7 +161,7 @@ html, body, .container-fluid {
     font-weight: 700;
   }
 }
-#ancgis-syncinfo-tbar {
+#ancgis-uploadinfo-tbar {
   margin-right: 10px;
   font-family: serif;
   font-size: large;
@@ -179,6 +179,9 @@ html, body, .container-fluid {
 #ancgis-map-ttbar .btn-primary.active,
 #ancgis-map-ttbar .btn-primary:visited {
   background-color: #BBB !important;
+}
+#ancgis-mapcontrol-drawcircle, #ancgis-topright-drawextent {
+  border-right-width: 3px;
 }
 
 /*************************/
@@ -200,6 +203,49 @@ html, body, .container-fluid {
 }
 #ancgis-mapstatus-mouseposition {
 	text-align: center
+}
+#ancgis-mapstatus-mapcachesync {
+  float: right;
+  progress {
+    vertical-align: middle;
+    font-size: 1.3em;
+    width: 15em;
+  }
+  span {
+    vertical-align: text-top;
+    margin-right: 5px;
+  }
+}
+
+/*************************/
+/**       Progress      **/
+/*************************/
+
+// See https://stackoverflow.com/questions/34838976/styling-issues-with-a-progressbar-chrome
+// Enable ::-webkit-progress-value
+progress {
+  -webkit-appearance: none;
+  appearance: none;
+}
+// static part
+progress, progress::-webkit-progress-bar {
+  background-color: #fff !important;
+}
+// moving part
+progress, progress::-moz-progress-bar, progress::-webkit-progress-value {
+  background-color: #353535 !important;
+  color:  #353535 !important;
+}
+progress[value]::-webkit-progress-value {
+  background-image:
+    -webkit-linear-gradient(-45deg,
+                      transparent 33%, rgba(0, 0, 0, .1) 33%,
+                      rgba(0,0, 0, .1) 66%, transparent 66%),
+    -webkit-linear-gradient(top,
+                      rgba(255, 255, 255, .25),
+                      rgba(0, 0, 0, .25)),
+    -webkit-linear-gradient(left, #BBBBBB, #000000);
+  background-size: 35px 20px, 100% 100%, 100% 100%;
 }
 
 /*************************/
@@ -289,6 +335,9 @@ html, body, .container-fluid {
 }
 .ancgis-glyphicons-202upload {
   background-image: url("../images/glyphicons/glyphicons-202-upload.png");
+}
+.ancgis-glyphicons-100vectorpathall {
+  background-image: url("../images/glyphicons/glyphicons-100-vector-path-all.png");
 }
 
 /*************************/

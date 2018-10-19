@@ -60,8 +60,8 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus ) {
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR.responseJSON.error);
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
+      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
     });
   }
 
@@ -79,8 +79,8 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus ) {
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR.responseJSON.error);
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
+      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
     });
   }
 
@@ -98,8 +98,8 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus ) {
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR.responseJSON.error);
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
+      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
     });
   }
 

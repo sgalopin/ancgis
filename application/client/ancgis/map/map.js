@@ -30,7 +30,7 @@ import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName) {
+export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -59,6 +59,7 @@ export default async function(hivesLayerName, vegetationsLayerName) {
     }
   });
 
+  // Vegetations layer
   var vegetationsLayerSource = new VectorSource({
     wrapX: false,
     format: extendedGeoJSON
@@ -112,6 +113,24 @@ export default async function(hivesLayerName, vegetationsLayerName) {
     }
   });
 
+  // Extents Layer
+  var extentsLayerSource = new VectorSource({
+    wrapX: false,
+    format: extendedGeoJSON
+  });
+  var extentsLayer = new VectorLayer({
+    name: extentsLayerName,
+    source: extentsLayerSource,
+    style(feature) {
+      return new Style({
+        stroke: new Stroke({
+          color: "black",
+          width: 3
+        })
+      });
+    }
+  });
+
   // BDORTHO layer
   var resolutions = [];
   var matrixIds = [];
@@ -148,31 +167,31 @@ export default async function(hivesLayerName, vegetationsLayerName) {
   });
 
   var bdorthoLayer = new TileLayer({
-    name: "bdorthoLayer",
+    name: bdorthoLayerName,
     source: ignSource
   });
 
   return new ExtendedMap ({ // Openlayers Map
-      layers: [bdorthoLayer, hivesLayer, vegetationsLayer],
-      target: "ancgis-map",
-      keyboardEventTarget: document,
-      controls: [
-        new PeriodSwitcher(),
-        new Attribution(),
-        new ZoomSlider(),
-        new ScaleLine(),
-        new MousePosition({
-          className:"",
-          target:document.getElementById("ancgis-mapstatus-mouseposition"),
-          coordinateFormat(coords) {
-            var template = "X: {x} - Y: {y} ";
-            return coordinateFormat(coords, template);
-        }})
-      ],
-      view: new View({
-        zoom: 20,
-        //center: ol.proj.transform([5, 45], "EPSG:4326", "EPSG:3857")
-        center: [308555, 6121070] // Chez Didier
-      })
-    });
+    layers: [bdorthoLayer, hivesLayer, extentsLayer, vegetationsLayer],
+    target: "ancgis-map",
+    keyboardEventTarget: document,
+    controls: [
+      new PeriodSwitcher(),
+      new Attribution(),
+      new ZoomSlider(),
+      new ScaleLine(),
+      new MousePosition({
+        className:"",
+        target:document.getElementById("ancgis-mapstatus-mouseposition"),
+        coordinateFormat(coords) {
+          var template = "X: {x} - Y: {y} ";
+          return coordinateFormat(coords, template);
+      }})
+    ],
+    view: new View({
+      zoom: 20,
+      //center: ol.proj.transform([5, 45], "EPSG:4326", "EPSG:3857")
+      center: [308555, 6121070] // Chez Didier
+    })
+  });
 };

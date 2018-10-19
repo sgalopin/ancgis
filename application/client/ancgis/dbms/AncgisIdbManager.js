@@ -47,6 +47,7 @@ class AncgisIdbManager extends SyncIdbManager {
         if (cursor) {
           let feature = cursor.value;
           if (!(feature.properties && feature.properties.metadata && feature.properties.metadata.deleted)) {
+            // Populate the flore
             if (feature.properties.flore && feature.properties.flore.length > 0) {
               let flore = [];
               feature.properties.flore.forEach(async function(specie){

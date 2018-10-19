@@ -19,3 +19,7 @@ echo "--- Populating done."
 echo "--- Populating of the hives collection."
 mongo localhost/ancgis hives.js
 echo "--- Populating done."
+
+echo "--- Populating of the extents collection."
+mongo localhost/ancgis extents.js
+echo "--- Populating done."

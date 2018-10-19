@@ -31,9 +31,11 @@ class AbstractDAO {
 
   dispatchEvent(e) {
     let eventType = e.type;
-    this.listeners[eventType].forEach(function(listener){
-      listener.call(this);
-    });
+    if (this.listeners && this.listeners[eventType]) {
+      this.listeners[eventType].forEach(function(listener) {
+        listener.call(this);
+      });
+    }
   }
 
   dispatchDirtyAddedEvent() {

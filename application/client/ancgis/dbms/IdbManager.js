@@ -40,6 +40,8 @@ class IdbManager {
         hivesStore.createIndex("dirty", "properties.metadata.dirty");
         let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"})
         zonesStore.createIndex("dirty", "properties.metadata.dirty");
+        let extentsStore = self.db.createObjectStore("extents", {keyPath: "id"})
+        extentsStore.createIndex("dirty", "properties.metadata.dirty");
         // Returns the db
         event.target.transaction.oncomplete = function(e) {
           self.populateDataCollection("taxons"); // is Asynchrone

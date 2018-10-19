@@ -9,6 +9,10 @@ function displayMessage(message, msgDivSelector, cleanPreviousMsg = false) {
     $(".alert-dismissible").remove();
   }
   $(msgDivSelector).append(appMessageHTML);
+  // Remove all the success messages after 3s
+  setTimeout(function(){
+    $(".alert-success").remove();
+  }, 3000);
 }
 
 /**

@@ -1,44 +1,65 @@
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open("ancgis-statics-ressources").then(function(cache) {
-      return cache.addAll(
-        [
-          // Code
-          '/',
-          '/manifest.json',
-          '/stylesheets/style.css',
-          '/rest/taxons',
-          '/javascripts/app.bundle.js',
-          '/javascripts/tools.bundle.js',
-          // Map's tiles
-          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66545&TileRow=45516',
-          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66545&TileRow=45515',
-          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66544&TileRow=45516',
-          'https://wxs.ign.fr/7wbodpc2qweqkultejkb47zv/wmts?layer=ORTHOIMAGERY.ORTHOPHOTOS&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fjpeg&TileMatrix=17&TileCol=66544&TileRow=45515',
-          // Images
-          '/images/glyphicons/glyphicons-388-log-out.png',
-          '/images/glyphicons/glyphicons-551-erase.png',
-          '/images/glyphicons/glyphicons-31-pencil.png',
-          '/images/glyphicons/glyphicons-187-move.png',
-          '/images/glyphicons/glyphicons-96-vector-path-circle.png',
-          '/images/glyphicons/glyphicons-97-vector-path-polygon.png',
-          '/images/glyphicons/glyphicons-454-kiosk.png',
-          '/images/glyphicons/glyphicons-194-ok-sign.png',
-          '/images/glyphicons/glyphicons-193-remove-sign.png',
-          '/images/glyphicons/glyphicons-191-plus-sign.png',
-          '/images/glyphicons/glyphicons-208-remove.png',
-          '/images/glyphicons/glyphicons-201-download.png',
-          '/images/glyphicons/glyphicons-202-upload.png',
-          '/images/warning.png'
-        ]
-      );
-    })
-  );
+  if (navigator.onLine) {
+    event.waitUntil(
+      caches.open("ancgis-statics-ressources").then(function(cache) {
+        return cache.addAll(
+          [
+            // Code
+            '/',
+            '/manifest.json',
+            '/stylesheets/style.css',
+            '/javascripts/app.bundle.js',
+            '/javascripts/tools.bundle.js',
+            // Data
+            '/rest/taxons',
+            // Images
+            '/images/glyphicons/glyphicons-388-log-out.png',
+            '/images/glyphicons/glyphicons-551-erase.png',
+            '/images/glyphicons/glyphicons-31-pencil.png',
+            '/images/glyphicons/glyphicons-187-move.png',
+            '/images/glyphicons/glyphicons-96-vector-path-circle.png',
+            '/images/glyphicons/glyphicons-97-vector-path-polygon.png',
+            '/images/glyphicons/glyphicons-454-kiosk.png',
+            '/images/glyphicons/glyphicons-194-ok-sign.png',
+            '/images/glyphicons/glyphicons-193-remove-sign.png',
+            '/images/glyphicons/glyphicons-191-plus-sign.png',
+            '/images/glyphicons/glyphicons-208-remove.png',
+            '/images/glyphicons/glyphicons-201-download.png',
+            '/images/glyphicons/glyphicons-202-upload.png',
+            '/images/glyphicons/glyphicons-100-vector-path-all.png',
+            '/images/warning.png',
+            '/images/blank.jpg'
+          ]
+        );
+      })
+    );
+  }
 });
-self.addEventListener('fetch', function(event) {
+
+/**
+ * Important note:
+ * In dev mode, check "Update on reload" in the DevTools Application panel
+ * to update the Service Worker and so the "install" cache on reload.
+ * For all modifications, check the update of the "cache.js" file
+ * in the DevTools Source panel before any interpretation.
+ */
+self.addEventListener('fetch', function (event) {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+    caches.match(event.request).then(function(cacheResponse) {
+      if (cacheResponse) {
+        return cacheResponse;
+      } else {
+        return fetch(event.request)
+        .catch(async function(error) {
+          if (
+            event.request.url.startsWith("https://wxs.ign.fr")
+            && event.request.headers.get("X-Custom-Header") !== 'MapCacheRequest') {
+            return await caches.match(new Request('/images/blank.jpg'));
+          } else {
+            console.error('Fetching failed:', error);
+          }
+        });
+      }
     })
   );
 });
