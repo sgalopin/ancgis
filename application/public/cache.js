@@ -27,6 +27,7 @@ self.addEventListener('install', function(event) {
             '/images/glyphicons/glyphicons-201-download.png',
             '/images/glyphicons/glyphicons-202-upload.png',
             '/images/glyphicons/glyphicons-100-vector-path-all.png',
+            '/images/glyphicons/glyphicons-517-menu-hamburger.png',
             '/images/warning.png',
             '/images/blank.jpg'
           ]

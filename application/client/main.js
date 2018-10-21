@@ -51,7 +51,7 @@ $(document).ready(function(){
     Sig();
 
     // Management of the logout button
-    $("#ancgis-topright-logout").click(function() {
+    $("#ancgis-topright-logout, #ancgis-topright-logout2").click(function() {
       if ( !navigator.onLine ) {
         confirm("Confirmez-vous la déconnexion ? Attention, l'authentification requiert une connexion.").then(
           disconnect,

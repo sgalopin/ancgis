@@ -161,6 +161,14 @@ html, body, .container-fluid {
     font-weight: 700;
   }
 }
+@media screen and (max-width: 640px) {
+  #ancgis-info-tbar {
+    margin: 0;
+    .content {
+      display: none;
+    }
+  }
+}
 #ancgis-uploadinfo-tbar {
   margin-right: 10px;
   font-family: serif;
@@ -182,6 +190,20 @@ html, body, .container-fluid {
 }
 #ancgis-mapcontrol-drawcircle, #ancgis-topright-drawextent {
   border-right-width: 3px;
+}
+#ancgis-topright-menu {
+  display: none;
+  .dropdown-toggle::after {
+    display: none;
+  }
+}
+@media screen and (max-width: 640px) {
+  #ancgis-topright-tbar {
+    display: none;
+  }
+  #ancgis-topright-menu {
+    display: block;
+  }
 }
 
 /*************************/
@@ -214,6 +236,24 @@ html, body, .container-fluid {
   span {
     vertical-align: text-top;
     margin-right: 5px;
+  }
+  span.count {
+    margin-right: 5px;
+  }
+}
+@media screen and (max-width: 640px) {
+  #ancgis-mapstatus-mapcachesync {
+    progress {
+      vertical-align: -2px;
+      font-size: 1.2em;
+      width: 10em;
+    }
+    span {
+      vertical-align: inherit;
+    }
+    span.label {
+      display: none;
+    }
   }
 }
 
@@ -338,6 +378,9 @@ progress[value]::-webkit-progress-value {
 }
 .ancgis-glyphicons-100vectorpathall {
   background-image: url("../images/glyphicons/glyphicons-100-vector-path-all.png");
+}
+.ancgis-glyphicons-517menuhamburger {
+  background-image: url("../images/glyphicons/glyphicons-517-menu-hamburger.png");
 }
 
 /*************************/

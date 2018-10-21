@@ -211,7 +211,7 @@ export default async function() {
   });
 
   // Management of the upload button
-  $("#ancgis-topright-upload").click(async function() {
+  $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     if ( !navigator.onLine ) {
       displayMapMessage("La soumission des données requiert une connexion.", "error", true);
     } else {
@@ -230,7 +230,7 @@ export default async function() {
   });
 
   // Management of the download button
-  $("#ancgis-topright-download").click(async function() {
+  $("#ancgis-topright-download, #ancgis-topright-download2").click(async function() {
     if ( !navigator.onLine ) {
       displayMapMessage("La récupération des données requiert une connexion.", 'error', true);
     } else {
@@ -258,19 +258,21 @@ export default async function() {
   // Management of the draw extent button
   // Note: To avoid to surcharge the "management of the toggling of the interactions" code part,
   // we simulate a button in the mapcontrol toolbar.
-  $("#ancgis-topright-drawextent").click(function() {
+  $("#ancgis-topright-drawextent, #ancgis-topright-drawextent2").click(function() {
     event.stopPropagation();
     if ( !$("#ancgis-topright-drawextent").is(".active") && !navigator.onLine ) {
       displayMapMessage("La délimitation des zones de cache requiert une connexion.", 'error', true);
     } else {
-      $(this).toggleClass("active");
+      $("#ancgis-topright-drawextent").toggleClass("active");
+      $("#ancgis-topright-drawextent2").toggleClass("active");
       $("#ancgis-mapcontrol-drawextent").trigger("click");
     }
   });
-  $("#ancgis-mapcontrol-drawextent").on("controlChange", function(event) {
+  $("#ancgis-mapcontrol-drawextent, #ancgis-topright-drawextent2").on("controlChange", function(event) {
     event.stopPropagation();
     if($("#ancgis-topright-drawextent").is(".active")){
       $("#ancgis-topright-drawextent").toggleClass("active");
+      $("#ancgis-topright-drawextent2").toggleClass("active");
     }
   });
 
