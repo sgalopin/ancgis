@@ -217,12 +217,15 @@ export default async function() {
       zones: await zoneDAO.uploadFeatures(),
       extents: await extentDAO.uploadFeatures()
     }
-    const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
-    + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
-    + "</br><b>Soumission des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
-    displayMapMessage(msg, "success", true);
-    // TODO: remove "setTimeout" when the download will be done at once
-    setTimeout(updateSyncInfo, 2000);
+    if (count.hives && count.zones && count.extents) {
+      const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
+      + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
+      + "</br><b>Soumission des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
+      displayMapMessage(msg, "success", true);
+    } else {
+      displayMapMessage("La soumission des données a échoué. Veuillez réessayer.", "error", true);
+    }
+    updateSyncInfo();
   });
 
   // Management of the download button

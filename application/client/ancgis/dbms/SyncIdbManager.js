@@ -57,8 +57,13 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
-      displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+        // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+      } else {
+        // something weird is happening
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+      }
       if (errorThrown) { console.error(errorThrown); }
     });
   }
@@ -77,8 +82,13 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
-      displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+        // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+      } else {
+        // something weird is happening
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+      }
       if (errorThrown) { console.error(errorThrown); }
     });
   }
@@ -97,8 +107,13 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
-      displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+        // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+      } else {
+        // something weird is happening
+        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+      }
       if (errorThrown) { console.error(errorThrown); }
     });
   }
@@ -290,6 +305,7 @@ class SyncIdbManager extends IdbManager {
           }
           console.error( "Request Failed with status : " + textStatus );
           if (errorThrown) { console.error(errorThrown); }
+          reject(Error("Unable to get remote documents from server."));
       });
     });
   }
@@ -338,25 +354,36 @@ class SyncIdbManager extends IdbManager {
 
   async uploadFeatures(collection) {
     let self = this;
-    let geoJsonFeatures = await this.getDirtyDocuments(collection);
-    let count = {
-      added: 0,
-      updated: 0,
-      deleted: 0
-    };
-    geoJsonFeatures.forEach( function(gjFeature) {
-      if (gjFeature.properties.metadata.local) {
-        self.postLocalDocument(collection, gjFeature);
-        count.added++;
-      } else if (gjFeature.properties.metadata.deleted) {
-        self.deleteLocalDocument(collection, gjFeature);
-        count.deleted++;
+    return new Promise(async function(resolve, reject) {
+      let geoJsonFeatures = await self.getDirtyDocuments(collection);
+      let count = {
+        added: 0,
+        updated: 0,
+        deleted: 0
+      };
+      if (geoJsonFeatures.length === 0) {
+        resolve(count);
       } else {
-        self.putLocalDocument(collection, gjFeature);
-        count.updated++;
+        let uploadPromises = [];
+        geoJsonFeatures.forEach( function(gjFeature) {
+          if (gjFeature.properties.metadata.local) {
+            uploadPromises.push(self.postLocalDocument(collection, gjFeature));
+            count.added++;
+          } else if (gjFeature.properties.metadata.deleted) {
+            uploadPromises.push(self.deleteLocalDocument(collection, gjFeature));
+            count.deleted++;
+          } else {
+            uploadPromises.push(self.putLocalDocument(collection, gjFeature));
+            count.updated++;
+          }
+        });
+        Promise.all(uploadPromises).then(function(){
+          resolve(count);
+        }).catch(function(){
+          reject(Error("Unable to upload the documents to the server."));
+        });
       }
     });
-    return count;
   }
 
   onCreateEvent(e) {}
