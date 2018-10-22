@@ -29,5 +29,7 @@ export function displayFormatedLoginMessage(message, cleanPreviousMsg) {
 }
 
 export function displayLoginMessage(message, type, cleanPreviousMsg) {
-  displayMessage({"messages":{type: message}}, ".ancgis-appmessage", cleanPreviousMsg);
+  let msg = {"messages": {}};
+  msg.messages[type] = message;
+  displayMessage(msg, ".ancgis-appmessage", cleanPreviousMsg);
 }

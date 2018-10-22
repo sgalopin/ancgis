@@ -40,10 +40,7 @@ class SyncIdbManager extends IdbManager {
   }
 
   getRemoteDocuments(collection) {
-    return jQuery.getJSON({
-      url: this.getRestUrl(collection),
-      dataType: "json"
-    });
+    return jQuery.getJSON(this.getRestUrl(collection));
   }
 
   // Create the doc remotly
@@ -59,9 +56,10 @@ class SyncIdbManager extends IdbManager {
     .done(function() {
       self.onRemoteSuccess(collection, doc);
     })
-    .fail(function( jqXHR, textStatus ) {
+    .fail(function( jqXHR, textStatus, errorThrown ) {
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
+      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (errorThrown) { console.error(errorThrown); }
     });
   }
 
@@ -78,9 +76,10 @@ class SyncIdbManager extends IdbManager {
     .done(function() {
       self.onRemoteSuccess(collection, doc);
     })
-    .fail(function( jqXHR, textStatus ) {
+    .fail(function( jqXHR, textStatus, errorThrown ) {
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
+      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (errorThrown) { console.error(errorThrown); }
     });
   }
 
@@ -97,9 +96,10 @@ class SyncIdbManager extends IdbManager {
     .done(function() {
       self.onRemoteSuccess(collection, doc);
     })
-    .fail(function( jqXHR, textStatus ) {
+    .fail(function( jqXHR, textStatus, errorThrown ) {
       displayMapMessage("La soumission d'une donnée a échoué. Veuillez réessayer.", "error", false);
-      console.error("Unable to synchronize  '" + doc.id + "': ", jqXHR);
+      console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus );
+      if (errorThrown) { console.error(errorThrown); }
     });
   }
 
@@ -227,54 +227,69 @@ class SyncIdbManager extends IdbManager {
   downloadFeatures(collection) {
     let self = this;
     return new Promise(async function(resolve, reject) {
-      let featureCollection = await self.getRemoteDocuments(collection);
-      let objectStore = self.db.transaction(collection, "readwrite").objectStore(collection);
-      let count = {
-        added: 0,
-        updated: 0,
-        deleted: 0
-      }
-      featureCollection.features.forEach(function(rfeature) {
-        let getLocalFeatureRequest = objectStore.get(rfeature.id);
-        getLocalFeatureRequest.onsuccess = function(event) {
-          let lFeature = getLocalFeatureRequest.result
-          // Case 1: The feature is present into the local database
-          if (lFeature) {
-            // Case 1.1: The remote is newer
-            if (rfeature.properties.metadata.timestamp > lFeature.properties.metadata.timestamp) {
-              // Case 1.1.1: The remote was deleted
-              if (rfeature.properties.metadata.deleted) {
-                objectStore.delete(rfeature.id);
-                count.deleted++;
-              }
-              // Case 1.1.2: The remote was updated
-              else {
-                // Case 1.1.2.1: The local was not modified
-                if (!lfeature.properties.metadata.dirty) {
-                  // The local is replaced
-                  objectStore.put(rfeature);
-                  count.updated++;
+      self.getRemoteDocuments(collection).done( function(featureCollection) {
+        let objectStore = self.db.transaction(collection, "readwrite").objectStore(collection);
+        let count = {
+          added: 0,
+          updated: 0,
+          deleted: 0
+        }
+        featureCollection.features.forEach(function(rfeature) {
+          let getLocalFeatureRequest = objectStore.get(rfeature.id);
+          getLocalFeatureRequest.onsuccess = function(event) {
+            let lFeature = getLocalFeatureRequest.result
+            // Case 1: The feature is present into the local database
+            if (lFeature) {
+              // Case 1.1: The remote is newer
+              if (rfeature.properties.metadata.timestamp > lFeature.properties.metadata.timestamp) {
+                // Case 1.1.1: The remote was deleted
+                if (rfeature.properties.metadata.deleted) {
+                  objectStore.delete(rfeature.id);
+                  count.deleted++;
                 }
-                // Case 1.1.2.2: The local was modified
+                // Case 1.1.2: The remote was updated
                 else {
-                  // The local is replaced
-                  // TODO: Do better (conflict manager).
-                  objectStore.put(rfeature);
-                  count.updated++;
+                  // Case 1.1.2.1: The local was not modified
+                  if (!lfeature.properties.metadata.dirty) {
+                    // The local is replaced
+                    objectStore.put(rfeature);
+                    count.updated++;
+                  }
+                  // Case 1.1.2.2: The local was modified
+                  else {
+                    // The local is replaced
+                    // TODO: Do better (conflict manager).
+                    objectStore.put(rfeature);
+                    count.updated++;
+                  }
                 }
               }
             }
+            // Case 2: The feature is not present into the local database
+            else {
+              objectStore.add(rfeature);
+              count.added++;
+            }
+            resolve(count);
+          };
+          getLocalFeatureRequest.onerror = function(event) {
+            reject(Error("Unable to retrieve data from database."));
+          };
+        });
+      })
+      .fail(function( jqXHR, textStatus, errorThrown ) {
+          if (jqXHR.readyState == 0) {
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur réseau.", 'error', true);
+          } else if (jqXHR.readyState == 4) {
+            // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur HTTP.", 'error', true);
+          } else {
+            // something weird is happening
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur inconnue.", 'error', true);
           }
-          // Case 2: The feature is not present into the local database
-          else {
-            objectStore.add(rfeature);
-            count.added++;
-          }
-          resolve(count);
-        };
-        getLocalFeatureRequest.onerror = function(event) {
-          reject(Error("Unable to retrieve data from database."));
-        };
+          console.error( "Request Failed with status : " + textStatus );
+          if (errorThrown) { console.error(errorThrown); }
       });
     });
   }

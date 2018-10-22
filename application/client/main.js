@@ -29,19 +29,32 @@ $(document).ready(function(){
   }
 
   function disconnect() {
-    if (navigator.onLine) { // server logout
-      $.ajax({
-        type: "GET",
-        url: "/logout",
-        dataType: 'json',
-        success: function(response){
+    // server logout
+    $.ajax({
+      type: "GET",
+      url: "/logout",
+      dataType: 'json',
+      success: function(response) {
+        document.location.href = "/";
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.readyState == 0) { // Network error
+          // local logout
+          deleteCookie("jwt");
           document.location.href = "/";
         }
-      });
-    } else { // local logout
-      deleteCookie("jwt");
-      document.location.href = "/";
-    }
+        else if (jqXHR.readyState == 4) {
+          // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur HTTP.", 'error', true);
+        }
+        else {
+          // something weird is happening
+          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur inconnue.", 'error', true);
+        }
+        console.error( "Request Failed with status : " + textStatus );
+        if (errorThrown) { console.error(errorThrown); }
+      }
+    });
   }
 
   async function openSIGPage() {
@@ -52,14 +65,10 @@ $(document).ready(function(){
 
     // Management of the logout button
     $("#ancgis-topright-logout, #ancgis-topright-logout2").click(function() {
-      if ( !navigator.onLine ) {
-        confirm("Confirmez-vous la déconnexion ? Attention, l'authentification requiert une connexion.").then(
-          disconnect,
-          $.noop
-        );
-      } else {
-        disconnect();
-      }
+      confirm("Confirmez-vous la déconnexion ? Attention, l'authentification requiert une connexion.").then(
+        disconnect,
+        $.noop
+      );
     });
   }
 
@@ -68,32 +77,44 @@ $(document).ready(function(){
     updatePage(loginPageTemplate);
     $("#login-form").bind("submit", function(e) {
       e.preventDefault();
-      // Authentification
-      if ( !navigator.onLine ) {
-        displayLoginMessage("L'authentification requiert une connexion.", 'error', true);
-      } else {
-        $.ajax({
-          type: "POST",
-          url: $("#login-form").prop('action'),
-          data: $('#login-form').serialize(),
-          dataType: 'json',
-          success: function(response){
-            if (response.success === true && hasVerifiedJWT("jwt")) { // TODO: Check the JWT validity
-              openSIGPage();
-              // Add Service worker for cache
-              addServiceWorker();
-            } else {
-              displayFormatedLoginMessage(response.message, true);
-            }
+      // Remote authentification
+      $.ajax({
+        type: "POST",
+        url: $("#login-form").prop('action'),
+        data: $('#login-form').serialize(),
+        dataType: 'json',
+        success: function(response) {
+          if (response.success === true && hasVerifiedJWT("jwt")) {
+            openSIGPage();
+            // Add Service worker for cache
+            addServiceWorker();
+          } else {
+            displayFormatedLoginMessage(response.message, true);
           }
-        });
-      }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          if (jqXHR.readyState == 0) {
+            // Local authentification
+            if (hasVerifiedJWT("jwt")) {
+              openSIGPage();
+            } else {
+              // Network error (i.e. connection refused, access denied due to CORS, etc.)
+              displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", 'error', true);
+            }
+          } else if (jqXHR.readyState == 4) {
+            // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+            displayLoginMessage("La demande de connexion a echouée suite à une erreur HTTP.", 'error', true);
+          } else {
+            // something weird is happening
+            displayLoginMessage("La demande de connexion a echouée suite à une erreur inconnue.", 'error', true);
+          }
+          console.error( "Request Failed with status : " + textStatus );
+          if (errorThrown) { console.error(errorThrown); }
+        }
+      });
     });
   }
 
-  if ( !navigator.onLine && hasVerifiedJWT("jwt") ) {
-    openSIGPage();
-  } else {
-    openLoginPage();
-  }
+  openLoginPage();
+
 });

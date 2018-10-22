@@ -212,47 +212,39 @@ export default async function() {
 
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
-    if ( !navigator.onLine ) {
-      displayMapMessage("La soumission des données requiert une connexion.", "error", true);
-    } else {
-      const count = {
-        hives: await hiveDAO.uploadFeatures(),
-        zones: await zoneDAO.uploadFeatures(),
-        extents: await extentDAO.uploadFeatures()
-      }
-      const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
-      + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
-      + "</br><b>Soumission des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
-      displayMapMessage(msg, "success", true);
-      // TODO: remove "setTimeout" when the download will be done at once
-      setTimeout(updateSyncInfo, 2000);
+    const count = {
+      hives: await hiveDAO.uploadFeatures(),
+      zones: await zoneDAO.uploadFeatures(),
+      extents: await extentDAO.uploadFeatures()
     }
+    const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
+    + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
+    + "</br><b>Soumission des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
+    displayMapMessage(msg, "success", true);
+    // TODO: remove "setTimeout" when the download will be done at once
+    setTimeout(updateSyncInfo, 2000);
   });
 
   // Management of the download button
   $("#ancgis-topright-download, #ancgis-topright-download2").click(async function() {
-    if ( !navigator.onLine ) {
-      displayMapMessage("La récupération des données requiert une connexion.", 'error', true);
-    } else {
-      const count = {
-        hives: await hiveDAO.downloadFeatures(),
-        zones: await zoneDAO.downloadFeatures(),
-        extents: await extentDAO.downloadFeatures()
-      }
-      hivesLayerSource.clear(true);
-      vegetationsLayerSource.clear(true);
-      extentsLayerSource.clear(true);
-      hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());
-      vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
-      extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
-      if ((count.extents.added + count.extents.updated + count.extents.deleted) > 0) {
-        cache.updateCache();
-      }
-      const msg = "<b>Récupération des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
-      + "</br><b>Récupération des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
-      + "</br><b>Récupération des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
-      displayMapMessage(msg, "success", true);
+    const count = {
+      hives: await hiveDAO.downloadFeatures(),
+      zones: await zoneDAO.downloadFeatures(),
+      extents: await extentDAO.downloadFeatures()
     }
+    hivesLayerSource.clear(true);
+    vegetationsLayerSource.clear(true);
+    extentsLayerSource.clear(true);
+    hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());
+    vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
+    extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
+    if ((count.extents.added + count.extents.updated + count.extents.deleted) > 0) {
+      cache.updateCache();
+    }
+    const msg = "<b>Récupération des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
+    + "</br><b>Récupération des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
+    + "</br><b>Récupération des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
+    displayMapMessage(msg, "success", true);
   });
 
   // Management of the draw extent button
@@ -260,13 +252,9 @@ export default async function() {
   // we simulate a button in the mapcontrol toolbar.
   $("#ancgis-topright-drawextent, #ancgis-topright-drawextent2").click(function() {
     event.stopPropagation();
-    if ( !$("#ancgis-topright-drawextent").is(".active") && !navigator.onLine ) {
-      displayMapMessage("La délimitation des zones de cache requiert une connexion.", 'error', true);
-    } else {
-      $("#ancgis-topright-drawextent").toggleClass("active");
-      $("#ancgis-topright-drawextent2").toggleClass("active");
-      $("#ancgis-mapcontrol-drawextent").trigger("click");
-    }
+    $("#ancgis-topright-drawextent").toggleClass("active");
+    $("#ancgis-topright-drawextent2").toggleClass("active");
+    $("#ancgis-mapcontrol-drawextent").trigger("click");
   });
   $("#ancgis-mapcontrol-drawextent, #ancgis-topright-drawextent2").on("controlChange", function(event) {
     event.stopPropagation();
@@ -312,7 +300,12 @@ export default async function() {
   });
   cache.addEventListener('cacheUpdateError', function(message) {
     displayMapMessage(message, "error", true);
+    setTimeout(function(){
+      $("#ancgis-mapstatus-mapcachesync .content").remove();
+    }, 3000);
   });
+
+  // Management of the extents layer change
   extentDAO.addEventListener('dirtyAdded', cache.updateCache.bind(cache));
 
   return { map, interactions };
