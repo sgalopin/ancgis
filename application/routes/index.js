@@ -31,11 +31,8 @@ router.post('/login', function(req, res, next) {
     if (err) {
       return next(err); // will generate a 500 error
     }
-    if (! user) { // TODO: Repair flash message
-      console.log('info.message: ',info.message);
-      req.flash('error', info.message);
-      //return res.render('login', { username : req.body.username });
-      return res.render('index');
+    if (! user) {
+      return res.status(200).send({ success: false, message: info.message});
     }
     // ***********************************************************************
     // "Note that when using a custom callback, it becomes the application's

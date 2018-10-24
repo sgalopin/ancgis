@@ -141,8 +141,6 @@ var loginUserLimiter = new RateLimit({
 // Routes (must be declared after the session)
 var index = require("./routes/index");
 app.use("/", index);
-app.use("/login", index);
-app.use("/logout", index);
 app.use("/register", require("./routes/register"));
 app.use("/requirePwdReset", require("./routes/requirePwdReset"));
 app.use("/resetPwd", require("./routes/resetPwd"));

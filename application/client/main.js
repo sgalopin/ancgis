@@ -4,7 +4,7 @@ import loginPageTemplate from "../views/subpages/login.hbs"
 import Sig from "./ancgis/map/sig.js"
 import {confirm} from "./ancgis/tool/modal.js";
 import jwt from 'jsonwebtoken';
-import {displayLoginMessage, displayFormatedLoginMessage} from "./ancgis/tool/message.js";
+import {displayLoginMessage} from "./ancgis/tool/message.js";
 import {addServiceWorker} from "./ancgis/tool/service-worker.js";
 
 $(document).ready(function(){
@@ -89,7 +89,7 @@ $(document).ready(function(){
             // Add Service worker for cache
             addServiceWorker();
           } else {
-            displayFormatedLoginMessage(response.message, true);
+            displayLoginMessage(response.message, 'error', true);
           }
         },
         error: function(jqXHR, textStatus, errorThrown) {
