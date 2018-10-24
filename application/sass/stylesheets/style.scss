@@ -554,6 +554,26 @@ progress[value]::-webkit-progress-value {
   top: calc(50% - 85px);
   left: calc(50% - 200px);
 }
+@media screen and (max-width: 640px) {
+  #ancgis-hiveform {
+    width: 350px;
+    height: 230px;
+    top: calc(50% - 115px);
+    left: calc(50% - 175px);
+  }
+  #ancgis-zoneform {
+    width: 350px;
+    height: 350px;
+    top: calc(50% - 175px);
+    left: calc(50% - 175px);
+  }
+  #ancgis-speciesform {
+    width: 350px;
+    height: 170px;
+    top: calc(50% - 85px);
+    left: calc(50% - 175px);
+  }
+}
 .ancgis-form:focus {
   outline: none;
 }
@@ -585,6 +605,11 @@ progress[value]::-webkit-progress-value {
 .ancgis-form-field>label {
   width: 200px;
   margin: 0;
+}
+@media screen and (max-width: 640px) {
+  .ancgis-form-field>label {
+    width: 150px;
+  }
 }
 .ancgis-form-field>input, .ancgis-form-field>select {
   width: 170px;

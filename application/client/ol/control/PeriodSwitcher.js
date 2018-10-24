@@ -99,6 +99,8 @@ class PeriodSwitcher extends Control {
       button.title = btnOpt.tipLabel;
       button.appendChild(document.createTextNode(btnOpt.label));
       button.setAttribute("data-period", btnOpt.period);
+      //button.setAttribute("data-toggle", "tooltip");
+      //button.setAttribute("data-placement", "bottom");
       listen(button, EventType.CLICK,
           PeriodSwitcher.handleClick_);
       button.onmouseover = simulateHover;

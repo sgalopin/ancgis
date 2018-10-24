@@ -34,9 +34,10 @@ class EditProperties extends Interaction {
  * @api
  */
 export function handleEvent(mapBrowserEvent) {
-
   // On right click only
-  if (mapBrowserEvent.type === MapBrowserEventType.POINTERDOWN && mapBrowserEvent.pointerEvent.button === 2) {
+  if ((mapBrowserEvent.type === MapBrowserEventType.POINTERDOWN
+    && mapBrowserEvent.pointerEvent.button === 2)
+    || mapBrowserEvent.type === MapBrowserEventType.DBLCLICK) {
     mapBrowserEvent.preventDefault();
     var map = mapBrowserEvent.map;
     var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel,
