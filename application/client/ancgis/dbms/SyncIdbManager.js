@@ -171,15 +171,23 @@ class SyncIdbManager extends IdbManager {
     let self = this;
     return new Promise(function(resolve, reject) {
       let store = self.db.transaction([collection], "readwrite").objectStore(collection);
+      // Gets the document from local database
       let getRequest = store.get(gjdoc.id);
       getRequest.onsuccess = function(event) {
-        let doc = event.target.result;
-        delete doc.properties.metadata.dirty;
-        delete doc.properties.metadata.local;
-        let request;
-        if (doc.properties.metadata.deleted) {
-          request = store.delete(doc.id);
-        } else {
+        let request, doc = event.target.result;
+        // The document was not modified during the upload process
+        if (gjdoc.properties.metadata.timestamp === doc.properties.metadata.timestamp) {
+          delete doc.properties.metadata.dirty;
+          delete doc.properties.metadata.local;
+          if (doc.properties.metadata.deleted) {
+            request = store.delete(doc.id);
+          } else {
+            request = store.put(doc);
+          }
+        }
+        // The document was modified during the upload process
+        else {
+          delete doc.properties.metadata.local; // The document was synchronized
           request = store.put(doc);
         }
         request.onsuccess = function(event) {
