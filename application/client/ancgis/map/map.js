@@ -192,9 +192,9 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
       }})
     ],
     view: new View({
-      zoom: 20,
+      zoom: 6,
       //center: ol.proj.transform([5, 45], "EPSG:4326", "EPSG:3857")
-      center: [308555, 6121070] // Chez Didier
+      center: [250000, 5910000] // France's center
     })
   });
 };

@@ -188,7 +188,9 @@ html, body, .container-fluid {
 #ancgis-map-ttbar .btn-primary:visited {
   background-color: #BBB !important;
 }
-#ancgis-mapcontrol-drawcircle, #ancgis-topright-drawextent {
+#ancgis-mapcontrol-drawcircle,
+#ancgis-topright-drawextent,
+#ancgis-topright-zoomtofeature {
   border-right-width: 3px;
 }
 #ancgis-topright-menu {
@@ -381,6 +383,9 @@ progress[value]::-webkit-progress-value {
 }
 .ancgis-glyphicons-517menuhamburger {
   background-image: url("../images/glyphicons/glyphicons-517-menu-hamburger.png");
+}
+.ancgis-glyphicons-488fitimagetoframe {
+  background-image: url("../images/glyphicons/glyphicons-488-fit-image-to-frame.png");
 }
 
 /*************************/

@@ -6,6 +6,7 @@ import Draw from 'ol/interaction/Draw.js'
 import Translate from 'ol/interaction/Translate.js'
 import VectorEventType from 'ol/source/VectorEventType.js'
 import Collection from 'ol/Collection.js'
+import {extend as olExtentExtend} from 'ol/extent.js'
 
 // local import
 import EditPropertiesEventType from '../../ol/interaction/EditPropertiesEventType.js'
@@ -91,7 +92,7 @@ export default async function(isOnline) {
 
   // Set up the extents layer source
   if (isOnline) {
-    let extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
+    var extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
     // Set the default values and save the new extent
     extentsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
       e.feature.setProperties({
@@ -215,7 +216,7 @@ export default async function(isOnline) {
     extentsLayerName: extentsLayerName,
     catchedLayerNames: [bdorthoLayerName]
   });
-  
+
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     const count = {
@@ -271,6 +272,14 @@ export default async function(isOnline) {
       $("#ancgis-topright-drawextent").toggleClass("active");
       $("#ancgis-topright-drawextent2").toggleClass("active");
     }
+  });
+
+  // Management of the zoom to feature button
+  $("#ancgis-topright-zoomtofeature, #ancgis-topright-zoomtofeature2").click(function() {
+    event.stopPropagation();
+    let extent = hivesLayerSource.getExtent();
+    olExtentExtend(extent, vegetationsLayerSource.getExtent());
+    map.getView().fit(extent, {duration: 1000});
   });
 
   // Management of the SyncInfo toolbar
