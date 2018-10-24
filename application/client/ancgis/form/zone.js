@@ -24,6 +24,7 @@ export default async function(idbm) {
         tbody.empty();
         tbody.append(floreLineTemplate({species: ppts.flore}));
         $(".ancgis-form-removespecies>span").click(onRemoveSpeciesClick); // eslint-disable-line no-use-before-define
+        $(".ancgis-form-florefields>table>tbody [data-toggle=\"tooltip\"]").tooltip();
       }
 
       // Remove buttons handler function
