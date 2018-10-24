@@ -57,11 +57,11 @@ $(document).ready(function(){
     });
   }
 
-  async function openSIGPage() {
+  async function openSIGPage(isOnline = false) {
     // Adds the sig page (static part)
-    updatePage(sigPageTemplate, {user: getUserInfo()});
+    updatePage(sigPageTemplate, {user: getUserInfo(), isOnline});
     // Adds the sig page (dynamic part)
-    Sig();
+    Sig(isOnline);
 
     // Management of the logout button
     $("#ancgis-topright-logout, #ancgis-topright-logout2").click(function() {
@@ -85,7 +85,7 @@ $(document).ready(function(){
         dataType: 'json',
         success: function(response) {
           if (response.success === true && hasVerifiedJWT("jwt")) {
-            openSIGPage();
+            openSIGPage(true); // true for online
             // Add Service worker for cache
             addServiceWorker();
           } else {

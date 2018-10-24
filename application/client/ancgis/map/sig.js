@@ -33,7 +33,7 @@ const TRANSLATEEND = 'translateend';
 /**
  * Sig builder.
  */
-export default async function() {
+export default async function(isOnline) {
 
   let idbm = await (new Idbm()).openDB();
   let hiveDAO = new HiveDAO(idbm);
@@ -45,7 +45,7 @@ export default async function() {
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await Map(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName);
+  let map = await Map(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -90,26 +90,21 @@ export default async function() {
   vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
 
   // Set up the extents layer source
-  let extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
-  // Set the default values and save the new extent
-  extentsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
-    e.feature.setProperties({
-      layerName: extentsLayerName,
-      dao: extentDAO,
-    }, true);
-    if ( typeof e.feature.getId() === "undefined" ) {
-      extentDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
-    }
-  });
-  // Add the features from the local database
-  extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
-
-  // Cache the map tiles
-  let cache = new MapCache({
-    map: map,
-    extentsLayerName: extentsLayerName,
-    catchedLayerNames: [bdorthoLayerName]
-  });
+  if (isOnline) {
+    let extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
+    // Set the default values and save the new extent
+    extentsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
+      e.feature.setProperties({
+        layerName: extentsLayerName,
+        dao: extentDAO,
+      }, true);
+      if ( typeof e.feature.getId() === "undefined" ) {
+        extentDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
+      }
+    });
+    // Add the features from the local database
+    extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
+  }
 
   var interactions = {
     // Add Hive Button Control
@@ -126,20 +121,12 @@ export default async function() {
       source: map.getLayerByName(vegetationsLayerName).getSource(),
       type: "Circle"
     }),
-    // Draw Extent Button Control
-    drawextent : new Draw({
-      source: map.getLayerByName(extentsLayerName).getSource(),
-      type: "Polygon"
-    }),
 		// Translate Button Control
 		translate : new Translate(),
 		// Modify Button Control
 		modify : [
       new ModifyFeature({
   			source: map.getLayerByName(vegetationsLayerName).getSource()
-  		}),
-      new ModifyFeature({
-  			source: map.getLayerByName(extentsLayerName).getSource()
   		})
     ],
 		// Erase Button Control
@@ -147,6 +134,18 @@ export default async function() {
     // Edit Zone Properties interaction
 		editproperties : new EditProperties()
   };
+
+  if (isOnline) {
+    // Draw Extent Button Control
+    interactions.drawextent = new Draw({
+      source: map.getLayerByName(extentsLayerName).getSource(),
+      type: "Polygon"
+    });
+    // Modify Button Control
+    interactions.modify.push(new ModifyFeature({
+      source: map.getLayerByName(extentsLayerName).getSource()
+    }));
+  }
 
 	// Management of the interactions events
 	interactions.translate.on(
@@ -210,6 +209,13 @@ export default async function() {
     map.addInteractions(interactions.editproperties);
   });
 
+  // Cache the map tiles
+  let cache = new MapCache({
+    map: map,
+    extentsLayerName: extentsLayerName,
+    catchedLayerNames: [bdorthoLayerName]
+  });
+  
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     const count = {

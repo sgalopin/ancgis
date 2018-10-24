@@ -30,7 +30,7 @@ import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName) {
+export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -171,8 +171,11 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: ignSource
   });
 
+  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
+  if (isOnline) { layers.push(extentsLayer); }
+
   return new ExtendedMap ({ // Openlayers Map
-    layers: [bdorthoLayer, hivesLayer, extentsLayer, vegetationsLayer],
+    layers,
     target: "ancgis-map",
     keyboardEventTarget: document,
     controls: [
