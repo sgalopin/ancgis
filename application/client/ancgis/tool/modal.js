@@ -27,4 +27,4 @@ export function confirm(message) {
       reject(e);
     });
   });
-};
+}

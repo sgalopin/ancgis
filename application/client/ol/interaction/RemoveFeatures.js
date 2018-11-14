@@ -1,10 +1,10 @@
 /**
  * @module ancgis/client/ol/interaction/RemoveFeatures
  */
-import RemoveFeatureEventType from './RemoveFeaturesEventType.js'
-import Select from 'ol/interaction/Select.js';
-import {platformModifierKeyOnly} from 'ol/events/condition.js';
-import Event from 'ol/events/Event.js';
+import RemoveFeatureEventType from "./RemoveFeaturesEventType.js"
+import Select from "ol/interaction/Select.js";
+import {platformModifierKeyOnly} from "ol/events/condition.js";
+import Event from "ol/events/Event.js";
 import {confirm} from "../../ancgis/tool/modal.js";
 
 /**

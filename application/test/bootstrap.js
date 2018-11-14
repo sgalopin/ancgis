@@ -1,14 +1,14 @@
-const puppeteer = require('puppeteer');
-const { expect } = require('chai');
-const _ = require('lodash');
-const globalVariables = _.pick(global, ['browser', 'expect']);
+const puppeteer = require("puppeteer");
+const { expect } = require("chai");
+const _ = require("lodash");
+const globalVariables = _.pick(global, ["browser", "expect"]);
 
 // puppeteer options
 const opts = {
   //headless: false,
   //slowMo: 100,
   timeout: 10000,
-  args: ['--no-sandbox']
+  args: ["--no-sandbox"]
 };
 
 // expose variables

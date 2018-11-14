@@ -138,7 +138,7 @@ class IdbManager {
             // No more entries
             resolve(data);
          }
-      }; // TODO: Add an 'onerror' handler ?
+      }; // TODO: Add an "onerror" handler ?
     });
   }
 

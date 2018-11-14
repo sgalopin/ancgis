@@ -12,6 +12,6 @@ export default {
    * @event module:ol/interaction/SelectEvent~SelectEvent#remove
    * @api
    */
-  REMOVE: 'remove'
+  REMOVE: "remove"
 
 };

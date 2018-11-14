@@ -4,24 +4,24 @@
 // TODO: serialize dataProjection as crs member when writing
 // see https://github.com/openlayers/openlayers/issues/2078
 
-import {assert} from 'ol/asserts.js';
-import Feature from 'ol/Feature.js';
-import {transformWithOptions} from 'ol/format/Feature.js';
-import JSONFeature from 'ol/format/JSONFeature.js';
-import GeometryCollection from 'ol/geom/GeometryCollection.js';
-import LineString from 'ol/geom/LineString.js';
-import MultiLineString from 'ol/geom/MultiLineString.js';
-import MultiPoint from 'ol/geom/MultiPoint.js';
-import MultiPolygon from 'ol/geom/MultiPolygon.js';
-import Point from 'ol/geom/Point.js';
-import Polygon from 'ol/geom/Polygon.js';
-import {assign, isEmpty} from 'ol/obj.js';
-import {get as getProjection} from 'ol/proj.js';
+import {assert} from "ol/asserts.js";
+import Feature from "ol/Feature.js";
+import {transformWithOptions} from "ol/format/Feature.js";
+import JSONFeature from "ol/format/JSONFeature.js";
+import GeometryCollection from "ol/geom/GeometryCollection.js";
+import LineString from "ol/geom/LineString.js";
+import MultiLineString from "ol/geom/MultiLineString.js";
+import MultiPoint from "ol/geom/MultiPoint.js";
+import MultiPolygon from "ol/geom/MultiPolygon.js";
+import Point from "ol/geom/Point.js";
+import Polygon from "ol/geom/Polygon.js";
+import {assign, isEmpty} from "ol/obj.js";
+import {get as getProjection} from "ol/proj.js";
 
 
 /**
  * @typedef {Object} Options
- * @property {module:ol/proj~ProjectionLike} [dataProjection='EPSG:4326'] Default data projection.
+ * @property {module:ol/proj~ProjectionLike} [dataProjection="EPSG:4326"] Default data projection.
  * @property {module:ol/proj~ProjectionLike} [featureProjection] Projection for features read or
  * written by the format.  Options passed to read or write methods will take precedence.
  * @property {string} [geometryName] Geometry name to use when creating features.
@@ -54,7 +54,7 @@ class ExtendedGeoJSON extends JSONFeature {
      */
     this.dataProjection = getProjection(
       options.dataProjection ?
-        options.dataProjection : 'EPSG:4326');
+        options.dataProjection : "EPSG:4326");
 
     if (options.featureProjection) {
       this.defaultFeatureProjection = getProjection(options.featureProjection);
@@ -84,11 +84,11 @@ class ExtendedGeoJSON extends JSONFeature {
      * @type {GeoJSONFeature}
      */
     let geoJSONFeature = null;
-    if (object.type === 'Feature') {
+    if (object.type === "Feature") {
       geoJSONFeature = /** @type {GeoJSONFeature} */ (object);
     } else {
       geoJSONFeature = /** @type {GeoJSONFeature} */ ({
-        type: 'Feature',
+        type: "Feature",
         geometry: /** @type {GeoJSONGeometry|GeoJSONGeometryCollection} */ (object)
       });
     }
@@ -117,7 +117,7 @@ class ExtendedGeoJSON extends JSONFeature {
     const geoJSONObject = /** @type {GeoJSONObject} */ (object);
     /** @type {Array<module:ol/Feature>} */
     let features = null;
-    if (geoJSONObject.type === 'FeatureCollection') {
+    if (geoJSONObject.type === "FeatureCollection") {
       const geoJSONFeatureCollection = /** @type {GeoJSONFeatureCollection} */ (object);
       features = [];
       const geoJSONFeatures = geoJSONFeatureCollection.features;
@@ -145,7 +145,7 @@ class ExtendedGeoJSON extends JSONFeature {
     const crs = geoJSONObject.crs;
     let projection;
     if (crs) {
-      if (crs.type == 'name') {
+      if (crs.type == "name") {
         projection = getProjection(crs.properties.name);
       } else {
         assert(false, 36); // Unknown SRS type
@@ -171,7 +171,7 @@ class ExtendedGeoJSON extends JSONFeature {
     opt_options = this.adaptOptions(opt_options);
 
     const object = /** @type {GeoJSONFeature} */ ({
-      'type': 'Feature'
+      "type": "Feature"
     });
     const id = feature.getId();
     if (id !== undefined) {
@@ -209,7 +209,7 @@ class ExtendedGeoJSON extends JSONFeature {
       objects.push(this.writeFeatureObject(features[i], opt_options));
     }
     return /** @type {GeoJSONFeatureCollection} */ ({
-      type: 'FeatureCollection',
+      type: "FeatureCollection",
       features: objects
     });
   }
@@ -235,21 +235,21 @@ class ExtendedGeoJSON extends JSONFeature {
 
 // Based on ol/format/GeoJSON v5.2.0
 
-import Circle from 'ol/geom/Circle.js'
+import Circle from "ol/geom/Circle.js"
 
 /**
  * @const
  * @type {Object<string, function(GeoJSONObject): module:ol/geom/Geometry>}
  */
 const GEOMETRY_READERS = {
-  'Point': readPointGeometry,
-  'LineString': readLineStringGeometry,
-  'Polygon': readPolygonGeometry,
-  'MultiPoint': readMultiPointGeometry,
-  'MultiLineString': readMultiLineStringGeometry,
-  'MultiPolygon': readMultiPolygonGeometry,
-  'GeometryCollection': readGeometryCollectionGeometry,
-  'Circle': readCircleGeometry
+  "Point": readPointGeometry,
+  "LineString": readLineStringGeometry,
+  "Polygon": readPolygonGeometry,
+  "MultiPoint": readMultiPointGeometry,
+  "MultiLineString": readMultiLineStringGeometry,
+  "MultiPolygon": readMultiPolygonGeometry,
+  "GeometryCollection": readGeometryCollectionGeometry,
+  "Circle": readCircleGeometry
 };
 
 /**
@@ -257,14 +257,14 @@ const GEOMETRY_READERS = {
  * @type {Object<string, function(module:ol/geom/Geometry, module:ol/format/Feature~WriteOptions=): (GeoJSONGeometry|GeoJSONGeometryCollection)>}
  */
 const GEOMETRY_WRITERS = {
-  'Point': writePointGeometry,
-  'LineString': writeLineStringGeometry,
-  'Polygon': writePolygonGeometry,
-  'MultiPoint': writeMultiPointGeometry,
-  'MultiLineString': writeMultiLineStringGeometry,
-  'MultiPolygon': writeMultiPolygonGeometry,
-  'GeometryCollection': writeGeometryCollectionGeometry,
-  'Circle': writeCircleGeometry
+  "Point": writePointGeometry,
+  "LineString": writeLineStringGeometry,
+  "Polygon": writePolygonGeometry,
+  "MultiPoint": writeMultiPointGeometry,
+  "MultiLineString": writeMultiLineStringGeometry,
+  "MultiPolygon": writeMultiPolygonGeometry,
+  "GeometryCollection": writeGeometryCollectionGeometry,
+  "Circle": writeCircleGeometry
 };
 
 /**
@@ -399,7 +399,7 @@ function writeGeometry(geometry, opt_options) {
  */
 function writeEmptyGeometryCollectionGeometry(geometry) {
   return /** @type {GeoJSONGeometryCollection} */ ({
-    type: 'GeometryCollection',
+    type: "GeometryCollection",
     geometries: []
   });
 }
@@ -417,7 +417,7 @@ function writeGeometryCollectionGeometry(geometry, opt_options) {
     return writeGeometry(geometry, options);
   });
   return /** @type {GeoJSONGeometryCollection} */ ({
-    type: 'GeometryCollection',
+    type: "GeometryCollection",
     geometries: geometries
   });
 }
@@ -430,7 +430,7 @@ function writeGeometryCollectionGeometry(geometry, opt_options) {
  */
 function writeLineStringGeometry(geometry, opt_options) {
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'LineString',
+    type: "LineString",
     coordinates: geometry.getCoordinates()
   });
 }
@@ -443,7 +443,7 @@ function writeLineStringGeometry(geometry, opt_options) {
  */
 function writeMultiLineStringGeometry(geometry, opt_options) {
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'MultiLineString',
+    type: "MultiLineString",
     coordinates: geometry.getCoordinates()
   });
 }
@@ -456,7 +456,7 @@ function writeMultiLineStringGeometry(geometry, opt_options) {
  */
 function writeMultiPointGeometry(geometry, opt_options) {
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'MultiPoint',
+    type: "MultiPoint",
     coordinates: geometry.getCoordinates()
   });
 }
@@ -473,7 +473,7 @@ function writeMultiPolygonGeometry(geometry, opt_options) {
     right = opt_options.rightHanded;
   }
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'MultiPolygon',
+    type: "MultiPolygon",
     coordinates: geometry.getCoordinates(right)
   });
 }
@@ -486,7 +486,7 @@ function writeMultiPolygonGeometry(geometry, opt_options) {
  */
 function writePointGeometry(geometry, opt_options) {
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'Point',
+    type: "Point",
     coordinates: geometry.getCoordinates()
   });
 }
@@ -503,7 +503,7 @@ function writePolygonGeometry(geometry, opt_options) {
     right = opt_options.rightHanded;
   }
   return /** @type {GeoJSONGeometry} */ ({
-    type: 'Polygon',
+    type: "Polygon",
     coordinates: geometry.getCoordinates(right)
   });
 }

@@ -1,9 +1,9 @@
-import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from './ancgis/tool/cookie.js'
+import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from "./ancgis/tool/cookie.js"
 import sigPageTemplate from "../views/subpages/sig.hbs"
 import loginPageTemplate from "../views/subpages/login.hbs"
 import Sig from "./ancgis/map/sig.js"
 import {confirm} from "./ancgis/tool/modal.js";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import {displayLoginMessage} from "./ancgis/tool/message.js";
 import {addServiceWorker} from "./ancgis/tool/service-worker.js";
 
@@ -12,7 +12,7 @@ $(document).ready(function(){
   function bootstrapSetup() {
     // Tooltip activation
     $("[data-toggle=\"tooltip\"]").tooltip({
-      trigger : 'hover'
+      trigger : "hover"
     });
     // Removes focus of the button.
     $(".btn").click(function(){
@@ -33,7 +33,7 @@ $(document).ready(function(){
     $.ajax({
       type: "GET",
       url: "/logout",
-      dataType: 'json',
+      dataType: "json",
       success: function(response) {
         document.location.href = "/";
       },
@@ -45,11 +45,11 @@ $(document).ready(function(){
         }
         else if (jqXHR.readyState == 4) {
           // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
-          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur HTTP.", 'error', true);
+          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur HTTP.", "error", true);
         }
         else {
           // something weird is happening
-          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur inconnue.", 'error', true);
+          displayLoginMessage("La demande de déconnexion a echouée suite à une erreur inconnue.", "error", true);
         }
         console.error( "Request Failed with status : " + textStatus );
         if (errorThrown) { console.error(errorThrown); }
@@ -80,16 +80,16 @@ $(document).ready(function(){
       // Remote authentification
       $.ajax({
         type: "POST",
-        url: $("#login-form").prop('action'),
-        data: $('#login-form').serialize(),
-        dataType: 'json',
+        url: $("#login-form").prop("action"),
+        data: $("#login-form").serialize(),
+        dataType: "json",
         success: function(response) {
           if (response.success === true && hasVerifiedJWT("jwt")) {
             openSIGPage(true); // true for online
             // Add Service worker for cache
             addServiceWorker();
           } else {
-            displayLoginMessage(response.message, 'error', true);
+            displayLoginMessage(response.message, "error", true);
           }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -99,14 +99,14 @@ $(document).ready(function(){
               openSIGPage();
             } else {
               // Network error (i.e. connection refused, access denied due to CORS, etc.)
-              displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", 'error', true);
+              displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", "error", true);
             }
           } else if (jqXHR.readyState == 4) {
             // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
-            displayLoginMessage("La demande de connexion a echouée suite à une erreur HTTP.", 'error', true);
+            displayLoginMessage("La demande de connexion a echouée suite à une erreur HTTP.", "error", true);
           } else {
             // something weird is happening
-            displayLoginMessage("La demande de connexion a echouée suite à une erreur inconnue.", 'error', true);
+            displayLoginMessage("La demande de connexion a echouée suite à une erreur inconnue.", "error", true);
           }
           console.error( "Request Failed with status : " + textStatus );
           if (errorThrown) { console.error(errorThrown); }

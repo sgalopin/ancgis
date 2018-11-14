@@ -9,11 +9,11 @@ const debug = require("debug")("app:server");
 /**
  * Create HTTPS server.
  */
-const fs = require('fs');
-const spdy = require('spdy');
+const fs = require("fs");
+const spdy = require("spdy");
 const options = {
-  key: fs.readFileSync('encryption/ancgis.dev.net.key'),
-  cert: fs.readFileSync( 'encryption/ancgis.dev.net.crt' )
+  key: fs.readFileSync("encryption/ancgis.dev.net.key"),
+  cert: fs.readFileSync( "encryption/ancgis.dev.net.crt" )
 };
 let https_server = spdy.createServer(options, app);
 https_server.listen(443);
@@ -23,7 +23,7 @@ https_server.on("listening", onListening);
 /**
  * Create HTTP server which runs alongside HTTPS and will redirect to it.
  */
-const http = require('http');
+const http = require("http");
 let http_server = http.createServer(app);
 http_server.listen(80);
 

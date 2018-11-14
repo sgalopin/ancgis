@@ -1,12 +1,12 @@
 /**
  * @module ancgis/client/ol/control/PeriodSwitcher
  */
-import Control from 'ol/control/Control.js';
-import {listen} from 'ol/events.js';
-import PeriodSwitcherEventType from './PeriodSwitcherEventType.js';
-import GeometryType from 'ol/geom/GeometryType.js';
-import EventType from 'ol/events/EventType.js';
-import {CLASS_UNSELECTABLE, CLASS_CONTROL} from 'ol/css.js';
+import Control from "ol/control/Control.js";
+import {listen} from "ol/events.js";
+import PeriodSwitcherEventType from "./PeriodSwitcherEventType.js";
+import GeometryType from "ol/geom/GeometryType.js";
+import EventType from "ol/events/EventType.js";
+import {CLASS_UNSELECTABLE, CLASS_CONTROL} from "ol/css.js";
 
 /**
  * @classdesc
@@ -87,7 +87,7 @@ class PeriodSwitcher extends Control {
       periodElements.forEach(function(periodElement){
         periodElement.classList.toggle("hover");
       });
-    };
+    }
 
     // Buttons list
     var list = document.createElement("ul");

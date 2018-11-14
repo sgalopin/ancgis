@@ -52,7 +52,7 @@ export default async function(idbm) {
       $("#ancgis-zoneform").focus();
 
       // keys handler
-      // Note: 'keypress' doesn't seem to be handled consistently
+      // Note: "keypress" doesn't seem to be handled consistently
       // between browsers whereas keyup is consistent.
       $("#ancgis-zoneform-typefield").on("keypress", function (event) {
           event.stopPropagation();
@@ -74,7 +74,7 @@ export default async function(idbm) {
         }
       });
 
-      // Manage the 'speciesFormValidated' event thrown by the species form
+      // Manage the "speciesFormValidated" event thrown by the species form
       $("#ancgis-zoneform").on("speciesFormValidated", function(event, sfValues) {
         event.stopPropagation();
         // Check the absence of the taxon
@@ -91,7 +91,7 @@ export default async function(idbm) {
         }
       });
 
-      // Manage the 'change' event thrown by the type field
+      // Manage the "change" event thrown by the type field
       $("#ancgis-zoneform-typefield").change(function() {
         newPpts.type = $("#ancgis-zoneform-typefield").val();
       });
@@ -125,4 +125,4 @@ export default async function(idbm) {
       });
     }
   };
-};
+}

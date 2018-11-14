@@ -11,6 +11,6 @@ var bundler = browserify("./client/main.js", {debug: true})
     global: true, // required per openlayers
     presets: ["@babel/preset-env"]
   })
-  .transform('uglifyify', { global: true  })
+  .transform("uglifyify", { global: true  })
   .bundle()
   .pipe(fs.createWriteStream("./client/bundle-debug.js"));

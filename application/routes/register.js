@@ -1,10 +1,10 @@
 var router = require("express").Router();
-var passport = require('passport');
-var zxcvbn = require('zxcvbn');
-var Account = require('../models/account');
-var RateLimit = require('express-rate-limit');
-const { checkSchema, validationResult } = require('express-validator/check');
-var jwt = require('jsonwebtoken');
+var passport = require("passport");
+var zxcvbn = require("zxcvbn");
+var Account = require("../models/account");
+var RateLimit = require("express-rate-limit");
+const { checkSchema, validationResult } = require("express-validator/check");
+var jwt = require("jsonwebtoken");
 var fs = require("fs");
 
 // Force brute protection middleware
@@ -14,8 +14,8 @@ var iPLimiter = new RateLimit({
   delayMs: 0, // disabled
   skipFailedRequests: true,
   handler: function (req, res, /*next*/) {
-    req.flash('error', "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
-    return res.render('register');
+    req.flash("error", "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
+    return res.render("register");
   }
 });
 //router.use(iPLimiter);
@@ -30,7 +30,7 @@ var postCheckSchema = checkSchema({
     },
     isAlphanumeric: {
       errorMessage: "Le nom d'utilisateur doit être de type alphanumérique.",
-      options: 'fr-FR'
+      options: "fr-FR"
     }
   },
   email: {
@@ -41,7 +41,7 @@ var postCheckSchema = checkSchema({
   profil: {
     isIn: {
       errorMessage: "Profil incorrect.",
-      options: [['Agriculteur', 'Apiculteur', 'Collectivité', 'Entomologiste', 'Semencier']]
+      options: [["Agriculteur", "Apiculteur", "Collectivité", "Entomologiste", "Semencier"]]
     }
   },
   password: {
@@ -55,9 +55,9 @@ var postCheckSchema = checkSchema({
     },
     custom: {
       options: (value, { req, location, path }) => {
-        var passwordScore = zxcvbn(value, user_inputs=[req.body.username, 'ancgis', 'anc', 'gis']).score;
+        var passwordScore = zxcvbn(value, user_inputs=[req.body.username, "ancgis", "anc", "gis"]).score;
         if (passwordScore < 2) {
-          throw new Error('Le mot de passe est trop faible. Si besoin, vous pouvez l\'améliorer <a href="https://lowe.github.io/tryzxcvbn/" target="_blank">ici</a>.');
+          throw new Error("Le mot de passe est trop faible. Si besoin, vous pouvez l'améliorer <a href=\"https://lowe.github.io/tryzxcvbn/\" target=\"_blank\">ici</a>.");
         }
         // Bug of the v5.2 of express-validator (see: https://github.com/express-validator/express-validator/issues/593)
         return true;
@@ -67,23 +67,23 @@ var postCheckSchema = checkSchema({
 });
 
 // Return the register form
-router.get('/', function(req, res) {
+router.get("/", function(req, res) {
   if (req.isAuthenticated()) {
-    res.redirect('/');
+    res.redirect("/");
   } else {
-    res.render('register');
+    res.render("register");
   }
 });
 
 // Manage the register form submission
-router.post('/', postCheckSchema, function(req, res, next) {
+router.post("/", postCheckSchema, function(req, res, next) {
 
   // Finds the validation errors in this request
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     var errorsMessage = "";
     errors.array().forEach(function(element) {
-      errorsMessage += errorsMessage === "" ? element.msg : '</br>' + element.msg;
+      errorsMessage += errorsMessage === "" ? element.msg : "</br>" + element.msg;
     });
     return errorRender(req, res, errorsMessage);
   }
@@ -99,7 +99,7 @@ router.post('/', postCheckSchema, function(req, res, next) {
     if (err) {
       return errorRender(req, res, err.message);
     }
-    passport.authenticate('local')(req, res, function () {
+    passport.authenticate("local")(req, res, function () {
       req.session.save(function (err) {
         if (err) {
           return next(err);
@@ -108,20 +108,20 @@ router.post('/', postCheckSchema, function(req, res, next) {
         // create an asymmetric token
         // TODO: Make a function to create the token and the cookie
         // Note: readFileSync returns a buffer if no encoding is specified.
-        var cert = fs.readFileSync(__dirname + '/../encryption/ancgis.dev.net.key', 'utf8'); // get private key
+        var cert = fs.readFileSync(__dirname + "/../encryption/ancgis.dev.net.key", "utf8"); // get private key
         var token = jwt.sign({ id: user._id, username: user.username, profil: user.profil }, cert, {
-          algorithm: 'RS256', // sign with RSA SHA256
+          algorithm: "RS256", // sign with RSA SHA256
           expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)
         });
 
         // Set a new cookie
-        res.cookie('jwt', token, {
+        res.cookie("jwt", token, {
           maxAge: 365 * 24 * 60 * 60 * 1000, // expires in 1 year (in ms)
           httpOnly: false,
           secure: true
         });
 
-        res.redirect('/');
+        res.redirect("/");
       });
     });
   });
@@ -129,8 +129,8 @@ router.post('/', postCheckSchema, function(req, res, next) {
 
 // Render the register form with error(s) message(s)
 function errorRender (req, res, message) {
-  req.flash('warning', message);
-  return res.render('register', {
+  req.flash("warning", message);
+  return res.render("register", {
     username : req.body.username,
     email: req.body.email,
     profil: req.body.profil

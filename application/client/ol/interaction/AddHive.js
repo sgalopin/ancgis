@@ -1,19 +1,19 @@
 /**
  * @module ancgis/client/ol/interaction/AddHive
  */
- import Interaction from 'ol/interaction/Interaction.js';
- import EventType from 'ol/events/EventType.js';
- import Feature from 'ol/Feature.js';
- import {getChangeEventType} from 'ol/Object.js';
- import {listen} from 'ol/events.js';
- import Event from 'ol/events/Event.js'
- import {platformModifierKeyOnly, pointerMove, singleClick} from 'ol/events/condition.js';
- import {TRUE, FALSE} from 'ol/functions.js';
- import Polygon from 'ol/geom/Polygon.js';
- import InteractionProperty from 'ol/interaction/Property.js';
- import VectorLayer from 'ol/layer/Vector.js';
- import VectorSource from 'ol/source/Vector.js';
- import {DEVICE_PIXEL_RATIO, FIREFOX, SAFARI} from 'ol/has.js';
+ import Interaction from "ol/interaction/Interaction.js";
+ import EventType from "ol/events/EventType.js";
+ import Feature from "ol/Feature.js";
+ import {getChangeEventType} from "ol/Object.js";
+ import {listen} from "ol/events.js";
+ import Event from "ol/events/Event.js"
+ import {platformModifierKeyOnly, pointerMove, singleClick} from "ol/events/condition.js";
+ import {TRUE, FALSE} from "ol/functions.js";
+ import Polygon from "ol/geom/Polygon.js";
+ import InteractionProperty from "ol/interaction/Property.js";
+ import VectorLayer from "ol/layer/Vector.js";
+ import VectorSource from "ol/source/Vector.js";
+ import {DEVICE_PIXEL_RATIO, FIREFOX, SAFARI} from "ol/has.js";
 
 /**
 * @typedef {Object} Options

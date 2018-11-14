@@ -3,7 +3,7 @@
  */
 
 import AbstractDAO from "./AbstractDAO.js";
-import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js';
+import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 import {getUserInfo} from "../tool/cookie.js";
 import uuidv1 from "uuid/v1";
 

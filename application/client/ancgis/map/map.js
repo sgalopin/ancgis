@@ -1,31 +1,31 @@
 /*global ol*/
 
 // ol import
-import VectorSource from 'ol/source/Vector.js'
-import VectorLayer from 'ol/layer/Vector.js'
-import Style from 'ol/style/Style.js'
-import Fill from 'ol/style/Fill.js'
-import Stroke from 'ol/style/Stroke.js'
-import Text from 'ol/style/Text.js'
-import Circle from 'ol/geom/Circle.js'
-import WMTSTileGrid from 'ol/tilegrid/WMTS.js'
-import WMTSSource from 'ol/source/WMTS.js'
-import TileLayer from 'ol/layer/Tile.js'
-import Attribution from 'ol/control/Attribution.js'
-import ZoomSlider from 'ol/control/ZoomSlider.js'
-import ScaleLine from 'ol/control/ScaleLine.js'
-import MousePosition from 'ol/control/MousePosition.js'
-import {format as coordinateFormat} from 'ol/coordinate.js'
-import View from 'ol/View.js'
-import {get as olProjGet} from 'ol/proj.js'
-import {getWidth as olExtentGetWidth} from 'ol/extent.js'
+import VectorSource from "ol/source/Vector.js"
+import VectorLayer from "ol/layer/Vector.js"
+import Style from "ol/style/Style.js"
+import Fill from "ol/style/Fill.js"
+import Stroke from "ol/style/Stroke.js"
+import Text from "ol/style/Text.js"
+import Circle from "ol/geom/Circle.js"
+import WMTSTileGrid from "ol/tilegrid/WMTS.js"
+import WMTSSource from "ol/source/WMTS.js"
+import TileLayer from "ol/layer/Tile.js"
+import Attribution from "ol/control/Attribution.js"
+import ZoomSlider from "ol/control/ZoomSlider.js"
+import ScaleLine from "ol/control/ScaleLine.js"
+import MousePosition from "ol/control/MousePosition.js"
+import {format as coordinateFormat} from "ol/coordinate.js"
+import View from "ol/View.js"
+import {get as olProjGet} from "ol/proj.js"
+import {getWidth as olExtentGetWidth} from "ol/extent.js"
 
 // Local import
-import ExtendedMap from '../../ol/ExtendedMap.js'
-import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
-import PeriodSwitcher from '../../ol/control/PeriodSwitcher.js'
-import PeriodSwitcherEvent from '../../ol/control/PeriodSwitcherEvent.js'
-import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js'
+import ExtendedMap from "../../ol/ExtendedMap.js"
+import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js"
+import PeriodSwitcher from "../../ol/control/PeriodSwitcher.js"
+import PeriodSwitcherEvent from "../../ol/control/PeriodSwitcherEvent.js"
+import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js"
 
 /**
  * Map builder.
@@ -215,4 +215,4 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
       center: [250000, 5910000] // France's center
     })
   });
-};
+}

@@ -12,6 +12,6 @@ export default {
    * @event module:ol/control/PeriodSwitcherEvent~PeriodSwitcherEvent#periodpotentialchange
    * @api
    */
-  PERIODPOTENTIALCHANGE: 'periodpotentialchange'
+  PERIODPOTENTIALCHANGE: "periodpotentialchange"
 
 };

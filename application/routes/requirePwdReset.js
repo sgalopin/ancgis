@@ -1,9 +1,9 @@
 var router = require("express").Router();
-var passport = require('passport');
-var Account = require('../models/account');
-var RateLimit = require('express-rate-limit');
-var async = require('async');
-const { checkSchema, validationResult } = require('express-validator/check');
+var passport = require("passport");
+var Account = require("../models/account");
+var RateLimit = require("express-rate-limit");
+var async = require("async");
+const { checkSchema, validationResult } = require("express-validator/check");
 
 // Force brute protection middleware
 var iPLimiter = new RateLimit({
@@ -12,8 +12,8 @@ var iPLimiter = new RateLimit({
   delayMs: 0, // disabled
   skipFailedRequests: true,
   handler: function (req, res, /*next*/) {
-    req.flash('error', "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
-    return res.render('requirePwdReset');
+    req.flash("error", "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
+    return res.render("requirePwdReset");
   }
 });
 //router.use(iPLimiter);
@@ -28,31 +28,31 @@ var postCheckSchema = checkSchema({
 });
 
 // Return the form
-router.get('/', function(req, res) {
+router.get("/", function(req, res) {
   if (req.isAuthenticated()) {
-    res.redirect('/');
+    res.redirect("/");
   } else {
-    res.render('requirePwdReset');
+    res.render("requirePwdReset");
   }
 });
 
 // Manage the form submission
-router.post('/', postCheckSchema, function(req, res, next) {
+router.post("/", postCheckSchema, function(req, res, next) {
 
   // Finds the validation errors in this request
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     var errorsMessage = "";
     errors.array().forEach(function(element) {
-      errorsMessage += errorsMessage === "" ? element.msg : '</br>' + element.msg;
+      errorsMessage += errorsMessage === "" ? element.msg : "</br>" + element.msg;
     });
     return errorRender(req, res, errorsMessage);
   }
 
   async.waterfall([
     function(done) {
-      require('crypto').randomBytes(20, function(err, buf) {
-        var token = buf.toString('hex');
+      require("crypto").randomBytes(20, function(err, buf) {
+        var token = buf.toString("hex");
         done(err, token);
       });
     },
@@ -71,7 +71,7 @@ router.post('/', postCheckSchema, function(req, res, next) {
       });
     },
     function(token, user, done) {
-      const sgMail = require('@sendgrid/mail');
+      const sgMail = require("@sendgrid/mail");
       if(!process.env.ANCGIS_SENDGRID_API_KEY){
         return errorRender (req, res, "SendGrid n'est pas correctement configuré, veuillez renseigner la clé de l'API.");
       }
@@ -79,10 +79,10 @@ router.post('/', postCheckSchema, function(req, res, next) {
       const msg = {
         to: user.email,
         from: {
-          name: 'AncGIS website',
-          email: 'password.reset@ancgis.dev.net',
+          name: "AncGIS website",
+          email: "password.reset@ancgis.dev.net",
         },
-        subject: 'Votre demande de changement de mot de passe',
+        subject: "Votre demande de changement de mot de passe",
         text: "Bonjour,\n\n" +
         "Vous (ou quelqu'un d'autre) avez demandé la réinitialisation de votre mot de passe pour votre compte AncGIS.\n\n" +
           "Veuillez cliquer sur le lien suivant (ou le copier-coller dans votre navigateur) pour terminer le processus:\n\n" +
@@ -92,7 +92,7 @@ router.post('/', postCheckSchema, function(req, res, next) {
       };
       sgMail.send(msg, (error, result) => {
         if (error) {
-          console.error('ERROR:', error.toString());
+          console.error("ERROR:", error.toString());
           return errorRender (req, res, "Une erreur technique empêche l'envoi de l'email de réinitialisation, veuillez contacter l'administrateur du site.");
         }
         else {
@@ -101,21 +101,21 @@ router.post('/', postCheckSchema, function(req, res, next) {
       });
     }
   ], function(err) {
-    res.redirect('/requirePwdReset');
+    res.redirect("/requirePwdReset");
   });
 });
 
 // Render the form with error(s) message(s)
 function errorRender (req, res, message) {
-  req.flash('error', message);
-  return res.render('requirePwdReset', {
+  req.flash("error", message);
+  return res.render("requirePwdReset", {
     email: req.body.email
   });
 }
 // Render the form with a message
 function messageRender (req, res, message) {
-  req.flash('info', message);
-  return res.render('requirePwdReset');
+  req.flash("info", message);
+  return res.render("requirePwdReset");
 }
 
 module.exports = router;

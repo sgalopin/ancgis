@@ -1,10 +1,10 @@
 // Requirements
 var mongoose = require("mongoose");
-const uuidv1 = require('uuid/v1');
+const uuidv1 = require("uuid/v1");
 
 // Model's declaration
 module.exports = mongoose.model("Extent", new mongoose.Schema({
-  "_id": { type: String, default: uuidv1(), alias: 'id' },
+  "_id": { type: String, default: uuidv1(), alias: "id" },
   "type": {type: String, required: true},
   "properties": {
     "account": {type: String},

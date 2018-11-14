@@ -1,22 +1,22 @@
 /*global ol*/
 
 // ol import
-import 'ol/ol.css'
-import Draw from 'ol/interaction/Draw.js'
-import Translate from 'ol/interaction/Translate.js'
-import VectorEventType from 'ol/source/VectorEventType.js'
-import Collection from 'ol/Collection.js'
-import {extend as olExtentExtend} from 'ol/extent.js'
+import "ol/ol.css"
+import Draw from "ol/interaction/Draw.js"
+import Translate from "ol/interaction/Translate.js"
+import VectorEventType from "ol/source/VectorEventType.js"
+import Collection from "ol/Collection.js"
+import {extend as olExtentExtend} from "ol/extent.js"
 
 // local import
-import EditPropertiesEventType from '../../ol/interaction/EditPropertiesEventType.js'
-import ModifyFeatureEventType from '../../ol/interaction/ModifyFeatureEventType.js'
-import RemoveFeaturesEventType from '../../ol/interaction/RemoveFeaturesEventType.js'
-import AddHive from '../../ol/interaction/AddHive.js'
-import ModifyFeature from '../../ol/interaction/ModifyFeature.js'
-import RemoveFeatures from '../../ol/interaction/RemoveFeatures.js'
-import EditProperties from '../../ol/interaction/EditProperties.js'
-import Map, {featuresToGeoJson} from './map.js'
+import EditPropertiesEventType from "../../ol/interaction/EditPropertiesEventType.js"
+import ModifyFeatureEventType from "../../ol/interaction/ModifyFeatureEventType.js"
+import RemoveFeaturesEventType from "../../ol/interaction/RemoveFeaturesEventType.js"
+import AddHive from "../../ol/interaction/AddHive.js"
+import ModifyFeature from "../../ol/interaction/ModifyFeature.js"
+import RemoveFeatures from "../../ol/interaction/RemoveFeatures.js"
+import EditProperties from "../../ol/interaction/EditProperties.js"
+import Map, {featuresToGeoJson} from "./map.js"
 import Idbm from "../dbms/AncgisIdbManager.js"
 import {displayMapMessage} from "../tool/message.js";
 import ZoneDAO from "../dao/ZoneDAO.js";
@@ -29,7 +29,7 @@ import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
 import MapCache from "../tool/MapCache.js";
 
 // Copied from ol/interaction/Translate.js
-const TRANSLATEEND = 'translateend';
+const TRANSLATEEND = "translateend";
 
 /**
  * Sig builder.
@@ -111,16 +111,16 @@ export default async function(isOnline) {
   var interactions = {
     // Add Hive Button Control
     addhive : new AddHive({
-      source: map.getLayerByName(hivesLayerName).getSource()
+      source: hivesLayerSource
     }),
     // Draw Polygon Button Control
     drawpolygon : new Draw({
-      source: map.getLayerByName(vegetationsLayerName).getSource(),
+      source: vegetationsLayerSource,
       type: "Polygon"
     }),
     // Draw Circle Button Control
     drawcircle : new Draw({
-      source: map.getLayerByName(vegetationsLayerName).getSource(),
+      source: vegetationsLayerSource,
       type: "Circle"
     }),
 		// Translate Button Control
@@ -128,7 +128,7 @@ export default async function(isOnline) {
 		// Modify Button Control
 		modify : [
       new ModifyFeature({
-  			source: map.getLayerByName(vegetationsLayerName).getSource()
+  			source: vegetationsLayerSource
   		})
     ],
 		// Erase Button Control
@@ -140,12 +140,12 @@ export default async function(isOnline) {
   if (isOnline) {
     // Draw Extent Button Control
     interactions.drawextent = new Draw({
-      source: map.getLayerByName(extentsLayerName).getSource(),
+      source: extentsLayerSource,
       type: "Polygon"
     });
     // Modify Button Control
     interactions.modify.push(new ModifyFeature({
-      source: map.getLayerByName(extentsLayerName).getSource()
+      source: extentsLayerSource
     }));
   }
 
@@ -260,13 +260,17 @@ export default async function(isOnline) {
       zones: await zoneDAO.downloadFeatures(),
       extents: await extentDAO.downloadFeatures()
     }
-    hivesLayerSource.clear(true);
-    vegetationsLayerSource.clear(true);
-    extentsLayerSource.clear(true);
-    hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());
-    vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
-    extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
+    if ((count.hives.added + count.hives.updated + count.hives.deleted) > 0) {
+      hivesLayerSource.clear();
+      hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());
+    }
+    if ((count.zones.added + count.zones.updated + count.zones.deleted) > 0) {
+      vegetationsLayerSource.clear();
+      vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
+    }
     if ((count.extents.added + count.extents.updated + count.extents.deleted) > 0) {
+      extentsLayerSource.clear();
+      extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
       cache.updateCache();
     }
     const msg = "<b>Récupération des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
@@ -310,22 +314,22 @@ export default async function(isOnline) {
     $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
     // Tooltip activation
     $("[data-toggle=\"tooltip\"]").tooltip({
-      trigger : 'hover'
+      trigger : "hover"
     });
   }
-  zoneDAO.addEventListener('dirtyAdded', updateSyncInfo);
-  hiveDAO.addEventListener('dirtyAdded', updateSyncInfo);
-  extentDAO.addEventListener('dirtyAdded', updateSyncInfo);
+  zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
   updateSyncInfo(); // Initialization
 
   // Management of the MapCacheInfo toolbar
-  cache.addEventListener('tileAdded', function(count, total) {
+  cache.addEventListener("tileAdded", function(count, total) {
     let mapCacheInfoHtml = mapCacheInfoTemplate({count, total});
     $("#ancgis-mapstatus-mapcachesync .content").remove();
     $("#ancgis-mapstatus-mapcachesync").append(mapCacheInfoHtml);
     // Tooltip activation
     $("[data-toggle=\"tooltip\"]").tooltip({
-      trigger : 'hover'
+      trigger : "hover"
     });
     if (count === total) {
       displayMapMessage("Cache cartographique mis à jour.", "success", true);
@@ -334,7 +338,7 @@ export default async function(isOnline) {
       }, 3000);
     }
   });
-  cache.addEventListener('cacheUpdateError', function(message) {
+  cache.addEventListener("cacheUpdateError", function(message) {
     displayMapMessage(message, "error", true);
     setTimeout(function(){
       $("#ancgis-mapstatus-mapcachesync .content").remove();
@@ -342,7 +346,7 @@ export default async function(isOnline) {
   });
 
   // Management of the extents layer change
-  extentDAO.addEventListener('dirtyAdded', cache.updateCache.bind(cache));
+  extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
   return { map, interactions };
 };

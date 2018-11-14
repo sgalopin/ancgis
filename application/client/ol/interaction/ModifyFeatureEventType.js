@@ -12,6 +12,6 @@ export default {
    * @event module:ol/interaction/ModifyEvent~ModifyEvent#modifyfeatures
    * @api
    */
-  MODIFYFEATURES: 'modifyfeatures'
+  MODIFYFEATURES: "modifyfeatures"
 
 };

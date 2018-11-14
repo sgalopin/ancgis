@@ -6,12 +6,12 @@
   <div id="ancgis-login-menu-shadow"></div>
   <div id="ancgis-login-menu">
     <h1>Authentification</h1>
-    <form role='form' action="/login" method="post" id="login-form">
+    <form role="form" action="/login" method="post" id="login-form">
       <div class="form-group">
-        <input class="form-control" type='text' name="username" autocomplete="username" title="Utilisateur" placeholder='Utilisateur' {{#if username}}value="{{username}}"{{/if}} autofocus=true>
+        <input class="form-control" type="text" name="username" autocomplete="username" title="Utilisateur" placeholder="Utilisateur" {{#if username}}value="{{username}}"{{/if}} autofocus=true>
       </div>
       <div class="form-group">
-        <input class="form-control" type='password' name="password" autocomplete="current-password" title="Mot de passe" placeholder='Mot de passe'>
+        <input class="form-control" type="password" name="password" autocomplete="current-password" title="Mot de passe" placeholder="Mot de passe">
         <div class="text-right col-form-label-sm">
           <a href="/requirePwdReset">Mot de passe oublié</a>
         </div>

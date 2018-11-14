@@ -1,7 +1,7 @@
 /**
  * @module ancgis/client/ol/control/PeriodSwitcherEvent
  */
-import Event from 'ol/events/Event.js';
+import Event from "ol/events/Event.js";
 
 /**
  * @classdesc

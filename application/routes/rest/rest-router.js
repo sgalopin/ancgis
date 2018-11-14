@@ -1,5 +1,5 @@
 var express = require("express");
-var passport = require('passport');
+var passport = require("passport");
 
 module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
   var router = express.Router(); // eslint-disable-line new-cap
@@ -9,7 +9,7 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
       if (req.isAuthenticated()) {
           next();
       } else {
-          res.redirect('/');
+          res.redirect("/");
       }
   }
 

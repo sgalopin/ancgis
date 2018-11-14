@@ -12,6 +12,6 @@ export default {
    * @event module:ol/interaction/EditPropertiesEvent~EditPropertiesEvent#select
    * @api
    */
-  SELECT: 'select'
+  SELECT: "select"
 
 };

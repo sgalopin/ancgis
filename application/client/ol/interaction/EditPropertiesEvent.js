@@ -1,7 +1,7 @@
 /**
  * @module ancgis/client/ol/interaction/EditPropertiesEvent
  */
-import Event from 'ol/events/Event.js';
+import Event from "ol/events/Event.js";
 
 /**
  * @classdesc

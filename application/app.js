@@ -1,10 +1,10 @@
-const result = require('dotenv').config();
+const result = require("dotenv").config();
 if (result.error) { throw result.error; }
 
 var express = require("express");
-var session = require('express-session');
+var session = require("express-session");
 var exphbs  = require("express-handlebars");
-var passport = require('passport');
+var passport = require("passport");
 var mongoose = require("mongoose");
 var sassMiddleware = require("node-sass-middleware");
 var path = require("path");
@@ -12,8 +12,8 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-var RateLimit = require('express-rate-limit');
-var flash = require('express-flash');
+var RateLimit = require("express-rate-limit");
+var flash = require("express-flash");
 
 var app = express();
 
@@ -22,19 +22,19 @@ app.use(function(req, res, next) {
   if (req.secure) {
     next();
   } else {
-    res.redirect('https://' + req.headers.host + req.url);
+    res.redirect("https://" + req.headers.host + req.url);
   }
 });
 
 // view engine setup
-const handlebarsHelpers = require('./helpers/handlebars');
+const handlebarsHelpers = require("./helpers/handlebars");
 app.engine("hbs", exphbs({
   extname: ".hbs",
   defaultLayout: "layout",
-  layoutsDir: __dirname + '/views/layouts/',
+  layoutsDir: __dirname + "/views/layouts/",
   helpers: handlebarsHelpers,
   partialsDir: [
-    __dirname + '/views/partials/'
+    __dirname + "/views/partials/"
   ]
 }));
 app.set("view engine", "hbs");
@@ -50,14 +50,14 @@ app.use (
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString + "/taxons", function(err) {
   if (err) {
-    console.log('Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!');
+    console.log("Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!");
   }
 });
 if (app.get("env") === "development") {
   // webpack-dev-middleware
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackConfig = require('./webpack.config.js');
+  const webpack = require("webpack");
+  const webpackDevMiddleware = require("webpack-dev-middleware");
+  const webpackConfig = require("./webpack.config.js");
   const compiler = webpack(webpackConfig);
   // Tell express to use the webpack-dev-middleware and use the webpack.config.js
   // configuration file as a base.
@@ -92,9 +92,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger("dev"));
 
 // Session management
-app.set('trust proxy', 1) // trust first proxy
+app.set("trust proxy", 1) // trust first proxy
 app.use(session({
-  secret: process.env.ANCGIS_SESSION_SECRET ? process.env.ANCGIS_SESSION_SECRET : require('crypto').randomBytes(64).toString('hex'),
+  secret: process.env.ANCGIS_SESSION_SECRET ? process.env.ANCGIS_SESSION_SECRET : require("crypto").randomBytes(64).toString("hex"),
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
@@ -107,9 +107,9 @@ app.use(passport.initialize());
 // In application using persistent login sessions, passport.session() middleware must also be used.
 app.use(passport.session());
 // requires the model with Passport-Local Mongoose plugged in
-const Account = require('./models/account');
+const Account = require("./models/account");
 // use static authenticate method of model in LocalStrategy
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 passport.use(new LocalStrategy(Account.authenticate()));
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(Account.serializeUser());
@@ -121,7 +121,7 @@ var loginIPLimiter = new RateLimit({
   max: 100,
   delayMs: 0, // disabled
   handler: function (req, res, /*next*/) {
-    return res.render('login', { error : "Trop de tentatives de connexion à partir de cette adresse IP, veuillez réessayer plus tard." });
+    return res.render("login", { error : "Trop de tentatives de connexion à partir de cette adresse IP, veuillez réessayer plus tard." });
   }
 });
 var loginUserLimiter = new RateLimit({
@@ -129,7 +129,7 @@ var loginUserLimiter = new RateLimit({
   max: 10,
   delayMs: 0, // disabled
   handler: function (req, res, /*next*/) {
-    return res.render('login', { username : req.body.username, error : "Trop de tentatives de connexion pour cet utilisateur, veuillez réessayer plus tard." });
+    return res.render("login", { username : req.body.username, error : "Trop de tentatives de connexion pour cet utilisateur, veuillez réessayer plus tard." });
   },
   keyGenerator: function (req) {
     return req.body.username;

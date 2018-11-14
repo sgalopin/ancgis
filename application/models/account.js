@@ -1,7 +1,7 @@
 // Requirements
 var mongoose = require("mongoose");
-var passport = require('passport');
-var passportLocalMongoose = require('passport-local-mongoose');
+var passport = require("passport");
+var passportLocalMongoose = require("passport-local-mongoose");
 
 // Model's declaration
 var Account = new mongoose.Schema({
@@ -29,4 +29,4 @@ Account.plugin(passportLocalMongoose, {
     UserExistsError: "Un utilisateur avec le même nom est déjà enregistré."
   }
 });
-module.exports = mongoose.model('Account', Account);
+module.exports = mongoose.model("Account", Account);

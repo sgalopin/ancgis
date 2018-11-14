@@ -1,13 +1,13 @@
 /**
  * @module ancgis/client/ol/interaction/ModifyFeature
  */
-import Modify from 'ol/interaction/Modify.js';
-import {platformModifierKeyOnly, singleClick} from 'ol/events/condition.js';
-import Collection from 'ol/Collection.js';
-import ModifyFeatureEventType from  './ModifyFeatureEventType.js'
-import {ModifyEvent} from 'ol/interaction/Modify.js'
-import EventType from 'ol/events/EventType.js';
-import {listen, listenOnce, unlisten} from 'ol/events.js';
+import Modify from "ol/interaction/Modify.js";
+import {platformModifierKeyOnly, singleClick} from "ol/events/condition.js";
+import Collection from "ol/Collection.js";
+import ModifyFeatureEventType from  "./ModifyFeatureEventType.js"
+import {ModifyEvent} from "ol/interaction/Modify.js"
+import EventType from "ol/events/EventType.js";
+import {listen, listenOnce, unlisten} from "ol/events.js";
 
 /**
  * @enum {string}
@@ -18,13 +18,13 @@ const ModifyEventType = {
    * @event ModifyEvent#modifystart
    * @api
    */
-  MODIFYSTART: 'modifystart',
+  MODIFYSTART: "modifystart",
   /**
    * Triggered upon feature modification end
    * @event ModifyEvent#modifyend
    * @api
    */
-  MODIFYEND: 'modifyend'
+  MODIFYEND: "modifyend"
 };
 
 /**

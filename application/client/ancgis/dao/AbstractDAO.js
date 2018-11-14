@@ -1,4 +1,4 @@
-import ExtendedGeoJSON from '../../ol/format/ExtendedGeoJSON.js'
+import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js"
 
 /**
  * @module ancgis/client/ancgis/dao/AbstractDAO
@@ -39,7 +39,7 @@ class AbstractDAO {
   }
 
   dispatchDirtyAddedEvent() {
-    this.dispatchEvent(new Event('dirtyAdded'));
+    this.dispatchEvent(new Event("dirtyAdded"));
   }
 
   getDirtyDocumentsCount(collection) {
@@ -90,6 +90,6 @@ class AbstractDAO {
       "features": await this.dbm.readAll(collection)
     });
   }
-};
+}
 
 export default AbstractDAO;

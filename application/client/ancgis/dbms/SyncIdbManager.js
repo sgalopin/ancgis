@@ -28,10 +28,9 @@ class SyncIdbManager extends IdbManager {
   // Open the database
   async openDB() {
     await super.openDB();
-    console.log('dbm:', this);
 
     // Add listeners
-    this.db.addEventListener('create', this.onCreateEvent.bind(this));
+    this.db.addEventListener("create", this.onCreateEvent.bind(this));
 
     return this;
   }
@@ -61,10 +60,10 @@ class SyncIdbManager extends IdbManager {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
       if (errorThrown) { console.error(errorThrown); }
     });
@@ -87,10 +86,10 @@ class SyncIdbManager extends IdbManager {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
       if (errorThrown) { console.error(errorThrown); }
     });
@@ -113,17 +112,17 @@ class SyncIdbManager extends IdbManager {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + ". Request Failed with status : " + textStatus, jqXHR );
+        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
       if (errorThrown) { console.error(errorThrown); }
     });
   }
 
   // Get the collection remotly
-  // TODO: Don't use 'feature' here but 'doc' (move to AncgisIdbManager ?)
+  // TODO: Don't use "feature" here but "doc" (move to AncgisIdbManager ?)
   populateFeaturesCollection (collection) {
     let self = this;
     getRemoteDocuments(collection)
@@ -250,7 +249,7 @@ class SyncIdbManager extends IdbManager {
     // the resolution of the ajax request.
   }
 
-  // TODO: Don't use 'feature' here but 'doc'
+  // TODO: Don't use "feature" here but "doc"
   downloadFeatures(collection) {
     let self = this;
     return new Promise(async function(resolve, reject) {
@@ -307,13 +306,13 @@ class SyncIdbManager extends IdbManager {
       .fail(function( jqXHR, textStatus, errorThrown ) {
           if (jqXHR.readyState == 0) {
             // Network error (i.e. connection refused, access denied due to CORS, etc.)
-            displayMapMessage("La demande de récupération des données a echouée suite à une erreur réseau.", 'error', true);
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur réseau.", "error", true);
           } else if (jqXHR.readyState == 4) {
             // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
-            displayMapMessage("La demande de récupération des données a echouée suite à une erreur HTTP.", 'error', true);
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur HTTP.", "error", true);
           } else {
             // something weird is happening
-            displayMapMessage("La demande de récupération des données a echouée suite à une erreur inconnue.", 'error', true);
+            displayMapMessage("La demande de récupération des données a echouée suite à une erreur inconnue.", "error", true);
           }
           console.error( "Request Failed with status : " + textStatus );
           if (errorThrown) { console.error(errorThrown); }

@@ -1,10 +1,10 @@
 /**
  * @module ancgis/client/ol/interaction/EditProperties
  */
-import Interaction from 'ol/interaction/Interaction.js';
-import MapBrowserEventType from 'ol/MapBrowserEventType.js';
-import EditPropertiesEvent from './EditPropertiesEvent.js';
-import EditPropertiesEventType from './EditPropertiesEventType.js';
+import Interaction from "ol/interaction/Interaction.js";
+import MapBrowserEventType from "ol/MapBrowserEventType.js";
+import EditPropertiesEvent from "./EditPropertiesEvent.js";
+import EditPropertiesEventType from "./EditPropertiesEventType.js";
 
 /**
  * @classdesc

@@ -44,7 +44,7 @@ export default async function(idbm) {
         $("#ancgis-speciesform").focus();
 
         // keys handler
-        // Note: 'keypress' doesn't seem to be handled consistently
+        // Note: "keypress" doesn't seem to be handled consistently
         // between browsers whereas keyup is consistent.
         $("#ancgis-speciesform-taxonfield").on("keypress", function (event) {
             event.stopPropagation();
@@ -79,12 +79,12 @@ export default async function(idbm) {
           event.stopPropagation();
           validateForm();
         });
-      }, function(err) { // Catch the 'readAll' function error
+      }, function(err) { // Catch the "readAll" function error
         console.error(err);
       })
-      .catch(function(err) { // Catch the 'then' function error
+      .catch(function(err) { // Catch the "then" function error
         console.error(err);
       });
     }
   };
-};
+}

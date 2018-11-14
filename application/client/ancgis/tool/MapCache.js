@@ -16,13 +16,13 @@ class MapCache {
   constructor(options) {
     // Checks the required options
     if (!options.map) {
-      throw new Error('MapCache requires a map.');
+      throw new Error("MapCache requires a map.");
     }
     if (!options.extentsLayerName) {
-      throw new Error('MapCache requires a extents layer name.');
+      throw new Error("MapCache requires a extents layer name.");
     }
     if (!options.catchedLayerNames) {
-      throw new Error('MapCache requires a catched layer name.');
+      throw new Error("MapCache requires a catched layer name.");
     }
 
     // Sets the class attributs
@@ -70,10 +70,10 @@ class MapCache {
             "X-Custom-Header": "MapCacheRequest",
           });
           const myInit = {
-            method: 'GET',
+            method: "GET",
             headers: myHeaders,
-            mode: 'cors', // will allow requests for assets on the same-origin and other origins which return the appropriate CORs headers.
-            cache: 'no-cache' // means always validate a response that is in the HTTP cache even if the browser thinks that it’s fresh.
+            mode: "cors", // will allow requests for assets on the same-origin and other origins which return the appropriate CORs headers.
+            cache: "no-cache" // means always validate a response that is in the HTTP cache even if the browser thinks that it’s fresh.
           };
           fetch(url, myInit).then(function (response) {
             count++;
@@ -83,7 +83,7 @@ class MapCache {
           })
           .catch(function(error) {
             self.dispatchCacheUpdateErrorEvent("Erreur réseau lors de la mise à jour du cache cartographique. Veuillez réessayer.");
-            console.error('Fetching map cache failed:', error);
+            console.error("Fetching map cache failed:", error);
           });
         });
       });
@@ -106,11 +106,11 @@ class MapCache {
   }
 
   dispatchTileAddedEvent() {
-    this.dispatchEvent(new CustomEvent('tileAdded', { 'detail': arguments }));
+    this.dispatchEvent(new CustomEvent("tileAdded", { "detail": arguments }));
   }
 
   dispatchCacheUpdateErrorEvent() {
-    this.dispatchEvent(new CustomEvent('cacheUpdateError', { 'detail': arguments }));
+    this.dispatchEvent(new CustomEvent("cacheUpdateError", { "detail": arguments }));
   }
 }
 
