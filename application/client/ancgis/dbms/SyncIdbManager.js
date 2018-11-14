@@ -22,6 +22,7 @@ class SyncIdbManager extends IdbManager {
 
     const options = opt_options ? opt_options : {};
     this.restBaseUrl = options.restBaseUrl ? options.restBaseUrl : "/rest";
+    this.submitErrors = {};
   }
 
   // Open the database
@@ -59,6 +60,7 @@ class SyncIdbManager extends IdbManager {
     .fail(function( jqXHR, textStatus, errorThrown ) {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
         console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
@@ -84,6 +86,7 @@ class SyncIdbManager extends IdbManager {
     .fail(function( jqXHR, textStatus, errorThrown ) {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
         console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
@@ -109,6 +112,7 @@ class SyncIdbManager extends IdbManager {
     .fail(function( jqXHR, textStatus, errorThrown ) {
       if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
+        self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
         console.error("Unable to synchronize  '" + doc.id + ". Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
@@ -362,6 +366,7 @@ class SyncIdbManager extends IdbManager {
 
   async uploadFeatures(collection) {
     let self = this;
+    self.submitErrors[collection] = {};
     return new Promise(async function(resolve, reject) {
       let geoJsonFeatures = await self.getDirtyDocuments(collection);
       let count = {
@@ -388,7 +393,10 @@ class SyncIdbManager extends IdbManager {
         Promise.all(uploadPromises).then(function(){
           resolve(count);
         }).catch(function(){
-          reject(Error("Unable to upload the documents to the server."));
+          reject({
+            "error": Error("Unable to upload the documents to the server."),
+            "details": self.submitErrors[collection]
+          });
         });
       }
     });

@@ -30,7 +30,7 @@ import PeriodSwitcherEventType from '../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName, isOnline) {
+export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -44,17 +44,19 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: hivesLayerSource,
     style(feature) {
       var ppts = feature.getProperties();
+      var text = "?";
+      if (ppts.registrationNumber && ppts.registrationNumber != null) {
+        text = "N°" + ppts.registrationNumber;
+      }
       return new Style({
         fill: new Fill({
-          color: "red"
+          color: "gray"
         }),
         stroke: new Stroke({
           color: "black",
           width: 2
         }),
-        text: new Text({
-          text: "N°" + ppts.registrationNumber
-        })
+        text: new Text({ text })
       });
     }
   });
@@ -94,20 +96,22 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
       };
 
       // Style text
-      if(ppts.flore) {
-        var text = "";
+      let text = "?";
+      if (ppts.flore) {
         ppts.flore.forEach(function(species, i) {
-          if (i !== 0) {
+          if (i === 0) {
+            text = "";
+          } else {
             text += "\n\n";
           }
           text += species.taxon.vernacularName + "\n"
           + species.taxon.periods + "\n"
           + species.recovery + "%";
         });
-        text = new Text({ text });
-        styles.Polygon.setText(text);
-        styles.Circle.setText(text);
       }
+      text = new Text({ text });
+      styles.Polygon.setText(text);
+      styles.Circle.setText(text);
 
       return styles[feature.getGeometry().getType()];
     }
@@ -125,6 +129,20 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
       return new Style({
         stroke: new Stroke({
           color: "black",
+          width: 3
+        })
+      });
+    }
+  });
+
+  // Errors Layer
+  var errorsLayer = new VectorLayer({
+    name: errorsLayerName,
+    source: new VectorSource(),
+    style(feature) {
+      return new Style({
+        stroke: new Stroke({
+          color: "red",
           width: 3
         })
       });
@@ -171,7 +189,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
+  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer, errorsLayer];
   if (isOnline) { layers.push(extentsLayer); }
 
   return new ExtendedMap ({ // Openlayers Map

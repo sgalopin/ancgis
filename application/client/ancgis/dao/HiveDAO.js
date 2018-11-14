@@ -70,7 +70,19 @@ class HiveDAO extends AbstractDAO {
   }
 
   uploadFeatures() {
-    return super.uploadFeatures(this.collection);
+    return new Promise((resolve, reject) => {
+      super.uploadFeatures(this.collection).then(function(count){
+        let msg = "<b>Soumission des ruches :</b> <b>" + count.added + "</b> ruche(s) ajoutée(s), <b>" + count.updated + "</b> mise(s) à jour, <b>" + count.deleted + "</b> effacée(s).";
+        resolve({ success: true, message: msg });
+      }, function(response){
+        let msg = "<b>La soumission des ruches a échoué:</b><br/>";
+        $.each(response.details, function(id, message) {
+          msg += "<a data-id=\"" + id + "\" title=\"" + id + "\" href=\"#\" data-toggle=\"tooltip\" data-placement=\"right\" data-container=\".alert-dismissible\">" + id.substring(0, 13) + "...</a> : " + message + "</br>";
+        });
+        msg = msg.substring(0, msg.length - 5); // Removes the trailing "</br>"
+        resolve({ success: false, message: msg });
+      });
+    });
   }
 
   featuresToGeoJson() {

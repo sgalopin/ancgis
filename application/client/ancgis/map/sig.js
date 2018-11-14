@@ -45,8 +45,9 @@ export default async function(isOnline) {
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
+  const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await Map(hivesLayerName, vegetationsLayerName, extentsLayerName, bdorthoLayerName, isOnline);
+  let map = await Map(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -219,20 +220,37 @@ export default async function(isOnline) {
 
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
-    const count = {
-      hives: await hiveDAO.uploadFeatures(),
-      zones: await zoneDAO.uploadFeatures(),
-      extents: await extentDAO.uploadFeatures()
-    }
-    if (count.hives && count.zones && count.extents) {
-      const msg = "<b>Soumission des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
-      + "</br><b>Soumission des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
-      + "</br><b>Soumission des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
-      displayMapMessage(msg, "success", true);
-    } else {
-      displayMapMessage("La soumission des données a échoué. Veuillez réessayer.", "error", true);
-    }
-    updateSyncInfo();
+    Promise.all([
+      hiveDAO.uploadFeatures(),
+      zoneDAO.uploadFeatures(),
+      extentDAO.uploadFeatures()
+    ]).then(function(results){
+      let finalMessage = "";
+      let finalSuccess = true;
+      results.forEach(function(result){
+        finalMessage += finalMessage.length === 0 ? result.message : "<br/>" + result.message;
+        finalSuccess = finalSuccess && result.success;
+      });
+      displayMapMessage(finalMessage, finalSuccess ? "success" : "error", true);
+      if (!finalSuccess) {
+        // Management of the errors links
+        $(".ancgis-appmessage-onmap a").click(function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+          let feature = map.getFeatureById($(this)[0].dataset.id);
+          let errorsLayerSource = map.getLayerByName(errorsLayerName).getSource();
+          errorsLayerSource.addFeature(feature);
+          window.setTimeout(function(){
+            errorsLayerSource.removeFeature(feature);
+          }, 5000);
+        });
+      }
+      updateSyncInfo();
+    }, function(){})
+    .catch(function(){
+      displayMapMessage("La soumission des données a échoué. Veuillez réessayer.", "error", false);
+      updateSyncInfo();
+    });
   });
 
   // Management of the download button

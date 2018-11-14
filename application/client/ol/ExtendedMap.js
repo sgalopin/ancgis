@@ -5,6 +5,7 @@ import Map from 'ol/Map.js';
 import PeriodSwitcherEvent from './control/PeriodSwitcherEvent.js'
 import PeriodSwitcherEventType from './control/PeriodSwitcherEventType.js'
 import {get as olProjGet} from 'ol/proj.js'
+import VectorLayer from 'ol/layer/Vector.js'
 
 /**
  * @classdesc
@@ -23,6 +24,24 @@ class ExtendedMap extends Map {
   getLayerByName(layerName) {
     return this.getLayers().getArray().find(function(layer) {
       return layer.get("name") === layerName;
+    });
+  }
+
+  getFeatures() {
+    let features = [];
+    this.getLayers().getArray().forEach(function(layer){
+      if (layer instanceof VectorLayer) {
+        layer.getSource().getFeatures().forEach(function(feature){
+          features.push(feature);
+        });
+      }
+    });
+    return features;
+  }
+
+  getFeatureById(id) {
+    return this.getFeatures().find(function(feature) {
+      return feature.getId() === id;
     });
   }
 

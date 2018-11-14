@@ -298,6 +298,9 @@ progress[value]::-webkit-progress-value {
   position: absolute;
   top: 40px;
   margin-left: 5px;
+  .tooltip-inner {
+    max-width: 400px;
+  }
 }
 
 .ancgis-appmessage>.alert,

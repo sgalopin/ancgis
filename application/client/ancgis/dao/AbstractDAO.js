@@ -74,8 +74,7 @@ class AbstractDAO {
   }
 
   uploadFeatures(collection) {
-    return this.dbm.uploadFeatures(collection)
-    .catch(error => console.error(error));
+    return this.dbm.uploadFeatures(collection);
   }
 
   async featuresToGeoJson(collection) {
