@@ -1,23 +1,23 @@
 /*global ol*/
 
 // ol import
-import "ol/ol.css"
-import Draw from "ol/interaction/Draw.js"
-import Translate from "ol/interaction/Translate.js"
-import VectorEventType from "ol/source/VectorEventType.js"
-import Collection from "ol/Collection.js"
-import {extend as olExtentExtend} from "ol/extent.js"
+import "ol/ol.css";
+import Draw from "ol/interaction/Draw.js";
+import Translate from "ol/interaction/Translate.js";
+import VectorEventType from "ol/source/VectorEventType.js";
+import Collection from "ol/Collection.js";
+import {extend as olExtentExtend} from "ol/extent.js";
 
 // local import
-import EditPropertiesEventType from "../../ol/interaction/EditPropertiesEventType.js"
-import ModifyFeatureEventType from "../../ol/interaction/ModifyFeatureEventType.js"
-import RemoveFeaturesEventType from "../../ol/interaction/RemoveFeaturesEventType.js"
-import AddHive from "../../ol/interaction/AddHive.js"
-import ModifyFeature from "../../ol/interaction/ModifyFeature.js"
-import RemoveFeatures from "../../ol/interaction/RemoveFeatures.js"
-import EditProperties from "../../ol/interaction/EditProperties.js"
-import Map, {featuresToGeoJson} from "./map.js"
-import Idbm from "../dbms/AncgisIdbManager.js"
+import EditPropertiesEventType from "../../ol/interaction/EditPropertiesEventType.js";
+import ModifyFeatureEventType from "../../ol/interaction/ModifyFeatureEventType.js";
+import RemoveFeaturesEventType from "../../ol/interaction/RemoveFeaturesEventType.js";
+import AddHive from "../../ol/interaction/AddHive.js";
+import ModifyFeature from "../../ol/interaction/ModifyFeature.js";
+import RemoveFeatures from "../../ol/interaction/RemoveFeatures.js";
+import EditProperties from "../../ol/interaction/EditProperties.js";
+import Map, {featuresToGeoJson} from "./map.js";
+import Idbm from "../dbms/AncgisIdbManager.js";
 import {displayMapMessage} from "../tool/message.js";
 import ZoneDAO from "../dao/ZoneDAO.js";
 import HiveDAO from "../dao/HiveDAO.js";
@@ -123,18 +123,18 @@ export default async function(isOnline) {
       source: vegetationsLayerSource,
       type: "Circle"
     }),
-		// Translate Button Control
-		translate : new Translate(),
-		// Modify Button Control
-		modify : [
+    // Translate Button Control
+    translate : new Translate(),
+    // Modify Button Control
+    modify : [
       new ModifyFeature({
-  			source: vegetationsLayerSource
-  		})
+        source: vegetationsLayerSource
+      })
     ],
-		// Erase Button Control
-		erase : new RemoveFeatures(),
+    // Erase Button Control
+    erase : new RemoveFeatures(),
     // Edit Zone Properties interaction
-		editproperties : new EditProperties()
+    editproperties : new EditProperties()
   };
 
   if (isOnline) {
@@ -149,41 +149,41 @@ export default async function(isOnline) {
     }));
   }
 
-	// Management of the interactions events
-	interactions.translate.on(
-		TRANSLATEEND,
-		function(e){
-			e.features.forEach(function(feature){
-				feature.getProperties().dao.updateFeature(feature);
-			}, this);
-		}
-	);
-	interactions.modify.forEach(function(interaction) {
+  // Management of the interactions events
+  interactions.translate.on(
+    TRANSLATEEND,
+    function(e){
+      e.features.forEach(function(feature){
+        feature.getProperties().dao.updateFeature(feature);
+      }, this);
+    }
+  );
+  interactions.modify.forEach(function(interaction) {
     interaction.on(
-  		ModifyFeatureEventType.MODIFYFEATURES,
-  		function(e){
-  			e.features.forEach(function(feature){
-  				feature.getProperties().dao.updateFeature(feature);
-  			}, this);
-  		}
-  	);
+      ModifyFeatureEventType.MODIFYFEATURES,
+      function(e){
+        e.features.forEach(function(feature){
+          feature.getProperties().dao.updateFeature(feature);
+        }, this);
+      }
+    );
   });
-	interactions.erase.on(
-		RemoveFeaturesEventType.REMOVE,
-		function(e){
-			e.selected.forEach(function(feature){
-				feature.getProperties().dao.deleteFeature(feature);
-			}, this);
-		}
-	);
-	interactions.editproperties.on(
-		EditPropertiesEventType.SELECT,
-		function(e){
-			e.feature.getProperties().form.show(map, e.feature);
-		}
-	);
+  interactions.erase.on(
+    RemoveFeaturesEventType.REMOVE,
+    function(e){
+      e.selected.forEach(function(feature){
+        feature.getProperties().dao.deleteFeature(feature);
+      }, this);
+    }
+  );
+  interactions.editproperties.on(
+    EditPropertiesEventType.SELECT,
+    function(e){
+      e.feature.getProperties().form.show(map, e.feature);
+    }
+  );
 
-	// Management of the toggling of the interactions
+  // Management of the toggling of the interactions
   $("#ancgis-mapcontrol-tbar>button").click(function(){
     event.stopPropagation();
     $(this).toggleClass("active");
@@ -213,8 +213,8 @@ export default async function(isOnline) {
 
   // Cache the map tiles
   let cache = new MapCache({
-    map: map,
-    extentsLayerName: extentsLayerName,
+    map,
+    extentsLayerName,
     catchedLayerNames: [bdorthoLayerName]
   });
 
@@ -259,7 +259,7 @@ export default async function(isOnline) {
       hives: await hiveDAO.downloadFeatures(),
       zones: await zoneDAO.downloadFeatures(),
       extents: await extentDAO.downloadFeatures()
-    }
+    };
     if ((count.hives.added + count.hives.updated + count.hives.deleted) > 0) {
       hivesLayerSource.clear();
       hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());
@@ -309,7 +309,7 @@ export default async function(isOnline) {
     let count = await zoneDAO.getDirtyDocumentsCount();
     count += await hiveDAO.getDirtyDocumentsCount();
     count += await extentDAO.getDirtyDocumentsCount();
-    let syncInfoHtml = syncInfoTemplate({count: count});
+    let syncInfoHtml = syncInfoTemplate({count});
     $("#ancgis-uploadinfo-tbar .content").remove();
     $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
     // Tooltip activation
@@ -349,4 +349,4 @@ export default async function(isOnline) {
   extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
   return { map, interactions };
-};
+}

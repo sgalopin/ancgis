@@ -13,10 +13,10 @@ import SyncIdbManager from "./SyncIdbManager.js";
 class AncgisIdbManager extends SyncIdbManager {
 
   /**
-   * @param {module:ancgis/client/ancgis/dbms/SyncIdbManager~Options=} opt_options Options.
+   * @param {module:ancgis/client/ancgis/dbms/SyncIdbManager~Options=} optOptions Options.
    */
-  constructor(opt_options) {
-    super(opt_options);
+  constructor(optOptions) {
+    super(optOptions);
   }
 
   readStore(store, id) {

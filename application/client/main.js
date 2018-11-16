@@ -1,7 +1,7 @@
-import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from "./ancgis/tool/cookie.js"
-import sigPageTemplate from "../views/subpages/sig.hbs"
-import loginPageTemplate from "../views/subpages/login.hbs"
-import Sig from "./ancgis/map/sig.js"
+import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from "./ancgis/tool/cookie.js";
+import sigPageTemplate from "../views/subpages/sig.hbs";
+import loginPageTemplate from "../views/subpages/login.hbs";
+import Sig from "./ancgis/map/sig.js";
 import {confirm} from "./ancgis/tool/modal.js";
 import jwt from "jsonwebtoken";
 import {displayLoginMessage} from "./ancgis/tool/message.js";
@@ -17,7 +17,7 @@ $(document).ready(function(){
     // Removes focus of the button.
     $(".btn").click(function(){
       $(this).blur();
-    })
+    });
   }
 
   function updatePage(pageTemplate, data) {
@@ -34,10 +34,10 @@ $(document).ready(function(){
       type: "GET",
       url: "/logout",
       dataType: "json",
-      success: function(response) {
+      success (response) {
         document.location.href = "/";
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error (jqXHR, textStatus, errorThrown) {
         if (jqXHR.readyState == 0) { // Network error
           // local logout
           deleteCookie("jwt");

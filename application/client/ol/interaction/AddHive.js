@@ -6,7 +6,7 @@
  import Feature from "ol/Feature.js";
  import {getChangeEventType} from "ol/Object.js";
  import {listen} from "ol/events.js";
- import Event from "ol/events/Event.js"
+ import Event from "ol/events/Event.js";
  import {platformModifierKeyOnly, pointerMove, singleClick} from "ol/events/condition.js";
  import {TRUE, FALSE} from "ol/functions.js";
  import Polygon from "ol/geom/Polygon.js";
@@ -35,15 +35,15 @@
  */
 class AddHive extends Interaction { // Based on the Draw Interaction
   /**
-   * @param {module:ol/interaction/AddHive~Options=} opt_options Options.
+   * @param {module:ol/interaction/AddHive~Options=} optOptions Options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
     super({
-      handleEvent: handleEvent
+      handleEvent
     });
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
 
     /**
      * Rotation angle in radians.

@@ -1,7 +1,7 @@
 self.addEventListener("install", function(event) {
   event.waitUntil(
     caches.open("ancgis-statics-ressources").then(function(cache) {
-      urls = [
+      const urls = [
         // Code
         "/",
         "/manifest.json",

@@ -4,8 +4,8 @@
 import Modify from "ol/interaction/Modify.js";
 import {platformModifierKeyOnly, singleClick} from "ol/events/condition.js";
 import Collection from "ol/Collection.js";
-import ModifyFeatureEventType from  "./ModifyFeatureEventType.js"
-import {ModifyEvent} from "ol/interaction/Modify.js"
+import ModifyFeatureEventType from  "./ModifyFeatureEventType.js";
+import {ModifyEvent} from "ol/interaction/Modify.js";
 import EventType from "ol/events/EventType.js";
 import {listen, listenOnce, unlisten} from "ol/events.js";
 
@@ -35,11 +35,11 @@ const ModifyEventType = {
  */
 class ModifyFeature extends Modify {
   /**
-   * @param {module:ol/interaction/EditProperties~Options=} opt_options Options.
+   * @param {module:ol/interaction/EditProperties~Options=} optOptions Options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
     options.deleteCondition = options.deleteCondition ? options.deleteCondition : function(mapBrowserEvent) {
       return platformModifierKeyOnly(mapBrowserEvent) &&
         singleClick(mapBrowserEvent);

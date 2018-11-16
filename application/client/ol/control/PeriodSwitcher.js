@@ -17,11 +17,11 @@ import {CLASS_UNSELECTABLE, CLASS_CONTROL} from "ol/css.js";
 class PeriodSwitcher extends Control {
 
   /**
-   * @param {module:ol/control/PeriodSwitcher~Options=} opt_options PeriodSwitcher options.
+   * @param {module:ol/control/PeriodSwitcher~Options=} optOptions PeriodSwitcher options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
 
     var btnsOptions = [{
       period: "T1",
@@ -146,7 +146,7 @@ class PeriodSwitcher extends Control {
       var top = document.createElement("div");
       top.className = "ol-periodswitcher-top";
       top.appendChild(histo);
-      element.appendChild(top)
+      element.appendChild(top);
       // Bottom
       var bottom = document.createElement("div");
       bottom.className = "ol-periodswitcher-bottom";

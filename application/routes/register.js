@@ -13,7 +13,7 @@ var iPLimiter = new RateLimit({
   max: 10, // start blocking after 5 requests
   delayMs: 0, // disabled
   skipFailedRequests: true,
-  handler: function (req, res, /*next*/) {
+  handler (req, res, /*next*/) {
     req.flash("error", "Trop de comptes créés simultanément à partir de cette adresse IP, veuillez réessayer plus tard.");
     return res.render("register");
   }
@@ -95,7 +95,7 @@ router.post("/", postCheckSchema, function(req, res, next) {
     profil: req.body.profil,
   }),
   req.body.password,
-  function(err, account) {
+  function(err, user) {
     if (err) {
       return errorRender(req, res, err.message);
     }

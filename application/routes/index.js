@@ -40,7 +40,7 @@ router.post("/login", function(req, res, next) {
     // a response."
     // Source: http://passportjs.org/docs
     // ***********************************************************************
-    req.login(user, loginErr => {
+    req.login(user, (loginErr) => {
       if (loginErr) {
         return next(loginErr);
       }

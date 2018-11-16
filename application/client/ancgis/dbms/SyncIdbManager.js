@@ -14,13 +14,13 @@ import {displayMapMessage} from "../tool/message.js";
 class SyncIdbManager extends IdbManager {
 
   /**
-   * @param {module:ancgis/client/ancgis/dbms/SyncIdbManager~Options=} opt_options Options.
+   * @param {module:ancgis/client/ancgis/dbms/SyncIdbManager~Options=} optOptions Options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
     super();
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
     this.restBaseUrl = options.restBaseUrl ? options.restBaseUrl : "/rest";
     this.submitErrors = {};
   }
@@ -125,7 +125,7 @@ class SyncIdbManager extends IdbManager {
   // TODO: Don't use "feature" here but "doc" (move to AncgisIdbManager ?)
   populateFeaturesCollection (collection) {
     let self = this;
-    getRemoteDocuments(collection)
+    self.getRemoteDocuments(collection)
     .then(function(data, statusText, xhrObj) {
       // Add the data to the db
       var objectStore = self.db.transaction(collection, "readwrite").objectStore(collection);
@@ -259,11 +259,11 @@ class SyncIdbManager extends IdbManager {
           added: 0,
           updated: 0,
           deleted: 0
-        }
+        };
         featureCollection.features.forEach(function(rfeature) {
           let getLocalFeatureRequest = objectStore.get(rfeature.id);
           getLocalFeatureRequest.onsuccess = function(event) {
-            let lFeature = getLocalFeatureRequest.result
+            let lFeature = getLocalFeatureRequest.result;
             // Case 1: The feature is present into the local database
             if (lFeature) {
               // Case 1.1: The remote is newer
@@ -276,7 +276,7 @@ class SyncIdbManager extends IdbManager {
                 // Case 1.1.2: The remote was updated
                 else {
                   // Case 1.1.2.1: The local was not modified
-                  if (!lfeature.properties.metadata.dirty) {
+                  if (!lFeature.properties.metadata.dirty) {
                     // The local is replaced
                     objectStore.put(rfeature);
                     count.updated++;

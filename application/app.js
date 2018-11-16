@@ -92,13 +92,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger("dev"));
 
 // Session management
-app.set("trust proxy", 1) // trust first proxy
+app.set("trust proxy", 1); // trust first proxy
 app.use(session({
   secret: process.env.ANCGIS_SESSION_SECRET ? process.env.ANCGIS_SESSION_SECRET : require("crypto").randomBytes(64).toString("hex"),
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
-}))
+}));
 app.use(flash()); // Flash requires sessions.
 
 // Authentication with Passport (local)
@@ -120,7 +120,7 @@ var loginIPLimiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
   max: 100,
   delayMs: 0, // disabled
-  handler: function (req, res, /*next*/) {
+  handler (req, res, /*next*/) {
     return res.render("login", { error : "Trop de tentatives de connexion à partir de cette adresse IP, veuillez réessayer plus tard." });
   }
 });
@@ -128,10 +128,10 @@ var loginUserLimiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
   max: 10,
   delayMs: 0, // disabled
-  handler: function (req, res, /*next*/) {
+  handler (req, res, /*next*/) {
     return res.render("login", { username : req.body.username, error : "Trop de tentatives de connexion pour cet utilisateur, veuillez réessayer plus tard." });
   },
-  keyGenerator: function (req) {
+  keyGenerator (req) {
     return req.body.username;
   }
 });

@@ -15,17 +15,17 @@ const options = {
   key: fs.readFileSync("encryption/ancgis.dev.net.key"),
   cert: fs.readFileSync( "encryption/ancgis.dev.net.crt" )
 };
-let https_server = spdy.createServer(options, app);
-https_server.listen(443);
-https_server.on("error", onError);
-https_server.on("listening", onListening);
+let httpsServer = spdy.createServer(options, app);
+httpsServer.listen(443);
+httpsServer.on("error", onError);
+httpsServer.on("listening", onListening);
 
 /**
  * Create HTTP server which runs alongside HTTPS and will redirect to it.
  */
 const http = require("http");
-let http_server = http.createServer(app);
-http_server.listen(80);
+let httpServer = http.createServer(app);
+httpServer.listen(80);
 
 /**
  * Event listener for HTTPS server "error" event.
@@ -35,7 +35,7 @@ function onError(error) {
     throw error;
   }
   /*
-  const addr = https_server.address();
+  const addr = httpsServer.address();
   const port = addr.port;
   const bind = typeof port === "string"
     ? "Pipe " + port
@@ -61,7 +61,7 @@ function onError(error) {
  * Event listener for HTTPS server "listening" event.
  */
 function onListening() {
-  /*const addr = https_server.address();
+  /*const addr = httpsServer.address();
   const bind = typeof addr === "string"
     ? "pipe " + addr
     : "port " + addr.port;*/

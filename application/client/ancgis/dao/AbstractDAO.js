@@ -1,4 +1,4 @@
-import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js"
+import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 
 /**
  * @module ancgis/client/ancgis/dao/AbstractDAO

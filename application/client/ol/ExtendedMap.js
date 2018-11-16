@@ -2,10 +2,10 @@
  * @module ancgis/client/ol/ExtendedMap
  */
 import Map from "ol/Map.js";
-import PeriodSwitcherEvent from "./control/PeriodSwitcherEvent.js"
-import PeriodSwitcherEventType from "./control/PeriodSwitcherEventType.js"
-import {get as olProjGet} from "ol/proj.js"
-import VectorLayer from "ol/layer/Vector.js"
+import PeriodSwitcherEvent from "./control/PeriodSwitcherEvent.js";
+import PeriodSwitcherEventType from "./control/PeriodSwitcherEventType.js";
+import {get as olProjGet} from "ol/proj.js";
+import VectorLayer from "ol/layer/Vector.js";
 
 /**
  * @classdesc

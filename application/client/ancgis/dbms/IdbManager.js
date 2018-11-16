@@ -38,15 +38,15 @@ class IdbManager {
         self.db.createObjectStore("taxons", {keyPath: "id"});
         let hivesStore = self.db.createObjectStore("hives", {keyPath: "id"});
         hivesStore.createIndex("dirty", "properties.metadata.dirty");
-        let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"})
+        let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"});
         zonesStore.createIndex("dirty", "properties.metadata.dirty");
-        let extentsStore = self.db.createObjectStore("extents", {keyPath: "id"})
+        let extentsStore = self.db.createObjectStore("extents", {keyPath: "id"});
         extentsStore.createIndex("dirty", "properties.metadata.dirty");
         // Returns the db
         event.target.transaction.oncomplete = function(e) {
           self.populateDataCollection("taxons"); // is Asynchrone
           resolve(self);
-        }
+        };
       };
       request.onsuccess = function(event) {
           self.db = event.target.result;
@@ -181,7 +181,7 @@ class IdbManager {
   dispatchCreateEvent(collection, doc) {
     this.db.dispatchEvent(new CustomEvent("create", {
       "detail": {
-        "collection": collection,
+        collection,
         "document": doc
       }
     }));

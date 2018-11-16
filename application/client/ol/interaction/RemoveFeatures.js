@@ -1,7 +1,7 @@
 /**
  * @module ancgis/client/ol/interaction/RemoveFeatures
  */
-import RemoveFeatureEventType from "./RemoveFeaturesEventType.js"
+import RemoveFeatureEventType from "./RemoveFeaturesEventType.js";
 import Select from "ol/interaction/Select.js";
 import {platformModifierKeyOnly} from "ol/events/condition.js";
 import Event from "ol/events/Event.js";
@@ -54,11 +54,11 @@ class SelectEvent extends Event {
  */
 class RemoveFeatures extends Select {
   /**
-   * @param {module:ol/interaction/RemoveFeatures~Options=} opt_options Options.
+   * @param {module:ol/interaction/RemoveFeatures~Options=} optOptions Options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
     options.toggleCondition = options.toggleCondition ? options.toggleCondition : platformModifierKeyOnly;
 
     super(options);

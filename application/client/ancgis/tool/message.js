@@ -1,7 +1,7 @@
 /**
  * Message tools
  */
-import appMessageTemplate from "../../../views/partials/app-message.hbs"
+import appMessageTemplate from "../../../views/partials/app-message.hbs";
 
 function displayMessage(message, msgDivSelector, cleanPreviousMsg = false) {
   const appMessageHTML = appMessageTemplate(message);

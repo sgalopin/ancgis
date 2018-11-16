@@ -14,11 +14,11 @@ import EditPropertiesEventType from "./EditPropertiesEventType.js";
  */
 class EditProperties extends Interaction {
   /**
-   * @param {module:ol/interaction/EditProperties~Options=} opt_options Options.
+   * @param {module:ol/interaction/EditProperties~Options=} optOptions Options.
    */
-  constructor(opt_options) {
+  constructor(optOptions) {
 
-    const options = opt_options ? opt_options : {};
+    const options = optOptions ? optOptions : {};
     options.handleEvent = handleEvent;
 
     super(options);
