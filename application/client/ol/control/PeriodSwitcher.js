@@ -204,12 +204,13 @@ class PeriodSwitcher extends Control {
    * @param {Array} periodsPotential The periods potential array ( periodsPotential[period] : { nectar: 0, pollen: 0 } )
    * @private
    */
-  updateHistogram_(periodsPotential) {
+  updateHistogram_(periodsPotential) { // eslint-disable-line complexity
     this.clearHistogram_();
     // Get the maximum potential
     var maxNectar = 0;
     var maxPollen = 0;
-    for(var period in periodsPotential) {
+    var period;
+    for(period in periodsPotential) {
       if (periodsPotential.hasOwnProperty(period)) {
         if (periodsPotential[period].nectar > maxNectar){
           maxNectar = periodsPotential[period].nectar;
@@ -221,7 +222,7 @@ class PeriodSwitcher extends Control {
     }
     // Set the histogram columns news heights
     var maxColumnHeight = 100; // Pixels
-    for(var period in periodsPotential) {
+    for(period in periodsPotential) {
        if (periodsPotential.hasOwnProperty(period)) {
         var nectarColumn = document.querySelector(".ol-periodswitcher-histo-column[data-period="+period+"]>.ol-periodswitcher-nectar-column");
         nectarColumn.style["height"] = (periodsPotential[period].nectar * maxColumnHeight / maxNectar) + "px";

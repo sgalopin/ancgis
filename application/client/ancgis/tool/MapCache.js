@@ -13,7 +13,7 @@ class MapCache {
   /**
    * @param {module:ancgis/client/ancgis/tool/MapCache~Options=} options Options.
    */
-  constructor(options) {
+  constructor(options) { // eslint-disable-line complexity
     // Checks the required options
     if (!options.map) {
       throw new Error("MapCache requires a map.");

@@ -5,6 +5,20 @@ var RateLimit = require("express-rate-limit");
 var async = require("async");
 const { checkSchema, validationResult } = require("express-validator/check");
 
+// Render the form with error(s) message(s)
+function errorRender (req, res, message) {
+  req.flash("error", message);
+  return res.render("requirePwdReset", {
+    email: req.body.email
+  });
+}
+
+// Render the form with a message
+function messageRender (req, res, message) {
+  req.flash("info", message);
+  return res.render("requirePwdReset");
+}
+
 // Force brute protection middleware
 var iPLimiter = new RateLimit({
   windowMs: 60*60*1000, // 1 hour window
@@ -104,18 +118,5 @@ router.post("/", postCheckSchema, function(req, res, next) {
     res.redirect("/requirePwdReset");
   });
 });
-
-// Render the form with error(s) message(s)
-function errorRender (req, res, message) {
-  req.flash("error", message);
-  return res.render("requirePwdReset", {
-    email: req.body.email
-  });
-}
-// Render the form with a message
-function messageRender (req, res, message) {
-  req.flash("info", message);
-  return res.render("requirePwdReset");
-}
 
 module.exports = router;

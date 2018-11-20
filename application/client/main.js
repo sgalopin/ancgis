@@ -38,12 +38,12 @@ $(document).ready(function(){
         document.location.href = "/";
       },
       error (jqXHR, textStatus, errorThrown) {
-        if (jqXHR.readyState == 0) { // Network error
+        if (jqXHR.readyState === 0) { // Network error
           // local logout
           deleteCookie("jwt");
           document.location.href = "/";
         }
-        else if (jqXHR.readyState == 4) {
+        else if (jqXHR.readyState === 4) {
           // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
           displayLoginMessage("La demande de déconnexion a echouée suite à une erreur HTTP.", "error", true);
         }
@@ -92,8 +92,8 @@ $(document).ready(function(){
             displayLoginMessage(response.message, "error", true);
           }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-          if (jqXHR.readyState == 0) {
+        error: function(jqXHR, textStatus, errorThrown) { // eslint-disable-line complexity
+          if (jqXHR.readyState === 0) {
             // Local authentification
             if (hasVerifiedJWT("jwt")) {
               openSIGPage();
@@ -101,7 +101,7 @@ $(document).ready(function(){
               // Network error (i.e. connection refused, access denied due to CORS, etc.)
               displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", "error", true);
             }
-          } else if (jqXHR.readyState == 4) {
+          } else if (jqXHR.readyState === 4) {
             // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
             displayLoginMessage("La demande de connexion a echouée suite à une erreur HTTP.", "error", true);
           } else {

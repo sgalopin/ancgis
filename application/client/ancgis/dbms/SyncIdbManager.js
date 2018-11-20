@@ -56,8 +56,8 @@ class SyncIdbManager extends IdbManager {
     .done(function() {
       self.onRemoteSuccess(collection, doc);
     })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
-      if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+    .fail(function( jqXHR, textStatus, errorThrown ) { // eslint-disable-line complexity
+      if (jqXHR.readyState === 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
         console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
@@ -145,7 +145,7 @@ class SyncIdbManager extends IdbManager {
   async readAll(collection) {
     let geoJsonFeatures = await super.readAll(collection);
     let cleanedGeoJsonFeatures = [];
-    geoJsonFeatures.forEach(function(gjFeature){
+    geoJsonFeatures.forEach(function(gjFeature){ // eslint-disable-line complexity
       if (!(gjFeature.properties && gjFeature.properties.metadata && gjFeature.properties.metadata.deleted)) {
         // The features must stay metadata free
         if (gjFeature.properties && gjFeature.properties.metadata) {
@@ -304,10 +304,10 @@ class SyncIdbManager extends IdbManager {
         });
       })
       .fail(function( jqXHR, textStatus, errorThrown ) {
-          if (jqXHR.readyState == 0) {
+          if (jqXHR.readyState === 0) {
             // Network error (i.e. connection refused, access denied due to CORS, etc.)
             displayMapMessage("La demande de récupération des données a echouée suite à une erreur réseau.", "error", true);
-          } else if (jqXHR.readyState == 4) {
+          } else if (jqXHR.readyState === 4) {
             // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
             displayMapMessage("La demande de récupération des données a echouée suite à une erreur HTTP.", "error", true);
           } else {

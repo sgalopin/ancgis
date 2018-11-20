@@ -37,10 +37,10 @@ class AddHive extends Interaction { // Based on the Draw Interaction
   /**
    * @param {module:ol/interaction/AddHive~Options=} optOptions Options.
    */
-  constructor(optOptions) {
+  constructor(optOptions) { // eslint-disable-line complexity
 
     super({
-      handleEvent
+      handleEvent // eslint-disable-line no-use-before-define
     });
 
     const options = optOptions ? optOptions : {};
@@ -160,7 +160,7 @@ export function handleEvent(mapBrowserEvent) {  // Based on the MouseWheelZoom I
     // https://github.com/mapbox/mapbox-gl-js/blob/001c7b9/js/ui/handler/scroll_zoom.js
     const wheelEvent = /** @type {WheelEvent} */ (mapBrowserEvent.originalEvent);
     let delta;
-    if (mapBrowserEvent.type == EventType.WHEEL) {
+    if (mapBrowserEvent.type === EventType.WHEEL) {
       delta = wheelEvent.deltaY;
       if (FIREFOX &&
           wheelEvent.deltaMode === WheelEvent.DOM_DELTA_PIXEL) {
@@ -169,7 +169,7 @@ export function handleEvent(mapBrowserEvent) {  // Based on the MouseWheelZoom I
       if (wheelEvent.deltaMode === WheelEvent.DOM_DELTA_LINE) {
         delta *= 40;
       }
-    } else if (mapBrowserEvent.type == EventType.MOUSEWHEEL) {
+    } else if (mapBrowserEvent.type === EventType.MOUSEWHEEL) {
       delta = -wheelEvent.wheelDeltaY;
       if (SAFARI) {
         delta /= 3;

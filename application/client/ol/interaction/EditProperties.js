@@ -19,7 +19,7 @@ class EditProperties extends Interaction {
   constructor(optOptions) {
 
     const options = optOptions ? optOptions : {};
-    options.handleEvent = handleEvent;
+    options.handleEvent = handleEvent; // eslint-disable-line no-use-before-define
 
     super(options);
   }

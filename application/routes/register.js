@@ -7,6 +7,16 @@ const { checkSchema, validationResult } = require("express-validator/check");
 var jwt = require("jsonwebtoken");
 var fs = require("fs");
 
+// Render the register form with error(s) message(s)
+function errorRender (req, res, message) {
+  req.flash("warning", message);
+  return res.render("register", {
+    username : req.body.username,
+    email: req.body.email,
+    profil: req.body.profil
+  });
+}
+
 // Force brute protection middleware
 var iPLimiter = new RateLimit({
   windowMs: 60*60*1000, // 1 hour window
@@ -126,15 +136,5 @@ router.post("/", postCheckSchema, function(req, res, next) {
     });
   });
 });
-
-// Render the register form with error(s) message(s)
-function errorRender (req, res, message) {
-  req.flash("warning", message);
-  return res.render("register", {
-    username : req.body.username,
-    email: req.body.email,
-    profil: req.body.profil
-  });
-}
 
 module.exports = router;

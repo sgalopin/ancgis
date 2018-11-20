@@ -17,8 +17,8 @@ const options = {
 };
 let httpsServer = spdy.createServer(options, app);
 httpsServer.listen(443);
-httpsServer.on("error", onError);
-httpsServer.on("listening", onListening);
+httpsServer.on("error", onError); // eslint-disable-line no-use-before-define
+httpsServer.on("listening", onListening); // eslint-disable-line no-use-before-define
 
 /**
  * Create HTTP server which runs alongside HTTPS and will redirect to it.

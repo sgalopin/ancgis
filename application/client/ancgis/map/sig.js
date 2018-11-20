@@ -92,8 +92,8 @@ export default async function(isOnline) {
   vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
 
   // Set up the extents layer source
+  var extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
   if (isOnline) {
-    var extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
     // Set the default values and save the new extent
     extentsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
       e.feature.setProperties({
@@ -218,6 +218,24 @@ export default async function(isOnline) {
     catchedLayerNames: [bdorthoLayerName]
   });
 
+  // Management of the SyncInfo toolbar
+  async function updateSyncInfo() {
+    let count = await zoneDAO.getDirtyDocumentsCount();
+    count += await hiveDAO.getDirtyDocumentsCount();
+    count += await extentDAO.getDirtyDocumentsCount();
+    let syncInfoHtml = syncInfoTemplate({count});
+    $("#ancgis-uploadinfo-tbar .content").remove();
+    $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
+    // Tooltip activation
+    $("[data-toggle=\"tooltip\"]").tooltip({
+      trigger : "hover"
+    });
+  }
+  zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  updateSyncInfo(); // Initialization
+  
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     Promise.all([
@@ -303,24 +321,6 @@ export default async function(isOnline) {
     olExtentExtend(extent, vegetationsLayerSource.getExtent());
     map.getView().fit(extent, {duration: 1000});
   });
-
-  // Management of the SyncInfo toolbar
-  async function updateSyncInfo() {
-    let count = await zoneDAO.getDirtyDocumentsCount();
-    count += await hiveDAO.getDirtyDocumentsCount();
-    count += await extentDAO.getDirtyDocumentsCount();
-    let syncInfoHtml = syncInfoTemplate({count});
-    $("#ancgis-uploadinfo-tbar .content").remove();
-    $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
-    // Tooltip activation
-    $("[data-toggle=\"tooltip\"]").tooltip({
-      trigger : "hover"
-    });
-  }
-  zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
-  hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
-  extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
-  updateSyncInfo(); // Initialization
 
   // Management of the MapCacheInfo toolbar
   cache.addEventListener("tileAdded", function(count, total) {

@@ -5,6 +5,12 @@ var Account = require("../models/account");
 var RateLimit = require("express-rate-limit");
 const { checkSchema, validationResult } = require("express-validator/check");
 
+// Render the form with error(s) message(s)
+function errorRender (req, res, message) {
+  req.flash("error", message);
+  return res.render("resetPwd");
+}
+
 // Force brute protection middleware
 var iPLimiter = new RateLimit({
   windowMs: 60*60*1000, // 1 hour window
@@ -95,11 +101,5 @@ router.post("/:token", postCheckSchema, function(req, res, next) {
     });
   });
 });
-
-// Render the form with error(s) message(s)
-function errorRender (req, res, message) {
-  req.flash("error", message);
-  return res.render("resetPwd");
-}
 
 module.exports = router;

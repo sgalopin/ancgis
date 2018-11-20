@@ -1,5 +1,6 @@
 {
     "rules": {
+        "complexity": ["error", { "max": 4 }],
         "no-restricted-syntax": [
             "error",
             {

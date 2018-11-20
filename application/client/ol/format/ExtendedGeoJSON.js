@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+
 /**
  * @module ol/format/ExtendedGeoJSON
  */
@@ -145,7 +147,7 @@ class ExtendedGeoJSON extends JSONFeature {
     const crs = geoJSONObject.crs;
     let projection;
     if (crs) {
-      if (crs.type == "name") {
+      if (crs.type === "name") {
         projection = getProjection(crs.properties.name);
       } else {
         assert(false, 36); // Unknown SRS type

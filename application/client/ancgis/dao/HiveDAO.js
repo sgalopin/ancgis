@@ -28,7 +28,7 @@ class HiveDAO extends AbstractDAO {
   }
 
   // Returns the feature's JSON
-  featureToJSON(feature) {
+  featureToJSON(feature) { // eslint-disable-line complexity
     // Setup the geojsonPpts var
     var ppts = feature.getProperties();
     const format = new ExtendedGeoJSON();
