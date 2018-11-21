@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define no-undefined */
+/* eslint-disable no-use-before-define, no-undefined */
 
 /**
  * @module ol/format/ExtendedGeoJSON

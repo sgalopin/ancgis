@@ -199,7 +199,7 @@ class IdbManager {
   dispatchDeleteEvent(collection, doc) {
     this.db.dispatchEvent(new CustomEvent("delete", {
       "detail": {
-        "collection": collection,
+        collection,
         "document": doc
       }
     }));

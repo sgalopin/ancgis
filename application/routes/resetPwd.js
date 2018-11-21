@@ -38,7 +38,7 @@ var postCheckSchema = checkSchema({
     custom: {
       options: (value, { req, location, path }) => {
         // TODO: Add the req.user.username to the user_inputs like in register form
-        var passwordScore = zxcvbn(value, user_inputs=["ancgis", "anc", "gis"]).score; // eslint-disable-line no-undef camelcase
+        var passwordScore = zxcvbn(value, user_inputs=["ancgis", "anc", "gis"]).score; // eslint-disable-line no-undef, camelcase
         if (passwordScore < 2) {
           throw new Error("Le mot de passe est trop faible. Si besoin, vous pouvez l'améliorer <a href=\"https://lowe.github.io/tryzxcvbn/\" target=\"_blank\">ici</a>.");
         }

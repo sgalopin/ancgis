@@ -109,7 +109,7 @@ class SyncIdbManager extends IdbManager {
       self.onRemoteSuccess(collection, doc);
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
-      if (jqXHR.readyState == 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
+      if (jqXHR.readyState === 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
         console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
@@ -338,7 +338,7 @@ class SyncIdbManager extends IdbManager {
            // No more entries
            resolve(data);
         }
-      }
+      };
     });
   }
 
