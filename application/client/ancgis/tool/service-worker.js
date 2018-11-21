@@ -3,10 +3,10 @@ export function addServiceWorker() {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/cache.js")
     .then(function(registration) {
-      console.log("Registration successful, scope is:", registration.scope);
+      console.debug("Registration successful, scope is:", registration.scope);
     })
     .catch(function(error) {
-      console.log("Service worker registration failed, error:", error);
+      console.error("Service worker registration failed, error:", error);
     });
   }
 }

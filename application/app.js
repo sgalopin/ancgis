@@ -50,7 +50,7 @@ app.use (
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString + "/taxons", function(err) {
   if (err) {
-    console.log("Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!");
+    console.error("Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!");
   }
 });
 if (app.get("env") === "development") {

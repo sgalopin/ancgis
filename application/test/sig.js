@@ -1,4 +1,5 @@
 /*global browser ancgis ol*/
+/* eslint-disable no-console */
 describe("sig tests", function () {
   let page;
 

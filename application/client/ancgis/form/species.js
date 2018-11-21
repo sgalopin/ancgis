@@ -17,7 +17,7 @@ export default async function(idbm) {
         recovery === 0 && (recovery = 100); // Set default value to 100
         if (recovery < 0 || recovery > 100) {
           // TODO: Print an error message
-          console.log(Error("Bad recovery value"));
+          console.error(Error("Bad recovery value"));
         } else {
           // Get the taxon fields
           idbm.read("taxons", Number($("#ancgis-speciesform-taxonfield").val()))

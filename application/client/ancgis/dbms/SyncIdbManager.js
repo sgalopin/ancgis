@@ -134,11 +134,11 @@ class SyncIdbManager extends IdbManager {
       });
     }, function(xhrObj, textStatus, err) { // Catch the JQuery error
       // TODO: Delete the db ?
-      console.log(err);
+      console.error(err);
     })
     .catch(function(err) { // Catch the success function error
       // TODO: Delete the db ?
-      console.log(err);
+      console.error(err);
     });
   }
 

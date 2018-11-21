@@ -1,6 +1,6 @@
 {
     "rules": {
-        "complexity": ["error", { "max": 4 }],
+        "complexity": ["error", { "max": 7 }],
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "no-restricted-syntax": [
             "error",

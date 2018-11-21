@@ -9,7 +9,7 @@ window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || 
 window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
 if (!window.indexedDB) {
-  console.log("Your browser doesn't support a stable version of IndexedDB.");
+  console.error("Your browser doesn't support a stable version of IndexedDB.");
 }
 
 /**
@@ -79,11 +79,11 @@ class IdbManager {
       });
     }, function(xhrObj, textStatus, err) { // Catch the JQuery error
       // TODO: Delete the db ?
-      console.log(err);
+      console.error(err);
     })
     .catch(function(err) { // Catch the success function error
       // TODO: Delete the db ?
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -168,7 +168,7 @@ class IdbManager {
       .objectStore(collection)
       .delete(id);
       request.onsuccess = function(event) {
-        console.log("'" + id + "' entry has been removed from the database.");
+        console.debug("'" + id + "' entry has been removed from the database.");
         self.dispatchDeleteEvent(collection, id);
         resolve(id);
       };
