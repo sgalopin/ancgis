@@ -190,7 +190,7 @@ class IdbManager {
   dispatchUpdateEvent(collection, doc) {
     this.db.dispatchEvent(new CustomEvent("update", {
       "detail": {
-        "collection": collection,
+        collection,
         "document": doc
       }
     }));

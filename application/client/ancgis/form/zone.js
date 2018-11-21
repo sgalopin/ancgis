@@ -1,14 +1,14 @@
 // Requirements
 import zoneFormTemplate from "../../../views/partials/form/zone.hbs";
 import floreLineTemplate from "../../../views/partials/form/flore-line.hbs";
-import SpeciesForm from "./species.js";
+import getSpeciesForm from "./species.js";
 
 /**
  * Zone form builder.
  */
 export default async function(idbm) {
 
-  let speciesForm = await SpeciesForm(idbm);
+  let speciesForm = await getSpeciesForm(idbm);
 
   return {
     show(map, feature) {

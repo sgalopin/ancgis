@@ -1,4 +1,4 @@
-var router = require("express").Router();
+var router = require("express").Router();  // eslint-disable-line new-cap
 var passport = require("passport");
 var zxcvbn = require("zxcvbn");
 var Account = require("../models/account");
@@ -65,7 +65,7 @@ var postCheckSchema = checkSchema({
     },
     custom: {
       options: (value, { req, location, path }) => {
-        var passwordScore = zxcvbn(value, user_inputs=[req.body.username, "ancgis", "anc", "gis"]).score;
+        var passwordScore = zxcvbn(value, user_inputs=[req.body.username, "ancgis", "anc", "gis"]).score; // eslint-disable-line no-undef camelcase
         if (passwordScore < 2) {
           throw new Error("Le mot de passe est trop faible. Si besoin, vous pouvez l'améliorer <a href=\"https://lowe.github.io/tryzxcvbn/\" target=\"_blank\">ici</a>.");
         }

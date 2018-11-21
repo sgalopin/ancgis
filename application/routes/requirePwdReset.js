@@ -1,4 +1,4 @@
-var router = require("express").Router();
+var router = require("express").Router();  // eslint-disable-line new-cap
 var passport = require("passport");
 var Account = require("../models/account");
 var RateLimit = require("express-rate-limit");

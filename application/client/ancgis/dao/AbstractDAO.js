@@ -23,6 +23,8 @@ class AbstractDAO {
     }
   }
 
+/* eslint-disable security/detect-object-injection */
+
   addEventListener(eventType, listener) {
     this.listeners = this.listeners ? this.listeners : {};
     this.listeners[eventType] = this.listeners[eventType] ? this.listeners[eventType] : [];
@@ -38,13 +40,15 @@ class AbstractDAO {
     }
   }
 
+/* eslint-enable security/detect-object-injection */
+
   dispatchDirtyAddedEvent() {
     this.dispatchEvent(new Event("dirtyAdded"));
   }
 
   getDirtyDocumentsCount(collection) {
     return this.dbm.getDirtyDocumentsCount(collection)
-    .catch(error => console.error(error));
+    .catch((error) => console.error(error));
   }
 
   createFeature(collection, geoJsonFeature) {

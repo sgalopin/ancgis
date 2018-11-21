@@ -1,4 +1,4 @@
-var router = require("express").Router();
+var router = require("express").Router();  // eslint-disable-line new-cap
 var passport = require("passport");
 var zxcvbn = require("zxcvbn");
 var Account = require("../models/account");
@@ -38,7 +38,7 @@ var postCheckSchema = checkSchema({
     custom: {
       options: (value, { req, location, path }) => {
         // TODO: Add the req.user.username to the user_inputs like in register form
-        var passwordScore = zxcvbn(value, user_inputs=["ancgis", "anc", "gis"]).score;
+        var passwordScore = zxcvbn(value, user_inputs=["ancgis", "anc", "gis"]).score; // eslint-disable-line no-undef camelcase
         if (passwordScore < 2) {
           throw new Error("Le mot de passe est trop faible. Si besoin, vous pouvez l'améliorer <a href=\"https://lowe.github.io/tryzxcvbn/\" target=\"_blank\">ici</a>.");
         }
@@ -89,8 +89,8 @@ router.post("/:token", postCheckSchema, function(req, res, next) {
       req.flash("error", "Le jeton pour la réinitialisation du mot de passe est invalide ou a expiré.");
       return res.redirect("back");
     }
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
     user.setPassword(req.body.password, function(){
       user.save(function(err) {
         req.logIn(user, function(err) {

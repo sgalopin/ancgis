@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define no-undefined */
 
 /**
  * @module ol/format/ExtendedGeoJSON
@@ -237,7 +237,7 @@ class ExtendedGeoJSON extends JSONFeature {
 
 // Based on ol/format/GeoJSON v5.2.0
 
-import Circle from "ol/geom/Circle.js"
+import Circle from "ol/geom/Circle.js";
 
 /**
  * @const

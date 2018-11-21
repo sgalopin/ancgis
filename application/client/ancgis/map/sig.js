@@ -16,14 +16,14 @@ import AddHive from "../../ol/interaction/AddHive.js";
 import ModifyFeature from "../../ol/interaction/ModifyFeature.js";
 import RemoveFeatures from "../../ol/interaction/RemoveFeatures.js";
 import EditProperties from "../../ol/interaction/EditProperties.js";
-import Map, {featuresToGeoJson} from "./map.js";
+import getMap from "./map.js";
 import Idbm from "../dbms/AncgisIdbManager.js";
 import {displayMapMessage} from "../tool/message.js";
 import ZoneDAO from "../dao/ZoneDAO.js";
 import HiveDAO from "../dao/HiveDAO.js";
 import ExtentDAO from "../dao/ExtentDAO.js";
-import ZoneForm from "../form/zone.js";
-import HiveForm from "../form/hive.js";
+import getZoneForm from "../form/zone.js";
+import getHiveForm from "../form/hive.js";
 import syncInfoTemplate from "../../../views/partials/sync-info.hbs";
 import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
 import MapCache from "../tool/MapCache.js";
@@ -40,14 +40,14 @@ export default async function(isOnline) {
   let hiveDAO = new HiveDAO(idbm);
   let zoneDAO = new ZoneDAO(idbm);
   let extentDAO = new ExtentDAO(idbm);
-  let zoneForm = await ZoneForm(idbm);
-  let hiveForm = await HiveForm();
+  let zoneForm = await getZoneForm(idbm);
+  let hiveForm = await getHiveForm();
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await Map(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -235,7 +235,7 @@ export default async function(isOnline) {
   hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
   extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
   updateSyncInfo(); // Initialization
-  
+
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     Promise.all([

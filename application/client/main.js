@@ -1,7 +1,7 @@
 import {setCookie, getCookie, hasVerifiedJWT, deleteCookie, getUserInfo} from "./ancgis/tool/cookie.js";
 import sigPageTemplate from "../views/subpages/sig.hbs";
 import loginPageTemplate from "../views/subpages/login.hbs";
-import Sig from "./ancgis/map/sig.js";
+import getSig from "./ancgis/map/sig.js";
 import {confirm} from "./ancgis/tool/modal.js";
 import jwt from "jsonwebtoken";
 import {displayLoginMessage} from "./ancgis/tool/message.js";
@@ -61,7 +61,7 @@ $(document).ready(function(){
     // Adds the sig page (static part)
     updatePage(sigPageTemplate, {user: getUserInfo(), isOnline});
     // Adds the sig page (dynamic part)
-    Sig(isOnline);
+    getSig(isOnline);
 
     // Management of the logout button
     $("#ancgis-topright-logout, #ancgis-topright-logout2").click(function() {
@@ -83,7 +83,7 @@ $(document).ready(function(){
         url: $("#login-form").prop("action"),
         data: $("#login-form").serialize(),
         dataType: "json",
-        success: function(response) {
+        success(response) {
           if (response.success === true && hasVerifiedJWT("jwt")) {
             openSIGPage(true); // true for online
             // Add Service worker for cache
@@ -92,7 +92,7 @@ $(document).ready(function(){
             displayLoginMessage(response.message, "error", true);
           }
         },
-        error: function(jqXHR, textStatus, errorThrown) { // eslint-disable-line complexity
+        error(jqXHR, textStatus, errorThrown) { // eslint-disable-line complexity
           if (jqXHR.readyState === 0) {
             // Local authentification
             if (hasVerifiedJWT("jwt")) {
