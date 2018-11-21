@@ -22,7 +22,7 @@ class SyncIdbManager extends IdbManager {
 
     const options = optOptions ? optOptions : {};
     this.restBaseUrl = options.restBaseUrl ? options.restBaseUrl : "/rest";
-    this.submitErrors = {};
+    this.submitErrors = {};  // eslint-disable-line security/detect-object-injection
   }
 
   // Open the database
@@ -365,7 +365,7 @@ class SyncIdbManager extends IdbManager {
 
   async uploadFeatures(collection) {
     let self = this;
-    self.submitErrors[collection] = {};
+    self.submitErrors[collection] = {};  // eslint-disable-line security/detect-object-injection
     return new Promise(async function(resolve, reject) {
       let geoJsonFeatures = await self.getDirtyDocuments(collection);
       let count = {
@@ -394,7 +394,7 @@ class SyncIdbManager extends IdbManager {
         }).catch(function(){
           reject({
             "error": Error("Unable to upload the documents to the server."),
-            "details": self.submitErrors[collection]
+            "details": self.submitErrors[collection] // eslint-disable-line security/detect-object-injection
           });
         });
       }

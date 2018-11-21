@@ -199,6 +199,8 @@ class PeriodSwitcher extends Control {
     }, this);
   }
 
+/* eslint-disable security/detect-object-injection */
+
   /**
    * Update the histogram on the map
    * @param {Array} periodsPotential The periods potential array ( periodsPotential[period] : { nectar: 0, pollen: 0 } )
@@ -263,6 +265,8 @@ class PeriodSwitcher extends Control {
     }, this);
     return periodsPotential;
   }
+
+/* eslint-enable security/detect-object-injection */
 
   /**
    * @param {module:ol/events/EventType} event The event to handle
