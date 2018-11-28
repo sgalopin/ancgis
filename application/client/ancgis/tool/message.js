@@ -20,7 +20,7 @@ function displayMessage(message, msgDivSelector, cleanPreviousMsg = false) {
  */
 export function displayMapMessage(message, type, cleanPreviousMsg) {
   let msg = {"messages": {}};
-  msg.messages[type] = message;
+  msg.messages[type] = message; // TODO:  Make template for html message and escape message into the view ({{{ -> {{).
   displayMessage(msg, ".ancgis-appmessage-onmap", cleanPreviousMsg);
 }
 
@@ -30,6 +30,6 @@ export function displayFormatedLoginMessage(message, cleanPreviousMsg) {
 
 export function displayLoginMessage(message, type, cleanPreviousMsg) {
   let msg = {"messages": {}};
-  msg.messages[type] = message;
+  msg.messages[type] = message; // TODO:  Make template for html message and escape message into the view ({{{ -> {{).
   displayMessage(msg, ".ancgis-appmessage", cleanPreviousMsg);
 }

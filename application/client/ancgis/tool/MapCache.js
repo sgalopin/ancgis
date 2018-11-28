@@ -29,7 +29,6 @@ class MapCache {
     this.map = options.map;
     this.extentsLayerName = options.extentsLayerName;
     this.catchedLayerNames = Array.isArray(options.catchedLayerNames) ? options.catchedLayerNames : [options.catchedLayerNames];
-    this.cacheName = options.cacheName ? options.cacheName : "ancgis-statics-tiles";
   }
 
   getTilesUrls() {
@@ -56,12 +55,13 @@ class MapCache {
   }
 
   updateCache() {
+    const cacheName = "ancgis-statics-tiles";
     const self = this;
     const urls = self.getTilesUrls();
     let count = 0;
     // Delete the cache
-    caches.delete(self.cacheName).then(function(boolean) {
-      caches.open(self.cacheName).then(function(cache) {
+    caches.delete(cacheName).then(function(boolean) { // eslint-disable-line security/detect-object-injection
+      caches.open(cacheName).then(function(cache) { // eslint-disable-line security/detect-object-injection
         // Dispatch a event to display the map cache info toolbar.
         self.dispatchTileAddedEvent(0, urls.length);
           urls.forEach(function(url) {
@@ -90,6 +90,8 @@ class MapCache {
     });
   }
 
+  /* eslint-disable security/detect-object-injection */
+
   addEventListener(eventType, listener) {
     this.listeners = this.listeners ? this.listeners : {};
     this.listeners[eventType] = this.listeners[eventType] ? this.listeners[eventType] : [];
@@ -104,6 +106,8 @@ class MapCache {
       });
     }
   }
+
+  /* eslint-enable security/detect-object-injection */
 
   dispatchTileAddedEvent() {
     this.dispatchEvent(new CustomEvent("tileAdded", { "detail": arguments }));

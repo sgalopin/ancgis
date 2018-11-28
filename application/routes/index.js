@@ -2,6 +2,7 @@ var express = require("express");
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
 var fs = require("fs");
+const path = require("path");
 
 var router = express.Router(); // eslint-disable-line new-cap
 
@@ -47,7 +48,7 @@ router.post("/login", function(req, res, next) {
 
       // create an asymmetric token
       // Note: readFileSync returns a buffer if no encoding is specified.
-      var cert = fs.readFileSync(__dirname + "/../encryption/ancgis.dev.net.key", "utf8"); // get private key
+      var cert = fs.readFileSync(path.join(__dirname, "/../encryption/ancgis.dev.net.key"), "utf8"); // get private key
       var token = jwt.sign({ id: user._id, username: user.username, profil: user.profil }, cert, {
         algorithm: "RS256", // sign with RSA SHA256
         expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)

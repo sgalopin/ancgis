@@ -59,7 +59,8 @@ class SyncIdbManager extends IdbManager {
     .fail(function( jqXHR, textStatus, errorThrown ) { // eslint-disable-line complexity
       if (jqXHR.readyState === 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
-        self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
+        // Escapes the error message with "encodeURIComponent" for security purpose (Man-in-the-middle attack).
+        self.submitErrors[collection][doc.id] = encodeURIComponent(jqXHR.responseJSON.error); // eslint-disable-line security/detect-object-injection
         console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
