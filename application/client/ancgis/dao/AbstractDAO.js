@@ -1,4 +1,5 @@
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
+import * as log from "loglevel";
 
 /**
  * @module ancgis/client/ancgis/dao/AbstractDAO
@@ -48,33 +49,33 @@ class AbstractDAO {
 
   getDirtyDocumentsCount(collection) {
     return this.dbm.getDirtyDocumentsCount(collection)
-    .catch((error) => console.error(error));
+    .catch((error) => log.error(error));
   }
 
   createFeature(collection, geoJsonFeature) {
     let promise =  this.dbm.create(collection, geoJsonFeature)
-    .catch((error) => console.error(error));
+    .catch((error) => log.error(error));
     promise.then(this.dispatchDirtyAddedEvent.bind(this));
     return promise;
   }
 
   updateFeature(collection, geoJsonFeature) {
     let promise = this.dbm.update(collection, geoJsonFeature)
-    .catch((error) => console.error(error));
+    .catch((error) => log.error(error));
     promise.then(this.dispatchDirtyAddedEvent.bind(this));
     return promise;
   }
 
   deleteFeature(collection, id) {
     let promise = this.dbm.delete(collection, id)
-    .catch((error) => console.error(error));
+    .catch((error) => log.error(error));
     promise.then(this.dispatchDirtyAddedEvent.bind(this));
     return promise;
   }
 
   downloadFeatures(collection) {
     return this.dbm.downloadFeatures(collection)
-    .catch((error) => console.error(error));
+    .catch((error) => log.error(error));
   }
 
   uploadFeatures(collection) {

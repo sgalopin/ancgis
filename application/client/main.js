@@ -6,8 +6,12 @@ import {confirm} from "./ancgis/tool/modal.js";
 import jwt from "jsonwebtoken";
 import {displayLoginMessage} from "./ancgis/tool/message.js";
 import {addServiceWorker} from "./ancgis/tool/service-worker.js";
+import * as log from "loglevel";
+import Env from '@environment';
 
 $(document).ready(function(){
+
+  log.setLevel(Env.LOGLEVEL); // Logging is filtered to "warn" level by default.
 
   function bootstrapSetup() {
     // Tooltip activation
@@ -51,8 +55,8 @@ $(document).ready(function(){
           // something weird is happening
           displayLoginMessage("La demande de déconnexion a echouée suite à une erreur inconnue.", "error", true);
         }
-        console.error( "Request Failed with status : " + textStatus );
-        if (errorThrown) { console.error(errorThrown); }
+        log.error( "Request Failed with status : " + textStatus );
+        if (errorThrown) { log.error(errorThrown); }
       }
     });
   }
@@ -108,8 +112,8 @@ $(document).ready(function(){
             // something weird is happening
             displayLoginMessage("La demande de connexion a echouée suite à une erreur inconnue.", "error", true);
           }
-          console.error( "Request Failed with status : " + textStatus );
-          if (errorThrown) { console.error(errorThrown); }
+          log.error( "Request Failed with status : " + textStatus );
+          if (errorThrown) { log.error(errorThrown); }
         }
       });
     });

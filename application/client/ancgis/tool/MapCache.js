@@ -2,6 +2,8 @@
  * @module ancgis/client/ancgis/tool/MapCache
  */
 
+import * as log from "loglevel";
+
 /**
  * @classdesc
  * Manage the map cache
@@ -83,7 +85,7 @@ class MapCache {
           })
           .catch(function(error) {
             self.dispatchCacheUpdateErrorEvent("Erreur réseau lors de la mise à jour du cache cartographique. Veuillez réessayer.");
-            console.error("Fetching map cache failed:", error);
+            log.error("Fetching map cache failed:", error);
           });
         });
       });

@@ -1,5 +1,6 @@
 import IdbManager from "./IdbManager.js";
 import {displayMapMessage} from "../tool/message.js";
+import * as log from "loglevel";
 
 /**
  * @module ancgis/client/ancgis/dbms/SyncIdbManager
@@ -61,12 +62,12 @@ class SyncIdbManager extends IdbManager {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         // Escapes the error message with "encodeURIComponent" for security purpose (Man-in-the-middle attack).
         self.submitErrors[collection][doc.id] = encodeURIComponent(jqXHR.responseJSON.error); // eslint-disable-line security/detect-object-injection
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
-      if (errorThrown) { console.error(errorThrown); }
+      if (errorThrown) { log.error(errorThrown); }
     });
   }
 
@@ -87,12 +88,12 @@ class SyncIdbManager extends IdbManager {
       if (jqXHR.readyState === 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
-      if (errorThrown) { console.error(errorThrown); }
+      if (errorThrown) { log.error(errorThrown); }
     });
   }
 
@@ -113,12 +114,12 @@ class SyncIdbManager extends IdbManager {
       if (jqXHR.readyState === 4 && jqXHR.responseJSON && jqXHR.responseJSON.error) {
         // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
         self.submitErrors[collection][doc.id] = jqXHR.responseJSON.error;
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with error : " + jqXHR.responseJSON.error );
       } else {
         // something weird is happening
-        console.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
+        log.error("Unable to synchronize  '" + doc.id + "'. Request Failed with status : " + textStatus, jqXHR );
       }
-      if (errorThrown) { console.error(errorThrown); }
+      if (errorThrown) { log.error(errorThrown); }
     });
   }
 
@@ -135,11 +136,11 @@ class SyncIdbManager extends IdbManager {
       });
     }, function(xhrObj, textStatus, err) { // Catch the JQuery error
       // TODO: Delete the db ?
-      console.error(err);
+      log.error(err);
     })
     .catch(function(err) { // Catch the success function error
       // TODO: Delete the db ?
-      console.error(err);
+      log.error(err);
     });
   }
 
@@ -195,7 +196,7 @@ class SyncIdbManager extends IdbManager {
           request = store.put(doc);
         }
         request.onsuccess = function(event) {
-          console.debug("'" + doc.id + "' has been cleaned in your local database.");
+          log.debug("'" + doc.id + "' has been cleaned in your local database.");
           resolve(doc);
         };
         request.onerror = function(event) {
@@ -217,7 +218,7 @@ class SyncIdbManager extends IdbManager {
         gjdoc.properties.metadata.dirty = 1;
         let putRequest = store.put(gjdoc);
         putRequest.onsuccess = function(event) {
-          console.debug("'" + doc.id + "' has been updated in your local database.");
+          log.debug("'" + doc.id + "' has been updated in your local database.");
           self.dispatchUpdateEvent(collection, doc);
           resolve(doc);
         };
@@ -315,8 +316,8 @@ class SyncIdbManager extends IdbManager {
             // something weird is happening
             displayMapMessage("La demande de récupération des données a echouée suite à une erreur inconnue.", "error", true);
           }
-          console.error( "Request Failed with status : " + textStatus );
-          if (errorThrown) { console.error(errorThrown); }
+          log.error( "Request Failed with status : " + textStatus );
+          if (errorThrown) { log.error(errorThrown); }
           reject(Error("Unable to get remote documents from server."));
       });
     });

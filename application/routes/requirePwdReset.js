@@ -4,6 +4,7 @@ var Account = require("../models/account");
 var RateLimit = require("express-rate-limit");
 var async = require("async");
 const { checkSchema, validationResult } = require("express-validator/check");
+const log = require("loglevel");
 
 // Render the form with error(s) message(s)
 function errorRender (req, res, message) {
@@ -106,7 +107,7 @@ router.post("/", postCheckSchema, function(req, res, next) {
       };
       sgMail.send(msg, (error, result) => {
         if (error) {
-          console.error("ERROR:", error.toString());
+          log.error("ERROR:", error.toString());
           return errorRender (req, res, "Une erreur technique empêche l'envoi de l'email de réinitialisation, veuillez contacter l'administrateur du site.");
         }
         else {

@@ -42,7 +42,7 @@ self.addEventListener("install", function(event) {
           return cache.put(url, response);
         })
         .catch(function(error) {
-          console.error("Fetching install cache failed:", error);
+          console.error("Fetching install cache failed:", error); // eslint-disable-line no-console
         });
       });
     })
@@ -69,7 +69,7 @@ self.addEventListener("fetch", function (event) {
             && event.request.headers.get("X-Custom-Header") !== "MapCacheRequest") {
             return await caches.match(new Request("/images/blank.jpg"));
           } else {
-            console.error("Fetching failed:", error);
+            console.error("Fetching failed:", error); // eslint-disable-line no-console
           }
         });
       }

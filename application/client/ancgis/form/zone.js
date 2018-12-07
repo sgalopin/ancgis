@@ -2,6 +2,7 @@
 import zoneFormTemplate from "../../../views/partials/form/zone.hbs";
 import floreLineTemplate from "../../../views/partials/form/flore-line.hbs";
 import getSpeciesForm from "./species.js";
+import * as log from "loglevel";
 
 /**
  * Zone form builder.
@@ -87,7 +88,7 @@ export default async function(idbm) {
           updateSpeciesLines(newPpts);
         } else {
           // TODO: Display an Error
-          console.error(Error("Species already present"));
+          log.error(Error("Species already present"));
         }
       });
 

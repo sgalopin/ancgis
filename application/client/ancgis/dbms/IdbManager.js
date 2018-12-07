@@ -1,3 +1,5 @@
+import * as log from "loglevel";
+
 /**
  * @module ancgis/client/ancgis/dbms/IdbManager
  */
@@ -9,7 +11,7 @@ window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || 
 window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
 if (!window.indexedDB) {
-  console.error("Your browser doesn't support a stable version of IndexedDB.");
+  log.error("Your browser doesn't support a stable version of IndexedDB.");
 }
 
 /**
@@ -79,11 +81,11 @@ class IdbManager {
       });
     }, function(xhrObj, textStatus, err) { // Catch the JQuery error
       // TODO: Delete the db ?
-      console.error(err);
+      log.error(err);
     })
     .catch(function(err) { // Catch the success function error
       // TODO: Delete the db ?
-      console.error(err);
+      log.error(err);
     });
   }
 
@@ -94,7 +96,7 @@ class IdbManager {
       .objectStore(collection)
       .add(doc);
       request.onsuccess = function(event) {
-        console.debug("'" + doc.id + "' has been added to your local database.");
+        log.debug("'" + doc.id + "' has been added to your local database.");
         self.dispatchCreateEvent(collection, doc);
         resolve(doc);
       };
@@ -149,7 +151,7 @@ class IdbManager {
       .objectStore(collection)
       .put(doc);
       request.onsuccess = function(event) {
-        console.debug("'" + doc.id + "' has been updated in your local database.");
+        log.debug("'" + doc.id + "' has been updated in your local database.");
         if (dispatchEvent) {
           self.dispatchUpdateEvent(collection, doc);
         }
@@ -168,7 +170,7 @@ class IdbManager {
       .objectStore(collection)
       .delete(id);
       request.onsuccess = function(event) {
-        console.debug("'" + id + "' entry has been removed from the database.");
+        log.debug("'" + id + "' entry has been removed from the database.");
         self.dispatchDeleteEvent(collection, id);
         resolve(id);
       };

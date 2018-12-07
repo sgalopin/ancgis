@@ -1,5 +1,6 @@
 // Requirements
 import speciesFormTemplate from "../../../views/partials/form/species.hbs";
+import * as log from "loglevel";
 
 /**
  * Species form builder.
@@ -17,7 +18,7 @@ export default async function(idbm) {
         recovery === 0 && (recovery = 100); // Set default value to 100
         if (recovery < 0 || recovery > 100) {
           // TODO: Print an error message
-          console.error(Error("Bad recovery value"));
+          log.error(Error("Bad recovery value"));
         } else {
           // Get the taxon fields
           idbm.read("taxons", Number($("#ancgis-speciesform-taxonfield").val()))
@@ -29,7 +30,7 @@ export default async function(idbm) {
               $("#ancgis-zoneform").focus();
             });
           }, function(err) {
-            console.error(err);
+            log.error(err);
           });
         }
       }
@@ -80,10 +81,10 @@ export default async function(idbm) {
           validateForm();
         });
       }, function(err) { // Catch the "readAll" function error
-        console.error(err);
+        log.error(err);
       })
       .catch(function(err) { // Catch the "then" function error
-        console.error(err);
+        log.error(err);
       });
     }
   };

@@ -2,7 +2,8 @@ const result = require("dotenv").config();
 if (result.error) { throw result.error; }
 
 var express = require("express");
-var session = require("express-session");
+const session = require("express-session");
+const MongoStore = require('connect-mongo')(session);
 var exphbs  = require("express-handlebars");
 var passport = require("passport");
 var mongoose = require("mongoose");
@@ -14,6 +15,7 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var RateLimit = require("express-rate-limit");
 var flash = require("express-flash");
+const log = require("loglevel");
 
 var app = express();
 
@@ -48,12 +50,10 @@ app.use (
 );
 
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
-mongoose.connect(dbConnectionString + "/taxons", function(err) {
-  if (err) {
-    console.error("Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!");
-  }
-});
-if (app.get("env") === "development") {
+mongoose.connect(dbConnectionString, { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true); // Removes DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+
+if (process.env.NODE_ENV === "development") {
   // webpack-dev-middleware
   const webpack = require("webpack");
   const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -97,7 +97,8 @@ app.use(session({
   secret: process.env.ANCGIS_SESSION_SECRET ? process.env.ANCGIS_SESSION_SECRET : require("crypto").randomBytes(64).toString("hex"),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: true },
+  store: new MongoStore({ mongooseConnection: mongoose.connection }) // Re-use the existing MongoDB connection.
 }));
 app.use(flash()); // Flash requires sessions.
 
@@ -160,7 +161,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = process.env.NODE_ENV === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);

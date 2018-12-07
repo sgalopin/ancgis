@@ -5,6 +5,7 @@
  */
 let app = require("./app");
 const debug = require("debug")("app:server");
+const log = require("loglevel");
 
 /**
  * Create HTTPS server.
@@ -45,11 +46,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
-      console.error(bind + " requires elevated privileges");
+      log.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
     case "EADDRINUSE":
-      console.error(bind + " is already in use");
+      log.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
