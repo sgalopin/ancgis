@@ -1,4 +1,4 @@
 export default {
- ENV: 'development',
- LOGLEVEL: 'trace'
-}
+ ENV: "development",
+ LOGLEVEL: "trace"
+};

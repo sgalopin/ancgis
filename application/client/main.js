@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import {displayLoginMessage} from "./ancgis/tool/message.js";
 import {addServiceWorker} from "./ancgis/tool/service-worker.js";
 import * as log from "loglevel";
-import Env from '@environment';
+import Env from "@environment";
 
 $(document).ready(function(){
 

@@ -361,7 +361,7 @@ class SyncIdbManager extends IdbManager {
            // No more entries
            resolve(count);
         }
-      }
+      };
     });
   }
 

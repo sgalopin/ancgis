@@ -3,7 +3,7 @@ if (result.error) { throw result.error; }
 
 var express = require("express");
 const session = require("express-session");
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require("connect-mongo")(session);
 var exphbs  = require("express-handlebars");
 var passport = require("passport");
 var mongoose = require("mongoose");
@@ -51,7 +51,7 @@ app.use (
 
 var dbConnectionString = process.env.MONGODB_URI || "mongodb://localhost/ancgis";
 mongoose.connect(dbConnectionString, { useNewUrlParser: true });
-mongoose.set('useCreateIndex', true); // Removes DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+mongoose.set("useCreateIndex", true); // Removes DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 
 if (process.env.NODE_ENV === "development") {
   // webpack-dev-middleware

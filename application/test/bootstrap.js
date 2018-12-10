@@ -19,7 +19,7 @@ before (async function () {
 
 // close browser and reset global variables
 after (function () {
-  browser.close();
+  browser.close(); // eslint-disable-line no-undef
   global.browser = globalVariables.browser;
   global.expect = globalVariables.expect;
 });

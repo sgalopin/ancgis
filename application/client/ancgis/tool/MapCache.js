@@ -63,7 +63,7 @@ class MapCache {
     let count = 0;
     // Delete the cache
     caches.delete(cacheName).then(function(boolean) { // eslint-disable-line security/detect-object-injection
-      caches.open(cacheName).then(function(cache) { // eslint-disable-line security/detect-object-injection
+      caches.open(cacheName).then(function(cache) { // eslint-disable-line security/detect-object-injection, security/detect-non-literal-fs-filename
         // Dispatch a event to display the map cache info toolbar.
         self.dispatchTileAddedEvent(0, urls.length);
           urls.forEach(function(url) {

@@ -1,4 +1,4 @@
 export default {
- ENV: 'production',
- LOGLEVEL: 'error'
-}
+ ENV: "production",
+ LOGLEVEL: "error"
+};
