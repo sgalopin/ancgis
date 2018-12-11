@@ -2,9 +2,20 @@
  * Message tools
  */
 import appMessageTemplate from "../../../views/partials/app-message.hbs";
+import * as log from "loglevel";
 
-function displayMessage(message, msgDivSelector, cleanPreviousMsg = false) {
-  const appMessageHTML = appMessageTemplate(message);
+function isValidType(type) {
+  const msgTypes = ["error", "warning", "info", "success"];
+  if (!msgTypes.includes(type)) {
+    log.error("Bad message type provided.");
+    return false;
+  }
+  return true;
+}
+
+function displayMessage(msg, msgDivSelector, cleanPreviousMsg = false, escapeMsg = true) {
+  msg.escapeMsg = escapeMsg;
+  const appMessageHTML = appMessageTemplate(msg);
   if (cleanPreviousMsg && $(".alert-dismissible")) {
     $(".alert-dismissible").remove();
   }
@@ -18,18 +29,16 @@ function displayMessage(message, msgDivSelector, cleanPreviousMsg = false) {
 /**
  * Type: error, warning, info, success
  */
-export function displayMapMessage(message, type, cleanPreviousMsg) {
+export function displayMapMessage(message, type, cleanPreviousMsg, escapeMsg) {
+  if (!isValidType(type)) { return; } // For security (object-injection)
   let msg = {"messages": {}};
-  msg.messages[type] = message; // TODO:  Make template for html message and escape message into the view ({{{ -> {{).
-  displayMessage(msg, ".ancgis-appmessage-onmap", cleanPreviousMsg);
+  msg.messages[type] = message; // eslint-disable-line security/detect-object-injection
+  displayMessage(msg, ".ancgis-appmessage-onmap", cleanPreviousMsg, escapeMsg);
 }
 
-export function displayFormatedLoginMessage(message, cleanPreviousMsg) {
-  displayMessage(message, ".ancgis-appmessage", cleanPreviousMsg);
-}
-
-export function displayLoginMessage(message, type, cleanPreviousMsg) {
+export function displayLoginMessage(message, type, cleanPreviousMsg, escapeMsg) {
+  if (!isValidType(type)) { return; } // For security (object-injection)
   let msg = {"messages": {}};
-  msg.messages[type] = message; // TODO:  Make template for html message and escape message into the view ({{{ -> {{).
-  displayMessage(msg, ".ancgis-appmessage", cleanPreviousMsg);
+  msg.messages[type] = message; // eslint-disable-line security/detect-object-injection
+  displayMessage(msg, ".ancgis-appmessage", cleanPreviousMsg, escapeMsg);
 }

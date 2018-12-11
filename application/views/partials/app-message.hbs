@@ -1,6 +1,6 @@
 {{#if messages.error}}
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{{messages.error}}}
+    {{#if escapeMsg}} {{messages.error}} {{else}} {{{messages.error}}} {{/if}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -8,7 +8,7 @@
 {{/if}}
 {{#if messages.warning}}
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{{messages.warning}}}
+    {{#if escapeMsg}} {{messages.warning}} {{else}} {{{messages.warning}}} {{/if}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -16,7 +16,7 @@
 {{/if}}
 {{#if messages.info}}
   <div class="alert alert-info alert-dismissible fade show" role="alert">
-    {{{messages.info}}}
+    {{#if escapeMsg}} {{messages.info}} {{else}} {{{messages.info}}} {{/if}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -24,7 +24,7 @@
 {{/if}}
 {{#if messages.success}}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{{messages.success}}}
+    {{#if escapeMsg}} {{messages.success}} {{else}} {{{messages.success}}} {{/if}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>

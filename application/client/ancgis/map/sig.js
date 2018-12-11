@@ -26,6 +26,7 @@ import getZoneForm from "../form/zone.js";
 import getHiveForm from "../form/hive.js";
 import syncInfoTemplate from "../../../views/partials/sync-info.hbs";
 import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
+import dataDownloadTemplate from "../../../views/partials/messages/data_download.hbs";
 import MapCache from "../tool/MapCache.js";
 
 // Copied from ol/interaction/Translate.js
@@ -249,7 +250,7 @@ export default async function(isOnline) {
         finalMessage += finalMessage.length === 0 ? result.message : "<br/>" + result.message;
         finalSuccess = finalSuccess && result.success;
       });
-      displayMapMessage(finalMessage, finalSuccess ? "success" : "error", true);
+      displayMapMessage(finalMessage, finalSuccess ? "success" : "error", true, false);
       if (!finalSuccess) {
         // Management of the errors links
         $(".ancgis-appmessage-onmap a").click(function(event) {
@@ -291,10 +292,7 @@ export default async function(isOnline) {
       extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
       cache.updateCache();
     }
-    const msg = "<b>Récupération des ruches :</b> <b>" + count.hives.added + "</b> ruche(s) ajoutée(s), <b>" + count.hives.updated + "</b> mise(s) à jour, <b>" + count.hives.deleted + "</b> effacée(s)."
-    + "</br><b>Récupération des zones de végétation :</b> <b>" + count.zones.added + "</b> zone(s) ajoutée(s), <b>" + count.zones.updated + "</b> mise(s) à jour, <b>" + count.zones.deleted + "</b> effacée(s)."
-    + "</br><b>Récupération des zones de cache :</b> <b>" + count.extents.added + "</b> zone(s) ajoutée(s), <b>" + count.extents.updated + "</b> mise(s) à jour, <b>" + count.extents.deleted + "</b> effacée(s).";
-    displayMapMessage(msg, "success", true);
+    displayMapMessage(dataDownloadTemplate({count}), "success", true, false);
   });
 
   // Management of the draw extent button

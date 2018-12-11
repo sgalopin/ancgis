@@ -29,12 +29,14 @@ app.use(function(req, res, next) {
 });
 
 // view engine setup
-const handlebarsHelpers = require("./helpers/handlebars");
 app.engine("hbs", exphbs({
   extname: ".hbs",
   defaultLayout: "layout",
   layoutsDir: __dirname + "/views/layouts/",
-  helpers: handlebarsHelpers,
+  helpers: {
+    ifEqual: require("./views/helpers/ifEqual.js"),
+    substr: require("./views/helpers/substr.js")
+  },
   partialsDir: [
     __dirname + "/views/partials/"
   ]

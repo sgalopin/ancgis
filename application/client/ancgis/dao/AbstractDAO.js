@@ -1,5 +1,6 @@
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 import * as log from "loglevel";
+import dataUploadTemplate from "../../../views/partials/messages/data_upload.hbs";
 
 /**
  * @module ancgis/client/ancgis/dao/AbstractDAO
@@ -47,42 +48,53 @@ class AbstractDAO {
     this.dispatchEvent(new Event("dirtyAdded"));
   }
 
-  getDirtyDocumentsCount(collection) {
-    return this.dbm.getDirtyDocumentsCount(collection)
+  getDirtyDocumentsCount() {
+    return this.dbm.getDirtyDocumentsCount(this.collection)
     .catch((error) => log.error(error));
   }
 
-  createFeature(collection, geoJsonFeature) {
-    let promise =  this.dbm.create(collection, geoJsonFeature)
+  createFeature(feature) {
+    let promise =  this.dbm.create(this.collection, this.featureToJSON(feature))
+    .catch((error) => log.error(error));
+    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    promise.then(function(doc){
+      feature.setId(doc.id);
+    });
+    return promise;
+  }
+
+  updateFeature(feature) {
+    let promise = this.dbm.update(this.collection, this.featureToJSON(feature))
     .catch((error) => log.error(error));
     promise.then(this.dispatchDirtyAddedEvent.bind(this));
     return promise;
   }
 
-  updateFeature(collection, geoJsonFeature) {
-    let promise = this.dbm.update(collection, geoJsonFeature)
+  deleteFeature(feature) {
+    let promise = this.dbm.delete(this.collection, feature.getId())
     .catch((error) => log.error(error));
     promise.then(this.dispatchDirtyAddedEvent.bind(this));
     return promise;
   }
 
-  deleteFeature(collection, id) {
-    let promise = this.dbm.delete(collection, id)
-    .catch((error) => log.error(error));
-    promise.then(this.dispatchDirtyAddedEvent.bind(this));
-    return promise;
-  }
-
-  downloadFeatures(collection) {
-    return this.dbm.downloadFeatures(collection)
+  downloadFeatures() {
+    return this.dbm.downloadFeatures(this.collection)
     .catch((error) => log.error(error));
   }
 
-  uploadFeatures(collection) {
-    return this.dbm.uploadFeatures(collection);
+  uploadFeatures() {
+    const self = this;
+    return new Promise((resolve, reject) => {
+      self.dbm.uploadFeatures(self.collection).then(function(count){
+        resolve({ success: true, message: dataUploadTemplate({ success: true, collection: self.collection, count }) });
+      }, function(response){
+        resolve({ success: false, message: dataUploadTemplate({ success: false, collection: self.collection, details: response.details }) });
+      });
+    });
   }
 
-  async featuresToGeoJson(collection) {
+  async featuresToGeoJson() {
+    const self = this;
     let extendedGeoJSON = new ExtendedGeoJSON();
     return extendedGeoJSON.readFeatures({
       "type": "FeatureCollection",
@@ -92,7 +104,7 @@ class AbstractDAO {
           "name": "EPSG:3857"
         }
       },
-      "features": await this.dbm.readAll(collection)
+      "features": await this.dbm.readAll(self.collection)
     });
   }
 }

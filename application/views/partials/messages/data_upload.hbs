@@ -1,0 +1,39 @@
+{{#ifEqual collection "hives"}}
+  {{#if success}}
+    <b>Soumission des ruches :</b> <b>{{ count.added }}</b> ruche(s) ajoutée(s), <b>{{ count.updated }}</b> mise(s) à jour, <b>{{ count.deleted }}</b> effacée(s).
+  {{else}}
+    <b>La soumission des ruches a échoué:</b><br/>
+    {{#each details as |message id|}}
+      <a data-id="{{ id }}" title="{{ id }}" href="#" data-toggle="tooltip" data-placement="right" data-container=".alert-dismissible">{{ substr "13" id }}</a> : {{ message }}
+      {{#unless @last}}
+        </br>
+      {{/unless}}
+    {{/each}}
+  {{/if}}
+{{/ifEqual}}
+{{#ifEqual collection "vegetation-zones"}}
+  {{#if success}}
+    <b>Soumission des zones de végétation :</b> <b>{{ count.added }}</b> zone(s) ajoutée(s), <b>{{ count.updated }}</b> mise(s) à jour, <b>{{ count.deleted }}</b> effacée(s).
+  {{else}}
+    <b>La soumission des zones de végétation a échoué:</b><br/>
+    {{#each details as |message id|}}
+      <a data-id="{{ id }}" title="{{ id }}" href="#" data-toggle="tooltip" data-placement="right" data-container=".alert-dismissible">{{ substr "13" id }}</a> : {{ message }}
+      {{#unless @last}}
+        </br>
+      {{/unless}}
+    {{/each}}
+  {{/if}}
+{{/ifEqual}}
+{{#ifEqual collection "extents"}}
+  {{#if success}}
+    <b>Soumission des zones de cache :</b> <b>{{ count.added }}</b> zone(s) ajoutée(s), <b>{{ count.updated }}</b> mise(s) à jour, <b>{{ count.deleted }}</b> effacée(s).
+  {{else}}
+    <b>La soumission des zones de cache a échoué:</b><br/>
+    {{#each details as |message id|}}
+      <a data-id="{{ id }}" title="{{ id }}" href="#" data-toggle="tooltip" data-placement="right" data-container=".alert-dismissible">{{ substr "13" id }}</a> : {{ message }}
+      {{#unless @last}}
+        </br>
+      {{/unless}}
+    {{/each}}
+  {{/if}}
+{{/ifEqual}}
