@@ -189,8 +189,9 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer, errorsLayer];
+  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
   if (isOnline) { layers.push(extentsLayer); }
+  layers.push(errorsLayer); // The errors layer must be placed to the top.
 
   return new ExtendedMap ({ // Openlayers Map
     layers,
