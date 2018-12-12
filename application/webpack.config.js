@@ -41,9 +41,9 @@ module.exports = {
       test: /\.hbs$/,
       loader: "handlebars-loader",
       query: {
-      	helperDirs: [
-      		path.resolve(__dirname, "views/helpers")
-      	]
+        helperDirs: [
+          path.resolve(__dirname, "views/helpers")
+        ]
       }
     },{
       test: /^\.\/application\/.*\.json$/,

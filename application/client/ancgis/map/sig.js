@@ -27,6 +27,7 @@ import getHiveForm from "../form/hive.js";
 import syncInfoTemplate from "../../../views/partials/sync-info.hbs";
 import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
 import dataDownloadTemplate from "../../../views/partials/messages/data_download.hbs";
+import dataUploadTemplate from "../../../views/partials/messages/data_upload.hbs";
 import MapCache from "../tool/MapCache.js";
 
 // Copied from ol/interaction/Translate.js
@@ -244,10 +245,9 @@ export default async function(isOnline) {
       zoneDAO.uploadFeatures(),
       extentDAO.uploadFeatures()
     ]).then(function(results){
-      let finalMessage = "";
       let finalSuccess = true;
+      const finalMessage = dataUploadTemplate({results});
       results.forEach(function(result){
-        finalMessage += finalMessage.length === 0 ? result.message : "<br/>" + result.message;
         finalSuccess = finalSuccess && result.success;
       });
       displayMapMessage(finalMessage, finalSuccess ? "success" : "error", true, false);

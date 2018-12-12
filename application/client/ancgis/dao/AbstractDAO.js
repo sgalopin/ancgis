@@ -1,6 +1,5 @@
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 import * as log from "loglevel";
-import dataUploadTemplate from "../../../views/partials/messages/data_upload.hbs";
 
 /**
  * @module ancgis/client/ancgis/dao/AbstractDAO
@@ -86,9 +85,9 @@ class AbstractDAO {
     const self = this;
     return new Promise((resolve, reject) => {
       self.dbm.uploadFeatures(self.collection).then(function(count){
-        resolve({ success: true, message: dataUploadTemplate({ success: true, collection: self.collection, count }) });
+        resolve({ success: true, collection: self.collection, count });
       }, function(response){
-        resolve({ success: false, message: dataUploadTemplate({ success: false, collection: self.collection, details: response.details }) });
+        resolve({ success: false, collection: self.collection, details: response.details });
       });
     });
   }
