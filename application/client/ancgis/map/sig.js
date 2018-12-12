@@ -315,9 +315,18 @@ export default async function(isOnline) {
   // Management of the zoom to feature button
   $("#ancgis-topright-zoomtofeature, #ancgis-topright-zoomtofeature2").click(function() {
     event.stopPropagation();
-    let extent = hivesLayerSource.getExtent();
-    olExtentExtend(extent, vegetationsLayerSource.getExtent());
-    map.getView().fit(extent, {duration: 1000});
+    let extent = null;
+    if ( hivesLayerSource.getFeatures().length !== 0 ) {
+      extent = hivesLayerSource.getExtent();
+      if ( vegetationsLayerSource.getFeatures().length !== 0 ) {
+        olExtentExtend(extent, vegetationsLayerSource.getExtent());
+      }
+    } else if ( vegetationsLayerSource.getFeatures().length !== 0 ) {
+      extent = vegetationsLayerSource.getExtent();
+    }
+    if ( extent !== null ) {
+      map.getView().fit(extent, {duration: 1000});
+    }
   });
 
   // Management of the MapCacheInfo toolbar
