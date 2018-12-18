@@ -76,6 +76,23 @@ $(document).ready(function(){
     });
   }
 
+  function getConnectionState(){
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: "GET",
+        url: "/status",
+        success(response) {
+          resolve({ serverConnection: true, activeSession: response.activeSession });
+        },
+        error(jqXHR, textStatus, errorThrown) { // eslint-disable-line complexity
+          log.error( "Request Failed with status : " + textStatus );
+          if (errorThrown) { log.error(errorThrown); }
+          resolve({ serverConnection: false });
+        }
+      });
+    });
+  }
+
   function openLoginPage() {
     // Display the login page
     updatePage(loginPageTemplate);
@@ -98,13 +115,8 @@ $(document).ready(function(){
         },
         error(jqXHR, textStatus, errorThrown) { // eslint-disable-line complexity
           if (jqXHR.readyState === 0) {
-            // Local authentification
-            if (hasVerifiedJWT("jwt")) {
-              openSIGPage();
-            } else {
-              // Network error (i.e. connection refused, access denied due to CORS, etc.)
-              displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", "error", true);
-            }
+            // Network error (i.e. connection refused, access denied due to CORS, etc.)
+            displayLoginMessage("La demande de connexion a echouée suite à une erreur réseau.", "error", true);
           } else if (jqXHR.readyState === 4) {
             // HTTP error (can be checked by jqXHR.status and jqXHR.statusText)
             displayLoginMessage("La demande de connexion a echouée suite à une erreur HTTP.", "error", true);
@@ -119,6 +131,24 @@ $(document).ready(function(){
     });
   }
 
-  openLoginPage();
-
+  getConnectionState().then(function(state){
+    if(state.serverConnection){ // Server responds
+      if(state.activeSession && hasVerifiedJWT("jwt") ) {
+        openSIGPage(true); // true for online
+        // Add Service worker for cache
+        addServiceWorker();
+      } else {
+        openLoginPage();
+        displayLoginMessage("Votre session serveur a expiré. Veuillez vous authentifier de nouveau.", "error", true);
+      }
+    } else { // No server
+      // Local authentification
+      if (hasVerifiedJWT("jwt")) { // Valid JWT
+        openSIGPage();
+      } else { // Invalid JWT
+        openLoginPage();
+        displayLoginMessage("Votre session locale a expiré et le serveur n'est pas joignable. Une connexion réseau est nécessaire afin de pouvoir vous authentifier de nouveau.", "error", true);
+      }
+    }
+  });
 });

@@ -1,8 +1,6 @@
 var express = require("express");
 var passport = require("passport");
-var jwt = require("jsonwebtoken");
-var fs = require("fs");
-const path = require("path");
+const cookie = require("./tool/cookie");
 
 var router = express.Router(); // eslint-disable-line new-cap
 
@@ -21,6 +19,15 @@ router.get("/", function (req, res) {
 router.get("/jwks.json", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   res.send(require("../encryption/jwks.json"));
+});
+
+router.get("/status", function(req, res, next) {
+  if (req.isAuthenticated()) {
+      cookie.addJWTCookie(res,req.user);
+      return res.status(200).send({ success: true, activeSession: true});
+  } else {
+      return res.status(200).send({ success: true, activeSession: false});
+  }
 });
 
 router.post("/login", function(req, res, next) {
@@ -45,22 +52,7 @@ router.post("/login", function(req, res, next) {
       if (loginErr) {
         return next(loginErr);
       }
-
-      // create an asymmetric token
-      // Note: readFileSync returns a buffer if no encoding is specified.
-      // Gets the private key
-      var cert = fs.readFileSync(path.join(__dirname, "/../encryption/ancgis.dev.net.key"), "utf8"); // eslint-disable-line security/detect-non-literal-fs-filename
-      var token = jwt.sign({ id: user._id, username: user.username, profil: user.profil }, cert, {
-        algorithm: "RS256", // sign with RSA SHA256
-        expiresIn: 24 * 60 * 60 // expires in 24 hours (in s)
-      });
-
-      // Set a new cookie
-      res.cookie("jwt", token, {
-        maxAge: 365 * 24 * 60 * 60 * 1000, // expires in 1 year (in ms)
-        httpOnly: false,
-        secure: true
-      });
+      cookie.addJWTCookie(res, user);
       res.status(200).send({ success: true});
     });
   })(req, res, next);
@@ -69,11 +61,7 @@ router.post("/login", function(req, res, next) {
 router.get("/logout", function(req, res) {
   if (req.isAuthenticated()) {
     req.logout();
-    // Options must be identicals to those given to res.cookie(), excluding expires and maxAge.
-    res.clearCookie("jwt", {
-      httpOnly: false,
-      secure: true
-    });
+    cookie.clearJWTCookie(res);
   }
   res.status(200).send({ success: true});
 });
