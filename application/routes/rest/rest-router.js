@@ -5,12 +5,28 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
   var router = express.Router(); // eslint-disable-line new-cap
   var returnGeoJson_ = returnGeoJson ? returnGeoJson : false;
   var isPrivate_ = isPrivate ? isPrivate : false;
+
   function loggedIn(req, res, next) {
       if (req.isAuthenticated()) {
           next();
       } else {
           res.redirect("/");
       }
+  }
+  function checkUser(req, res, next) {
+    if (isPrivate_) {
+      // For security, compares the submitted account parameter to the current account
+      if (!req.body.properties || req.body.properties.account !== req.user._id.toString()) {
+        let msg;
+        switch(req.method){
+          case 'POST': msg = "Création impossible. "; break;
+          case 'PUT': msg = "Mise à jour impossible. "; break;
+          case 'DELETE': msg = "Suppression impossible. "; break;
+        }
+        return res.status(403).json({"status": "fail", "error": msg + "La donnée soumise est non attribuée ou attribuée à un autre compte."});
+      }
+    }
+    next();
   }
 
   router.route("/")
@@ -39,14 +55,8 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
       });
     })
     // CREATE
-    .post(loggedIn, function(req, res, next) {
+    .post(loggedIn, checkUser, function(req, res, next) {
       var doc = new Model(req.body);
-      // For security, compares the submitted account parameter to the current account
-      if (isPrivate_) {
-        if (!doc.properties || doc.properties.account !== req.user._id.toString()) {
-          return res.status(403).json({"status": "fail", "error": "Création impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
-        }
-      }
       doc.save()
       .then(function (doc) {
         res.json({"status": "success", "data": doc});
@@ -70,13 +80,7 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
       });
     })
     // UPDATE
-    .put(loggedIn, function(req, res, next) {
-      // For security, compares the submitted account parameter to the current account
-      if (isPrivate_) {
-        if (!req.body.properties || req.body.properties.account !== req.user._id.toString()) {
-          return res.status(403).json({"status": "fail", "error": "Mise à jour impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
-        }
-      }
+    .put(loggedIn, checkUser, function(req, res, next) {
       const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id.toString() } : { _id: req.params.id };
       Model.findOne(query)
       .exec(function (err, doc) {
@@ -94,13 +98,7 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
       });
     })
     // DELETE
-    .delete(loggedIn, function(req, res, next) {
-      // For security, compares the submitted account parameter to the current account
-      if (isPrivate_) {
-        if (!req.body.properties || req.body.properties.account !== req.user._id.toString()) {
-          return res.status(403).json({"status": "fail", "error": "Suppression impossible. La donnée soumise est non attribuée ou attribuée à un autre compte."});
-        }
-      }
+    .delete(loggedIn, checkUser, function(req, res, next) {
       const query = isPrivate_ ? { _id: req.params.id, "properties.account": req.user._id.toString() } : { _id: req.params.id };
       Model.findOne(query)
       .exec(function (err, doc) {
