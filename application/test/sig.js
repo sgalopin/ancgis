@@ -1,7 +1,9 @@
 /*global browser ancgis ol*/
 /* eslint-disable no-console */
+
 describe("sig tests", function () {
   let page;
+  const viewportSize = { width: 1280, height: 1024 };
 
   before (async function () {
 
@@ -9,37 +11,11 @@ describe("sig tests", function () {
 
     page = await browser.newPage();
     // set the viewport so we know the dimensions of the screen
-    const viewportSize = { width: 1280, height: 1024 };
+
     await page.setViewport(viewportSize);
-    await page.goto("http://localhost");
+    await page.goto("https://localhost");
     page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
 
-    // Add few test functions to the page
-    await page.evaluate( (viewportSize) => {
-      ancgis.test = {};
-      // See ol3/test/spec/ol/interaction/select.test.js
-      /**
-       * Simulates a browser event on the map viewport.  The client x/y location
-       * will be adjusted as if the map were centered at 0,0.
-       * @param {string} type Event type.
-       * @param {number} x Horizontal offset from map center.
-       * @param {number} y Vertical offset from map center.
-       * @param {boolean=} optShiftKey Shift key is pressed.
-       */
-      ancgis.test.simulateEvent = function(type, x, y, optShiftKey) {
-        var viewport = ancgis.map.getViewport();
-        // calculated in case body has top < 0 (test runner with small window)
-        var position = viewport.getBoundingClientRect();
-        var shiftKey = (typeof optShiftKey !== "undefined") ? optShiftKey : false;
-        var event = new ol.pointer.PointerEvent(type, {
-          clientX: position.left + x + viewportSize.width / 2,
-          clientY: position.top + y + viewportSize.height / 2,
-          shiftKey
-        });
-        ancgis.map.handleMapBrowserEvent(new ol.MapBrowserPointerEvent(type, ancgis.map, event));
-      };
-      return;
-    }, viewportSize);
   });
 
   after (async function () {
@@ -50,12 +26,19 @@ describe("sig tests", function () {
     expect(await page.title()).to.eql("AncSIG™");
   });
 
-  it("should have a single map", async function () {
-    const BODY_SELECTOR = ".ol-viewport canvas";
+  it("should have a login form", async function () {
+    const LOGIN_FORM_SELECTOR = "#login-form";
+    await page.waitFor(LOGIN_FORM_SELECTOR, {timeout: 2000});
+    expect(await page.$$(LOGIN_FORM_SELECTOR)).to.have.lengthOf(1);
+  });
 
-    await page.waitFor(BODY_SELECTOR);
-
-    expect(await page.$$(BODY_SELECTOR)).to.have.lengthOf(1);
+  it("should authenticate a valid login", async function () {
+    await page.type('#login-form [name="username"]', "sgalopin")
+    await page.type('#login-form [name="password"]', "sgalopin4ancgis.dev.net")
+    await page.click('#login-form button[type="submit"]')
+    const MAP_SELECTOR = ".ol-viewport canvas";
+    await page.waitFor(MAP_SELECTOR, {timeout: 2000});
+    expect(await page.$$(MAP_SELECTOR)).to.have.lengthOf(1);
   });
 
   it("should active the hive interaction", async function () {
@@ -82,12 +65,12 @@ describe("sig tests", function () {
       return hivesLayer.getSource().getFeatures().length;
     });
 
-    const newHivesCount = await page.evaluate(() => {
+    const newHivesCount = await page.evaluate((viewportSize) => {
       // click on the map to add a single hive
-      ancgis.test.simulateEvent("singleclick", 0, 0);
+      ancgis.map.simulateEvent("singleclick", 0, 0, viewportSize);
       var hivesLayer = ancgis.map.getLayerByName("hivesLayer"); // TODO: get the layer name or directly the layer
       return hivesLayer.getSource().getFeatures().length;
-    });
+    }, viewportSize);
 
     expect(newHivesCount).to.eql(oldHivesCount + 1);
   });

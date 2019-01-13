@@ -7,6 +7,7 @@ const globalVariables = _.pick(global, ["browser", "expect"]);
 const opts = {
   //headless: false,
   //slowMo: 100,
+  ignoreHTTPSErrors: true,
   timeout: 10000,
   args: ["--no-sandbox"]
 };

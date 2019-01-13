@@ -11,7 +11,7 @@ import Env from "@environment";
 
 $(document).ready(function(){
 
-  log.setLevel(Env.LOGLEVEL); // Logging is filtered to "warn" level by default.
+  log.setLevel(Env.LOG_LEVEL); // Logging is filtered to "warn" level by default.
 
   function bootstrapSetup() {
     // Tooltip activation
@@ -65,7 +65,11 @@ $(document).ready(function(){
     // Adds the sig page (static part)
     updatePage(sigPageTemplate, {user: getUserInfo(), isOnline});
     // Adds the sig page (dynamic part)
-    getSig(isOnline);
+    let sig = await getSig(isOnline);
+    if (Env.SET_GLOBAL_VAR) {
+      // Add ancgis global var
+      window.ancgis = sig;
+    }
 
     // Management of the logout button
     $("#ancgis-topright-logout, #ancgis-topright-logout2").click(function() {

@@ -6,6 +6,8 @@ import PeriodSwitcherEvent from "./control/PeriodSwitcherEvent.js";
 import PeriodSwitcherEventType from "./control/PeriodSwitcherEventType.js";
 import {get as olProjGet} from "ol/proj.js";
 import VectorLayer from "ol/layer/Vector.js";
+import PointerEvent from 'ol/pointer/PointerEvent.js';
+import MapBrowserPointerEvent from 'ol/MapBrowserPointerEvent.js';
 
 /**
  * @classdesc
@@ -92,6 +94,37 @@ class ExtendedMap extends Map {
       removedInteractions.push(self.getInteractions().remove(interaction));
     });
     return removedInteractions;
+  }
+
+  // See (ol5) openlayers/test/spec/ol/interaction/draw.test.js
+  // https://github.com/openlayers/openlayers/blob/master/test/spec/ol/interaction/draw.test.js
+  /**
+   * Simulates a browser event on the map viewport.  The client x/y location
+   * will be adjusted as if the map were centered at 0,0.
+   * @param {string} type Event type.
+   * @param {number} x Horizontal offset from map center.
+   * @param {number} y Vertical offset from map center.
+   * @param {object} viewportSize The viewport size (ex:{ width: 1280, height: 1024 }).
+   * @param {boolean=} opt_shiftKey Shift key is pressed.
+   * @return {module:ol/MapBrowserPointerEvent} The simulated event.
+   */
+  simulateEvent(type, x, y, viewportSize, opt_shiftKey) {
+    let self = this;
+    const viewport = self.getViewport();
+    // calculated in case body has top < 0 (test runner with small window)
+    const position = viewport.getBoundingClientRect();
+    const shiftKey = (typeof optShiftKey !== "undefined") ? optShiftKey : false;
+    const event = new PointerEvent(type, {
+      clientX: position.left + x + viewportSize.width / 2,
+      clientY: position.top + y + viewportSize.height / 2,
+      shiftKey: shiftKey,
+      preventDefault: function() {}
+    }, {
+      pointerType: 'mouse'
+    });
+    const simulatedEvent = new MapBrowserPointerEvent(type, self, event);
+    self.handleMapBrowserEvent(simulatedEvent);
+    return simulatedEvent;
   }
 }
 
