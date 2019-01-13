@@ -86,7 +86,6 @@ router.get("/", function(req, res) {
 
 // Manage the register form submission
 router.post("/", postCheckSchema, function(req, res, next) {
-
   // Finds the validation errors in this request
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -113,7 +112,7 @@ router.post("/", postCheckSchema, function(req, res, next) {
         if (err) {
           return next(err);
         }
-        cookie.addJWTCookie(res);
+        cookie.addJWTCookie(res, user);
         res.redirect("/");
       });
     });
