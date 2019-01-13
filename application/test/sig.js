@@ -33,8 +33,8 @@ describe("sig tests", function () {
   });
 
   it("should authenticate a valid login", async function () {
-    await page.type('#login-form [name="username"]', "sgalopin")
-    await page.type('#login-form [name="password"]', "sgalopin4ancgis.dev.net")
+    await page.type('#login-form [name="username"]', "ancgistest")
+    await page.type('#login-form [name="password"]', "ancgis-test-password")
     await page.click('#login-form button[type="submit"]')
     const MAP_SELECTOR = ".ol-viewport canvas";
     await page.waitFor(MAP_SELECTOR, {timeout: 2000});
