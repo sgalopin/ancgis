@@ -17,7 +17,7 @@ module.exports = {
     tools: ["./client/tools-main.js"]
   },
   devtool: env === "development" ? "inline-source-map" : "none",
-  output: env === "development" ? {
+  output: env !== "production" ? {
     filename: "[name].bundle.js",
     path: "/home/vagrant", // Must be set out of the application folder to avoid recursive restart
     publicPath: "/javascripts" //  Required per webpack-dev-middleware
