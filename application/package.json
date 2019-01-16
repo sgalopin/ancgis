@@ -7,7 +7,7 @@
     "start:prod": "NODE_ENV=production npm run build && node server.js",
     "start:dev": "NODE_ENV=development nodemon server.js",
     "start:test": "NODE_ENV=test nodemon server.js",
-    "test": "mocha test/bootstrap.js --recursive test",
+    "test": "mocha --opts tests/e2e/mocha.opts",
     "browserify": "mkdir -p public/javascripts && browserify --debug -t [ hbsfy -t ] -g [ babelify --presets [ \"@babel/preset-env\" ] ] -g uglifyify --entry client/main.js > public/javascripts/bundle.js",
     "build": "mkdir -p public/javascripts && webpack --config webpack.config.js"
   },

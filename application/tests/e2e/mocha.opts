@@ -1,0 +1,5 @@
+# mocha.opts
+--file tests/e2e/bootstrap.js
+--file tests/e2e/tests/register.js
+--file tests/e2e/tests/login.js
+--recursive tests/e2e/tests
