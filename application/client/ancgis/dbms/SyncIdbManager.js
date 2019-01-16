@@ -250,58 +250,77 @@ class SyncIdbManager extends IdbManager {
     // the resolution of the ajax request.
   }
 
+  uptadeLocalFeature(objectStore, rfeature) {
+    let updateType;
+    return new Promise(async function(resolve, reject) {
+      let getLocalFeatureRequest = objectStore.get(rfeature.id);
+      getLocalFeatureRequest.onsuccess = function(event) {
+        let lFeature = getLocalFeatureRequest.result;
+        // Case 1: The feature is present into the local database
+        if (lFeature) {
+          // Case 1.1: The remote is newer
+          if (rfeature.properties.metadata.timestamp > lFeature.properties.metadata.timestamp) {
+            // Case 1.1.1: The remote was deleted
+            if (rfeature.properties.metadata.deleted) {
+              objectStore.delete(rfeature.id);
+              updateType = "deleted";
+            }
+            // Case 1.1.2: The remote was updated
+            else {
+              // Case 1.1.2.1: The local was not modified
+              if (!lFeature.properties.metadata.dirty) {
+                // The local is replaced
+                objectStore.put(rfeature);
+                updateType = "updated";
+              }
+              // Case 1.1.2.2: The local was modified
+              else {
+                // The local is replaced
+                // TODO: Do better (conflict manager).
+                objectStore.put(rfeature);
+                updateType = "updated";
+              }
+            }
+          }
+        }
+        // Case 2: The feature is not present into the local database
+        else {
+          objectStore.add(rfeature);
+          updateType = "added";
+        }
+        resolve(updateType);
+      };
+      getLocalFeatureRequest.onerror = function(event) {
+        reject(Error("Unable to retrieve data from database."));
+      };
+    });
+  }
+
   // TODO: Don't use "feature" here but "doc"
   downloadFeatures(collection) {
     let self = this;
     return new Promise(async function(resolve, reject) {
       self.getRemoteDocuments(collection).done( function(featureCollection) {
         let objectStore = self.db.transaction(collection, "readwrite").objectStore(collection);
-        let count = {
-          added: 0,
-          updated: 0,
-          deleted: 0
-        };
+        let count = { added: 0, updated: 0, deleted: 0 };
+        let promises = [];
         featureCollection.features.forEach(function(rfeature) {
-          let getLocalFeatureRequest = objectStore.get(rfeature.id);
-          getLocalFeatureRequest.onsuccess = function(event) {
-            let lFeature = getLocalFeatureRequest.result;
-            // Case 1: The feature is present into the local database
-            if (lFeature) {
-              // Case 1.1: The remote is newer
-              if (rfeature.properties.metadata.timestamp > lFeature.properties.metadata.timestamp) {
-                // Case 1.1.1: The remote was deleted
-                if (rfeature.properties.metadata.deleted) {
-                  objectStore.delete(rfeature.id);
-                  count.deleted++;
-                }
-                // Case 1.1.2: The remote was updated
-                else {
-                  // Case 1.1.2.1: The local was not modified
-                  if (!lFeature.properties.metadata.dirty) {
-                    // The local is replaced
-                    objectStore.put(rfeature);
-                    count.updated++;
-                  }
-                  // Case 1.1.2.2: The local was modified
-                  else {
-                    // The local is replaced
-                    // TODO: Do better (conflict manager).
-                    objectStore.put(rfeature);
-                    count.updated++;
-                  }
-                }
-              }
-            }
-            // Case 2: The feature is not present into the local database
-            else {
-              objectStore.add(rfeature);
-              count.added++;
-            }
-            resolve(count);
-          };
-          getLocalFeatureRequest.onerror = function(event) {
-            reject(Error("Unable to retrieve data from database."));
-          };
+          promises.push(self.uptadeLocalFeature(objectStore, rfeature));
+        });
+        Promise.all(promises).then(function(results){
+          results.forEach(function(result) {
+            switch(result){
+              case "added": count.added++; break;
+              case "updated": count.updated++; break;
+              case "deleted": count.deleted++; break;
+            };
+          });
+          resolve(count);
+        }, function(e){
+          reject(e);
+        })
+        .catch(function(){
+          reject(Error("Unable to retrieve data from database."));
         });
       })
       .fail(function( jqXHR, textStatus, errorThrown ) {
