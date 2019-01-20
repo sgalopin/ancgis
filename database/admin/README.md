@@ -1,8 +1,9 @@
 # Note on AdminMongo:
 
-The ```config.json``` file is used to set the adminMongo connections.
+The ```config.json``` and the ```app.json``` files are used to set the adminMongo connections.
 
-The adminMongo interface is available on the ```1234``` port (ex: http://ancgis.dev.net:1234 ).
+The adminMongo server is listen on the ```0.0.0.0``` IP address and the ```1234``` port on the guest machine.
+The adminMongo interface is accessible at the ```http://ancgis.dev.net:1234``` address from your host machine.
 
 The adminMongo application can be launched via the following vagrant command:
 ```

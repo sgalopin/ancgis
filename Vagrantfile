@@ -147,6 +147,10 @@ Vagrant.configure("2") do |config|
     cd adminMongo
     npm install
     cp /var/tmp/ancgis/database/admin/config.json /var/www/adminMongo/config/config.json
+	  cp /var/tmp/ancgis/database/admin/app.json /var/www/adminMongo/config/app.json
+	  # Solves permission issue
+	  sudo chgrp -R vagrant /var/www/adminMongo
+	  chmod -R g+w /var/www/adminMongo
 
     # SendGrid
     echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
