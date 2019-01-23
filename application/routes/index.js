@@ -66,4 +66,19 @@ router.get("/logout", function(req, res) {
   res.status(200).send({ success: true});
 });
 
+router.get("/unregister", function(req, res) {
+  if (req.isAuthenticated()) {
+    const Account = require("../models/account");
+    Account.deleteOne({ _id: req.user._id.toString() })
+    .exec(function (err, doc) {
+      if (err) { return res.status(400).json({"status": "fail", "error": err}); }
+      req.logout();
+      cookie.clearJWTCookie(res);
+      res.json({"success": true});
+    });
+  } else {
+    res.json({ success: false, message: "Not authenticated."});
+  }
+});
+
 module.exports = router;
