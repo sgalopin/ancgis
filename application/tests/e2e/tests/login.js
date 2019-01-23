@@ -1,6 +1,6 @@
 /*global browser ancgis ol*/
 /* eslint-disable no-console */
-const { loginTestUser } = require("../macros.js");
+const { registerTestUser, loginTestUser } = require("../macros.js");
 
 describe("LOGIN TESTS:", function () {
   let page;
@@ -12,10 +12,20 @@ describe("LOGIN TESTS:", function () {
     page = await browser.newPage();
     page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
     await page.setViewport(viewportSize);
+    await registerTestUser(page); // Makes login too.
   });
 
   after (async function () {
+    await page.goto("https://localhost/unregister"); // Makes logout too.
     await page.close();
+  });
+
+  it("should logout", async function () { // Login done via the registration
+    await page.goto("https://localhost/logout");
+    response = await page.evaluate(() =>  {
+       return JSON.parse(document.querySelector("body").innerText);
+    });
+    expect(response.success).to.be.true;
   });
 
   it("should have the correct page title", async function () {
@@ -30,17 +40,9 @@ describe("LOGIN TESTS:", function () {
   });
 
   it("should authenticate a valid login", async function () {
-    this.timeout(3000);
+    this.timeout(4000);
     await loginTestUser(page);
-    const MAP_SELECTOR = ".ol-viewport canvas";
-    expect(await page.$$(MAP_SELECTOR)).to.have.lengthOf(1);
-  });
-
-  it("should logout", async function () {
-    await page.goto("https://localhost/logout");
-    response = await page.evaluate(() =>  {
-       return JSON.parse(document.querySelector("body").innerText);
-    });
-    expect(response.success).to.be.true;
+    const ancgisIsDefined = await page.evaluate(() => typeof ancgis !== 'undefined');
+    expect(ancgisIsDefined).to.be.true;
   });
 });

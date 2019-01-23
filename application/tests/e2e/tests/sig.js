@@ -1,6 +1,6 @@
 /*global browser ancgis ol*/
 /* eslint-disable no-console */
-const { loginTestUser, sleep } = require("../macros.js");
+const { registerTestUser, loginTestUser, sleep } = require("../macros.js");
 
 describe("SIG TESTS:", function () {
   let page;
@@ -12,10 +12,11 @@ describe("SIG TESTS:", function () {
     page = await browser.newPage();
     page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
     await page.setViewport(viewportSize);
-    await loginTestUser(page);
+    await registerTestUser(page); // Makes login too.
   });
 
   after (async function () {
+    await page.goto("https://localhost/unregister"); // Makes logout too.
     await page.close();
   });
 

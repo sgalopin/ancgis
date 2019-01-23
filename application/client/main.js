@@ -143,7 +143,7 @@ $(document).ready(function(){
         addServiceWorker();
       } else {
         openLoginPage();
-        displayLoginMessage("Votre session serveur a expiré. Veuillez vous authentifier de nouveau.", "error", true);
+        displayLoginMessage("Votre session serveur a expiré. Veuillez vous authentifier de nouveau.", "info", true);
       }
     } else { // No server
       // Local authentification
@@ -151,7 +151,7 @@ $(document).ready(function(){
         openSIGPage();
       } else { // Invalid JWT
         openLoginPage();
-        displayLoginMessage("Votre session locale a expiré et le serveur n'est pas joignable. Une connexion réseau est nécessaire afin de pouvoir vous authentifier de nouveau.", "error", true);
+        displayLoginMessage("Votre session locale a expiré et le serveur n'est pas joignable. Une connexion réseau est nécessaire afin de pouvoir vous authentifier de nouveau.", "info", true);
       }
     }
   });

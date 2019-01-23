@@ -1,6 +1,6 @@
 /*global browser ancgis ol*/
 /* eslint-disable no-console */
-const { registerTestUser } = require("../macros.js");
+const { registerTestUser, loginTestUser } = require("../macros.js");
 
 describe("REGISTER TESTS:", function () {
   let page;
@@ -45,5 +45,15 @@ describe("REGISTER TESTS:", function () {
       return $.trim($(".alert").text());
     });
     expect(errorMessage).to.equal('Un utilisateur avec le même nom est déjà enregistré.');
+  });
+
+  it("should unregister", async function () {
+    this.timeout(3000);
+    await loginTestUser(page); // Logout done via the previous registerTestUser function call
+    await page.goto("https://localhost/unregister");
+    response = await page.evaluate(() =>  {
+       return JSON.parse(document.querySelector("body").innerText);
+    });
+    expect(response.success).to.be.true;
   });
 });
