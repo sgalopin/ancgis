@@ -149,7 +149,7 @@ Vagrant.configure("2") do |config|
     cp /var/tmp/ancgis/database/admin/config.json /var/www/adminMongo/config/config.json
 	  cp /var/tmp/ancgis/database/admin/app.json /var/www/adminMongo/config/app.json
 	  # Solves permission issue
-	  sudo chgrp -R vagrant /var/www/adminMongo
+	  chgrp -R vagrant /var/www/adminMongo
 	  chmod -R g+w /var/www/adminMongo
 
     # SendGrid
