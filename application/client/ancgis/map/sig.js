@@ -94,8 +94,8 @@ export default async function(isOnline) {
   vegetationsLayerSource.addFeatures(await zoneDAO.featuresToGeoJson());
 
   // Set up the extents layer source
-  var extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
   if (isOnline) {
+    var extentsLayerSource = map.getLayerByName(extentsLayerName).getSource();
     // Set the default values and save the new extent
     extentsLayerSource.on(VectorEventType.ADDFEATURE, function(e){
       e.feature.setProperties({
