@@ -1,6 +1,6 @@
 /*global browser ancgis ol*/
 /* eslint-disable no-console */
-const { registerTestUser, loginTestUser } = require("../macros.js");
+const { registerTestUser, loginTestUser, expectMessage } = require("../macros.js");
 
 describe("REGISTER TESTS:", function () {
   let page;
@@ -37,14 +37,7 @@ describe("REGISTER TESTS:", function () {
   it("Should refuse an existing user", async function () {
     this.timeout(6000);
     await registerTestUser(page);
-    // Expect the register page reloading
-    await page.waitForSelector(".alert", {timeout: 5000});
-    // Get the errorMessage returned by the server
-    const errorMessage = await page.evaluate(function(){
-      $(".alert").children().remove();
-      return $.trim($(".alert").text());
-    });
-    expect(errorMessage).to.equal('Un utilisateur avec le même nom est déjà enregistré.');
+    await expectMessage(page, "Un utilisateur avec le même nom est déjà enregistré.");
   });
 
   it("should unregister", async function () {

@@ -24,7 +24,7 @@ exports.registerTestUser  = async function(page) {
     await page.select('#profil', "Apiculteur");
     await page.type('#password', "ancgis-test-password");
     const [response] = await Promise.all([
-      page.waitForNavigation({ timeout: 4000 }),
+      page.waitForNavigation({ timeout: 6000 }),
       page.click('button[type="submit"]')
     ]);
     if (response._status == 200) {
@@ -55,4 +55,19 @@ exports.loginTestUser = async function(page) {
 
 exports.sleep = function(milliseconds) {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+exports.expectMessage = async function(page, expectedMessage) {
+  try {
+    // Expect the register page reloading
+    await page.waitForSelector(".alert", {timeout: 5000});
+    // Get the errorMessage returned by the server
+    const errorMessage = await page.evaluate(function(){
+      $(".alert").children().remove();
+      return $.trim($(".alert").text());
+    });
+    expect(errorMessage).to.equal(expectedMessage);
+  } catch(e) {
+    console.log(e);
+  }
 }
