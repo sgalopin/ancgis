@@ -342,6 +342,9 @@ progress[value]::-webkit-progress-value {
   background-size: contain;
   background-repeat: no-repeat;
 }
+.ancgis-glyphicons-flag {
+  background-image: url("../images/glyphicons/glyphicons-267-flag.png");
+}
 .ancgis-glyphicons-kiosk {
   background-image: url("../images/glyphicons/glyphicons-454-kiosk.png");
 }
@@ -539,6 +542,12 @@ progress[value]::-webkit-progress-value {
   border-radius: 5px;
   color: white;
 }
+#ancgis-apiaryform {
+  width: 400px;
+  height: 240px;
+  top: calc(50% - 100px);
+  left: calc(50% - 200px);
+}
 #ancgis-hiveform {
   width: 400px;
   height: 200px;
@@ -558,6 +567,12 @@ progress[value]::-webkit-progress-value {
   left: calc(50% - 200px);
 }
 @media screen and (max-width: 640px) {
+  #ancgis-apiaryform {
+    width: 350px;
+    height: 270px;
+    top: calc(50% - 115px);
+    left: calc(50% - 175px);
+  }
   #ancgis-hiveform {
     width: 350px;
     height: 230px;

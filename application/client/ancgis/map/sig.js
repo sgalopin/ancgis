@@ -20,9 +20,11 @@ import getMap from "./map.js";
 import Idbm from "../dbms/AncgisIdbManager.js";
 import {displayMapMessage} from "../tool/message.js";
 import ZoneDAO from "../dao/ZoneDAO.js";
+import ApiaryDAO from "../dao/ApiaryDAO.js";
 import HiveDAO from "../dao/HiveDAO.js";
 import ExtentDAO from "../dao/ExtentDAO.js";
 import getZoneForm from "../form/zone.js";
+import getApiaryForm from "../form/apiary.js";
 import getHiveForm from "../form/hive.js";
 import syncInfoTemplate from "../../../views/partials/sync-info.hbs";
 import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
@@ -39,17 +41,36 @@ const TRANSLATEEND = "translateend";
 export default async function(isOnline) {
 
   let idbm = await (new Idbm()).openDB();
+  let apiaryDAO = new ApiaryDAO(idbm);
   let hiveDAO = new HiveDAO(idbm);
   let zoneDAO = new ZoneDAO(idbm);
   let extentDAO = new ExtentDAO(idbm);
   let zoneForm = await getZoneForm(idbm);
+  let apiaryForm = await getApiaryForm();
   let hiveForm = await getHiveForm();
+  const apiariesLayerName = "apiariesLayer";
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  let map = await getMap(apiariesLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+
+  // Set up the apiaries layer source
+  let apiariesLayerSource = map.getLayerByName(apiariesLayerName).getSource();
+  // Set the default values and save the new hive
+  apiariesLayerSource.on(VectorEventType.ADDFEATURE, function(e){
+    e.feature.setProperties({
+      layerName: apiariesLayerName,
+      dao: apiaryDAO,
+      form: apiaryForm
+    }, true);
+    if ( typeof e.feature.getId() === "undefined" ) {
+      apiaryDAO.createFeature(e.feature);
+    }
+  });
+  // Add the features from the local database
+  apiariesLayerSource.addFeatures(await apiaryDAO.featuresToGeoJson());
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -111,6 +132,11 @@ export default async function(isOnline) {
   }
 
   var interactions = {
+    // Add Apiary Button Control
+    addapiary : new Draw({
+      source: apiariesLayerSource,
+      type: "Point"
+    }),
     // Add Hive Button Control
     addhive : new AddHive({
       source: hivesLayerSource
@@ -223,6 +249,7 @@ export default async function(isOnline) {
   // Management of the SyncInfo toolbar
   async function updateSyncInfo() {
     let count = await zoneDAO.getDirtyDocumentsCount();
+    count += await apiaryDAO.getDirtyDocumentsCount();
     count += await hiveDAO.getDirtyDocumentsCount();
     count += await extentDAO.getDirtyDocumentsCount();
     let syncInfoHtml = syncInfoTemplate({count});
@@ -234,6 +261,7 @@ export default async function(isOnline) {
     });
   }
   zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  apiaryDAO.addEventListener("dirtyAdded", updateSyncInfo);
   hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
   extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
   updateSyncInfo(); // Initialization
@@ -241,6 +269,7 @@ export default async function(isOnline) {
   // Management of the upload button
   $("#ancgis-topright-upload, #ancgis-topright-upload2").click(async function() {
     Promise.all([
+      apiaryDAO.uploadFeatures(),
       hiveDAO.uploadFeatures(),
       zoneDAO.uploadFeatures(),
       extentDAO.uploadFeatures()
@@ -275,10 +304,15 @@ export default async function(isOnline) {
   // Management of the download button
   $("#ancgis-topright-download, #ancgis-topright-download2").click(async function() {
     const count = {
+      apiaries: await apiaryDAO.downloadFeatures(),
       hives: await hiveDAO.downloadFeatures(),
       zones: await zoneDAO.downloadFeatures(),
       extents: await extentDAO.downloadFeatures()
     };
+    if ((count.apiaries.added + count.apiaries.updated + count.apiaries.deleted) > 0) {
+      apiariesLayerSource.clear();
+      apiariesLayerSource.addFeatures(await apiaryDAO.featuresToGeoJson());
+    }
     if ((count.hives.added + count.hives.updated + count.hives.deleted) > 0) {
       hivesLayerSource.clear();
       hivesLayerSource.addFeatures(await hiveDAO.featuresToGeoJson());

@@ -16,6 +16,10 @@ echo "--- Populating of the vegetation zones collection."
 mongo localhost/ancgis vegetation-zones.js
 echo "--- Populating done."
 
+echo "--- Populating of the apiaries collection."
+mongo localhost/ancgis apiaries.js
+echo "--- Populating done."
+
 echo "--- Populating of the hives collection."
 mongo localhost/ancgis hives.js
 echo "--- Populating done."

@@ -38,6 +38,8 @@ class IdbManager {
       request.onupgradeneeded = function(event) {
         self.db = event.target.result;
         self.db.createObjectStore("taxons", {keyPath: "id"});
+        let apiariesStore = self.db.createObjectStore("apiaries", {keyPath: "id"});
+        apiariesStore.createIndex("dirty", "properties.metadata.dirty");
         let hivesStore = self.db.createObjectStore("hives", {keyPath: "id"});
         hivesStore.createIndex("dirty", "properties.metadata.dirty");
         let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"});

@@ -3,9 +3,7 @@
 // ol import
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
-import Style from "ol/style/Style.js";
-import Fill from "ol/style/Fill.js";
-import Stroke from "ol/style/Stroke.js";
+import {Circle as CircleStyle, Fill, Stroke, Style} from "ol/style.js";
 import Text from "ol/style/Text.js";
 import Circle from "ol/geom/Circle.js";
 import WMTSTileGrid from "ol/tilegrid/WMTS.js";
@@ -30,9 +28,42 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(apiariesLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
+
+  // Apiaries layer
+  var apiariesLayerSource = new VectorSource({
+    wrapX: false,
+    format: extendedGeoJSON
+  });
+  var apiariesLayer = new VectorLayer({
+    name: apiariesLayerName,
+    source: apiariesLayerSource,
+    style(feature) {
+      var ppts = feature.getProperties();
+      var text = "?";
+      if (ppts.registrationNumber && ppts.registrationNumber != null) {
+        text = ppts.registrationNumber;
+      }
+      return new Style({
+        fill: new Fill({
+          color: "red"
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        }),
+        text: new Text({ text }),
+        image: new CircleStyle({
+          radius: 7,
+          fill: new Fill({
+            color: '#ffcc33'
+          })
+        })
+      });
+    }
+  });
 
   // Hives layer
   var hivesLayerSource = new VectorSource({
@@ -189,7 +220,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
+  let layers = [bdorthoLayer, apiariesLayer, hivesLayer, vegetationsLayer];
   if (isOnline) { layers.push(extentsLayer); }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 
