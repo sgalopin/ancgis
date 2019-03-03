@@ -8,6 +8,7 @@ db.apiaries.insert([{
     "locationName": "Chez Didier",
     "city": "Fontenay sur loing",
     "zipCode": "45210",
+    "displayForagingArea": true,
     "account": "5b939503845b75060d79c7da",
     "metadata": {
       "timestamp": 1475960555

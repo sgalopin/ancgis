@@ -11,6 +11,7 @@ module.exports = mongoose.model("Apiary", new mongoose.Schema({
     "locationName": {type: String},
     "city": {type: String},
     "zipCode": {type: String},
+    "displayForagingArea": {type: Boolean},
     "account": {type: String},
     "metadata": {
       "timestamp": {type: Number}

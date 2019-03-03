@@ -21,6 +21,7 @@ export default async function() {
       $("#ancgis-apiaryform-locationNamefield").val(ppts.locationName);
       $("#ancgis-apiaryform-cityfield").val(ppts.city);
       $("#ancgis-apiaryform-zipCodefield").val(ppts.zipCode);
+      $("#ancgis-apiaryform-displayForagingAreafield").prop('checked', ppts.displayForagingArea);
       $("#ancgis-apiaryform [data-toggle=\"tooltip\"]").tooltip();
       $("#ancgis-apiaryform").focus();
 
@@ -65,6 +66,11 @@ export default async function() {
       // Manage the "change" event thrown by the zipCode field
       $("#ancgis-apiaryform-zipCodefield").change(function() {
         newPpts.zipCode = $("#ancgis-apiaryform-zipCodefield").val();
+      });
+
+      // Manage the "change" event thrown by the displayForagingArea field
+      $("#ancgis-apiaryform-displayForagingAreafield").change(function() {
+        newPpts.displayForagingArea = $("#ancgis-apiaryform-displayForagingAreafield").prop("checked");
       });
 
       // Cancel button handler

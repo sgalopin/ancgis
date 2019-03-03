@@ -544,8 +544,8 @@ progress[value]::-webkit-progress-value {
 }
 #ancgis-apiaryform {
   width: 400px;
-  height: 240px;
-  top: calc(50% - 100px);
+  height: 294px;
+  top: calc(50% - 147px);
   left: calc(50% - 200px);
 }
 #ancgis-hiveform {
@@ -569,8 +569,8 @@ progress[value]::-webkit-progress-value {
 @media screen and (max-width: 640px) {
   #ancgis-apiaryform {
     width: 350px;
-    height: 270px;
-    top: calc(50% - 115px);
+    height: 297px;
+    top: calc(50% - 147px);
     left: calc(50% - 175px);
   }
   #ancgis-hiveform {
@@ -609,16 +609,25 @@ progress[value]::-webkit-progress-value {
   border-color: rgb(221, 221, 221);
   border-image: initial;
 }
-.ancgis-form-fields {
+.ancgis-form-fields, .ancgis-form-options{
   padding: 10px 10px;
 }
 #ancgis-zoneform .ancgis-form-fields {
   background-color: rgba(50,50,50,.3);
 }
-.ancgis-form-field {
+.ancgis-form-options {
+  background-color: rgba(50,50,50,.3);
+}
+.ancgis-form-field, .ancgis-form-option {
   width: 100%;
   color: rgb(50,50,50);
   margin: 5px 0;
+}
+.ancgis-form-option>input[type=checkbox] {
+  margin: 0 5px 0 10px;
+}
+.ancgis-form-option>label {
+  margin: 0;
 }
 .ancgis-form-field>label {
   width: 200px;

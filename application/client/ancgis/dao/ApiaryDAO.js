@@ -38,7 +38,8 @@ class ApiaryDAO extends AbstractDAO {
         registrationNumber : ppts.registrationNumber ?  ppts.registrationNumber : null,
         locationName : ppts.locationName ?  ppts.locationName : null,
         city : ppts.city ? ppts.city : null,
-        zipCode : ppts.zipCode ? ppts.zipCode : null
+        zipCode : ppts.zipCode ? ppts.zipCode : null,
+        displayForagingArea : ppts.displayForagingArea ? ppts.displayForagingArea : false,
       },
       geometry: format.writeGeometryObject(ppts.geometry)
     };
