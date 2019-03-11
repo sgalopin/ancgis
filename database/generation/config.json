@@ -1,0 +1,5 @@
+{
+  "inputFileName": "../rawdata/Antennes_45.geojson",
+  "outputAntennasFileName": "../data/antennas.js",
+  "outputAntennaSectorsFileName": "../data/antenna-sectors.js"
+}
