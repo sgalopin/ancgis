@@ -17,6 +17,7 @@ self.addEventListener("install", function(event) {
         "/images/glyphicons/glyphicons-187-move.png",
         "/images/glyphicons/glyphicons-96-vector-path-circle.png",
         "/images/glyphicons/glyphicons-97-vector-path-polygon.png",
+        "/images/glyphicons/glyphicons-267-flag.png",
         "/images/glyphicons/glyphicons-454-kiosk.png",
         "/images/glyphicons/glyphicons-194-ok-sign.png",
         "/images/glyphicons/glyphicons-193-remove-sign.png",
