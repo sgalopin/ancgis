@@ -36,7 +36,7 @@ class AbstractDAO {
     let eventType = e.type;
     if (this.listeners && this.listeners[eventType]) {
       this.listeners[eventType].forEach(function(listener) {
-        listener.call(this);
+        listener.apply(this, e.detail);
       });
     }
   }
@@ -44,7 +44,7 @@ class AbstractDAO {
 /* eslint-enable security/detect-object-injection */
 
   dispatchDirtyAddedEvent() {
-    this.dispatchEvent(new Event("dirtyAdded"));
+    this.dispatchEvent(new CustomEvent("dirtyAdded", { "detail": arguments }));
   }
 
   getDirtyDocumentsCount() {
@@ -55,7 +55,7 @@ class AbstractDAO {
   createFeature(feature) {
     let promise =  this.dbm.create(this.collection, this.featureToJSON(feature))
     .catch((error) => log.error(error));
-    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    promise.then(this.dispatchDirtyAddedEvent(feature, "create"));
     promise.then(function(doc){
       feature.setId(doc.id);
     });
@@ -65,14 +65,14 @@ class AbstractDAO {
   updateFeature(feature) {
     let promise = this.dbm.update(this.collection, this.featureToJSON(feature))
     .catch((error) => log.error(error));
-    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    promise.then(this.dispatchDirtyAddedEvent(feature, "update"));
     return promise;
   }
 
   deleteFeature(feature) {
     let promise = this.dbm.delete(this.collection, feature.getId())
     .catch((error) => log.error(error));
-    promise.then(this.dispatchDirtyAddedEvent.bind(this));
+    promise.then(this.dispatchDirtyAddedEvent(feature, "delete"));
     return promise;
   }
 

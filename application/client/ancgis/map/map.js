@@ -28,7 +28,7 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(apiariesLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -180,6 +180,24 @@ export default async function(apiariesLayerName, hivesLayerName, vegetationsLaye
     }
   });
 
+  // ForagingAreas Layer
+  var foragingAreasLayerSource = new VectorSource({
+    wrapX: false,
+    format: extendedGeoJSON
+  });
+  var foragingAreasLayer = new VectorLayer({
+    name: foragingAreasLayerName,
+    source: foragingAreasLayerSource,
+    style(feature) {
+      return new Style({
+        stroke: new Stroke({
+          color: "orange",
+          width: 3
+        })
+      });
+    }
+  });
+
   // BDORTHO layer
   var resolutions = [];
   var matrixIds = [];
@@ -220,7 +238,7 @@ export default async function(apiariesLayerName, hivesLayerName, vegetationsLaye
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, apiariesLayer, hivesLayer, vegetationsLayer];
+  let layers = [bdorthoLayer, foragingAreasLayer, apiariesLayer, hivesLayer, vegetationsLayer];
   if (isOnline) { layers.push(extentsLayer); }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 

@@ -22,6 +22,28 @@ class EditProperties extends Interaction {
     options.handleEvent = handleEvent; // eslint-disable-line no-use-before-define
 
     super(options);
+    
+    // Note: copied from ol/interaction/Select.js
+    /** @type {function(import("../layer/Layer.js").default): boolean} */
+    let layerFilter;
+    if (options.layers) {
+      if (typeof options.layers === 'function') {
+        layerFilter = options.layers;
+      } else {
+        const layers = options.layers;
+        layerFilter = function(layer) {
+          return includes(layers, layer);
+        };
+      }
+    } else {
+      layerFilter = TRUE;
+    }
+
+    /**
+     * @private
+     * @type {function(import("../layer/Layer.js").default): boolean}
+     */
+    this.layerFilter_ = layerFilter;
   }
 }
 
@@ -34,6 +56,7 @@ class EditProperties extends Interaction {
  * @api
  */
 export function handleEvent(mapBrowserEvent) {
+  let self = this;
   // On right click only
   if ((mapBrowserEvent.type === MapBrowserEventType.POINTERDOWN
     && mapBrowserEvent.pointerEvent.button === 2)
@@ -46,7 +69,8 @@ export function handleEvent(mapBrowserEvent) {
       },{
         layerFilter(layerCandidate) {
           // Checks if the layer has a name (Avoids the selection of the drawing layers).
-          if (layerCandidate.getProperties().hasOwnProperty("name")) {
+          if (layerCandidate.getProperties().hasOwnProperty("name")
+              && self.layerFilter_(layerCandidate)) {
             return true;
           } else {
             return false;

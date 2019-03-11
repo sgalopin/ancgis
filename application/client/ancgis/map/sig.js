@@ -31,6 +31,7 @@ import mapCacheInfoTemplate from "../../../views/partials/map-cache-info.hbs";
 import dataDownloadTemplate from "../../../views/partials/messages/data_download.hbs";
 import dataUploadTemplate from "../../../views/partials/messages/data_upload.hbs";
 import MapCache from "../tool/MapCache.js";
+import ForagingArea from "./ForagingArea.js";
 
 // Copied from ol/interaction/Translate.js
 const TRANSLATEEND = "translateend";
@@ -49,12 +50,13 @@ export default async function(isOnline) {
   let apiaryForm = await getApiaryForm();
   let hiveForm = await getHiveForm();
   const apiariesLayerName = "apiariesLayer";
+  const foragingAreasLayerName = "foragingAreasLayer"
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await getMap(apiariesLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  let map = await getMap(apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the apiaries layer source
   let apiariesLayerSource = map.getLayerByName(apiariesLayerName).getSource();
@@ -152,7 +154,16 @@ export default async function(isOnline) {
       type: "Circle"
     }),
     // Translate Button Control
-    translate : new Translate(),
+    translate : new Translate({
+      // Excludes few not translatable layers
+      layers: function(layer) {
+        const excludedLayers = [
+          foragingAreasLayerName,
+          errorsLayerName
+        ]
+        return !excludedLayers.includes(layer.get("name"));
+      }
+    }),
     // Modify Button Control
     modify : [
       new ModifyFeature({
@@ -160,9 +171,27 @@ export default async function(isOnline) {
       })
     ],
     // Erase Button Control
-    erase : new RemoveFeatures(),
+    erase : new RemoveFeatures({
+      // Excludes few not removable layers
+      layers: function(layer) {
+        const excludedLayers = [
+          foragingAreasLayerName,
+          errorsLayerName
+        ]
+        return !excludedLayers.includes(layer.get("name"));
+      }
+    }),
     // Edit Zone Properties interaction
-    editproperties : new EditProperties()
+    editproperties : new EditProperties({
+      // Excludes few not editable layers
+      layers: function(layer) {
+        const excludedLayers = [
+          foragingAreasLayerName,
+          errorsLayerName
+        ]
+        return !excludedLayers.includes(layer.get("name"));
+      }
+    })
   };
 
   if (isOnline) {
@@ -246,6 +275,13 @@ export default async function(isOnline) {
     catchedLayerNames: [bdorthoLayerName]
   });
 
+  // Apiaries's foraging areas
+  let foragingAreas = new ForagingArea({
+    map,
+    apiariesLayerName,
+    foragingAreasLayerName
+  });
+
   // Management of the SyncInfo toolbar
   async function updateSyncInfo() {
     let count = await zoneDAO.getDirtyDocumentsCount();
@@ -312,6 +348,7 @@ export default async function(isOnline) {
     if ((count.apiaries.added + count.apiaries.updated + count.apiaries.deleted) > 0) {
       apiariesLayerSource.clear();
       apiariesLayerSource.addFeatures(await apiaryDAO.featuresToGeoJson());
+      foragingAreas.updateAreas();
     }
     if ((count.hives.added + count.hives.updated + count.hives.deleted) > 0) {
       hivesLayerSource.clear();
@@ -388,6 +425,9 @@ export default async function(isOnline) {
 
   // Management of the extents layer change
   extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
+
+  // Management of the apiaries layer change
+  apiaryDAO.addEventListener("dirtyAdded", foragingAreas.updateArea.bind(foragingAreas));
 
   return { map, interactions };
 }
