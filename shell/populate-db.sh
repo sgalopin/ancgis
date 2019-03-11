@@ -27,3 +27,11 @@ echo "--- Populating done."
 echo "--- Populating of the extents collection."
 mongo localhost/ancgis extents.js
 echo "--- Populating done."
+
+echo "--- Populating of the antennas collection."
+mongo localhost/ancgis antennas.js
+echo "--- Populating done."
+
+echo "--- Populating of the antenna sectors collection."
+mongo localhost/ancgis antenna-sectors.js
+echo "--- Populating done."
