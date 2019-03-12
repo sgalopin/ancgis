@@ -47,6 +47,10 @@ Vagrant.configure("2") do |config|
 
   # Disable the default root
   config.vm.synced_folder ".", "/vagrant", disabled: true
+  # Sync the share dir on Linux
+  config.vm.synced_folder "./share", "/var/tmp/ancgis/share", create: true, type: "nfs"
+  # Sync the share dir on Windows and Linux (Requires Virtualbox Guest Additions and virtualbox)
+  # config.vm.synced_folder "./share", "/var/tmp/ancgis/share", create: true, type: "virtualbox"
   # Sync the database dir
   config.vm.synced_folder "./database", "/var/tmp/ancgis/database",
     create: true,
