@@ -33,7 +33,6 @@ module.exports = async function (coordinates) {
         centroid: centroid
       };
       if (turf.inside(ruche, currentGeometry)) {
-        centroid.properties.id +=  '**';
         ruche = turf.centroid(currentGeometry);
         id_centre_grille = featureIndex;
       }
@@ -167,11 +166,12 @@ module.exports = async function (coordinates) {
     // On ne retient que les x polygones les plus facilement atteignable
     hexgrid.features.sort((a, b) => parseFloat(a.properties.res) - parseFloat(b.properties.res)); //tri des polygones par éloignement
     var polygone_zone_butinage = []
-    for (var iter=0;iter<=cfg.targetArea/aire_cellule;iter++){
-      if(hexgrid.features[iter].properties.res<cfg.maxWeight){
-        polygone_zone_butinage.push(turf.buffer(hexgrid.features[iter],0.001)) //
+    for (var hexgridCell of hexgrid.features) {
+      if(hexgridCell.properties.res < cfg.maxWeight){
+        polygone_zone_butinage.push(turf.buffer(hexgridCell,0.001));
       }
     }
+    // TODO: If the polygone_zone_butinage aera < cfg.targetArea increase the cfg.maxWeight and add the next grid cells
     polygone_zone_butinage = turf.union.apply(this,polygone_zone_butinage);
 
     var c_polygone_zone_butinage = turf.toMercator(polygone_zone_butinage);

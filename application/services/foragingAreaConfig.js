@@ -1,7 +1,7 @@
 module.exports = {
   "targetArea": Math.PI*3000**2,
   "maxWeight": 3000,
-  "lookupAreaRadius": 5,
-  "lookupAreaCellSize": 0.2,
-  "antennaWeightFactor": 1
+  "lookupAreaRadius": 3,
+  "lookupAreaCellSize": 0.1,
+  "antennaWeightFactor": 10
 }
