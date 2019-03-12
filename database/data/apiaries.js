@@ -16,6 +16,6 @@ db.apiaries.insert([{
   },
   "geometry": {
     "type": "Point",
-    "coordinates": [308524.8, 6121088.8]
+    "coordinates": [2.7715255, 48.085488]
   }
 }]);

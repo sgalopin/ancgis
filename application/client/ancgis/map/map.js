@@ -202,11 +202,7 @@ export default async function(antennasLayerName, apiariesLayerName, foragingArea
   var antennasLayerSource = new VectorSource({
     wrapX: false,
     projection: "EPSG:3857",
-    format: new ExtendedGeoJSON({
-      "featureProjection": "EPSG:3857",
-      "dataProjection": "EPSG:4326",
-      "geometryName": "geometry"
-    }),
+    format: extendedGeoJSON,
     url: "./rest/antennas"
   });
   var antennasLayer = new VectorLayer({
