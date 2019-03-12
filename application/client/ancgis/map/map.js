@@ -28,7 +28,7 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(antennasLayerName, apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -198,6 +198,33 @@ export default async function(apiariesLayerName, foragingAreasLayerName, hivesLa
     }
   });
 
+  // Antennas Layer
+  var antennasLayerSource = new VectorSource({
+    wrapX: false,
+    projection: "EPSG:3857",
+    format: new ExtendedGeoJSON({
+      "featureProjection": "EPSG:3857",
+      "dataProjection": "EPSG:4326",
+      "geometryName": "geometry"
+    }),
+    url: "./rest/antennas"
+  });
+  var antennasLayer = new VectorLayer({
+    name: antennasLayerName,
+    source: antennasLayerSource,
+    style(feature) {
+      return new Style({
+        fill: new Fill({
+          color: "gray"
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        })
+      });
+    }
+  });
+
   // BDORTHO layer
   var resolutions = [];
   var matrixIds = [];
@@ -238,7 +265,7 @@ export default async function(apiariesLayerName, foragingAreasLayerName, hivesLa
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, foragingAreasLayer, apiariesLayer, hivesLayer, vegetationsLayer];
+  let layers = [bdorthoLayer, antennasLayer, foragingAreasLayer, apiariesLayer, hivesLayer, vegetationsLayer];
   if (isOnline) { layers.push(extentsLayer); }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 

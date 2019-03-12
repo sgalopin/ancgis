@@ -41,12 +41,12 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
         if (returnGeoJson_) {
           res.json({
             "type": "FeatureCollection",
-            "crs": {
+            /*"crs": {
               "type": "name",
               "properties": {
                 "name": "EPSG:3857"
               }
-            },
+            },*/
             "features": docs
           });
         } else  {

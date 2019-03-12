@@ -49,14 +49,15 @@ export default async function(isOnline) {
   let zoneForm = await getZoneForm(idbm);
   let apiaryForm = await getApiaryForm();
   let hiveForm = await getHiveForm();
+  const antennasLayerName = "antennasLayer";
   const apiariesLayerName = "apiariesLayer";
-  const foragingAreasLayerName = "foragingAreasLayer"
+  const foragingAreasLayerName = "foragingAreasLayer";
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await getMap(apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  let map = await getMap(antennasLayerName, apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the apiaries layer source
   let apiariesLayerSource = map.getLayerByName(apiariesLayerName).getSource();
@@ -158,6 +159,7 @@ export default async function(isOnline) {
       // Excludes few not translatable layers
       layers: function(layer) {
         const excludedLayers = [
+          antennasLayerName,
           foragingAreasLayerName,
           errorsLayerName
         ]
@@ -175,6 +177,7 @@ export default async function(isOnline) {
       // Excludes few not removable layers
       layers: function(layer) {
         const excludedLayers = [
+          antennasLayerName,
           foragingAreasLayerName,
           errorsLayerName
         ]
@@ -186,6 +189,7 @@ export default async function(isOnline) {
       // Excludes few not editable layers
       layers: function(layer) {
         const excludedLayers = [
+          antennasLayerName,
           foragingAreasLayerName,
           errorsLayerName
         ]
