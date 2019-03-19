@@ -57,6 +57,7 @@ Vagrant.configure("2") do |config|
     owner: "vagrant",
     group: "vagrant",
     type: "rsync",
+    rsync__exclude: ["generation/node_modules/"],
     rsync__args: ["--archive", "--delete", "-z"]
     # Sync the database dir
   config.vm.synced_folder "./shell", "/var/tmp/ancgis/shell",
