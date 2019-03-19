@@ -8,9 +8,6 @@ module.exports = function (inputFileName, outputFileName) {
   let cleaned_data = data.features.map(function(antenne) {
     return JSON.stringify({
       "type": antenne.type,
-      "properties": {
-        "Azimut": antenne.properties.Azimut
-      },
       "geometry": {
         "type": antenne.geometry.type,
         "coordinates": antenne.geometry.coordinates
@@ -31,15 +28,14 @@ module.exports = function (inputFileName, outputFileName) {
       return this.join(',\n');
   };
 
-  // Setup and write the geojson file
-  const geojsonContent =
-`{
-"type": "FeatureCollection",
-"name": "${data.name}",
-"crs": { "type": "name", "properties": { "name": "${data.crs.properties.name}" } },
-"features": [
+  // Setup and write the js file
+  const jsContent =
+`/*global db*/
+db.waterareas.drop();
+db.waterareas.insert([
 ${final_cleaned_data}
-]}`;
+]);
+db.waterareas.createIndex({ "geometry": "2dsphere" });`;
 
-  fs.writeFileSync(outputFileName, geojsonContent, 'utf8');
+  fs.writeFileSync(outputFileName, jsContent, 'utf8');
 }

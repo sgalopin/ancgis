@@ -1,5 +1,8 @@
 {
-  "inputFileName": "../rawdata/Antennes_45.geojson",
-  "outputAntennasFileName": "../data/antennas.js",
-  "outputAntennaSectorsFileName": "../data/antenna-sectors.js"
+  "antennasInputFileName": "../rawdata/antennas_45.geojson",
+  "highVoltageLinesInputFileName": "../rawdata/hvl.geojson",
+  "waterAreasInputFileName": "../rawdata/water_areas_74.geojson",
+  "antennaSectorsOutputFileName": "../data/antenna-sectors.js",
+  "highVoltageLineSectorsOutputFileName": "../data/hvl-sectors.js",
+  "waterAreasOutputFileName": "../data/water-areas.js"
 }

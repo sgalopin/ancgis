@@ -9,7 +9,7 @@ module.exports = function (inputFileName, outputFileName) {
     return JSON.stringify({
       "type": antenne.type,
       "properties": {
-        "Azimut": antenne.properties.Azimut
+        "TENSIONMAX": antenne.properties.TENSIONMAX
       },
       "geometry": {
         "type": antenne.geometry.type,
