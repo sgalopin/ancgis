@@ -28,7 +28,7 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(antennasLayerName, apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(waterareasLayerName, hvlsLayerName, antennasLayerName, apiariesLayerName, foragingAreasLayerName, hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -198,29 +198,6 @@ export default async function(antennasLayerName, apiariesLayerName, foragingArea
     }
   });
 
-  // Antennas Layer
-  var antennasLayerSource = new VectorSource({
-    wrapX: false,
-    projection: "EPSG:3857",
-    format: extendedGeoJSON,
-    url: "./rest/antennas"
-  });
-  var antennasLayer = new VectorLayer({
-    name: antennasLayerName,
-    source: antennasLayerSource,
-    style(feature) {
-      return new Style({
-        fill: new Fill({
-          color: "gray"
-        }),
-        stroke: new Stroke({
-          color: "black",
-          width: 2
-        })
-      });
-    }
-  });
-
   // BDORTHO layer
   var resolutions = [];
   var matrixIds = [];
@@ -261,7 +238,82 @@ export default async function(antennasLayerName, apiariesLayerName, foragingArea
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, antennasLayer, foragingAreasLayer, apiariesLayer, hivesLayer, vegetationsLayer];
+  // Water Areas Layer
+  var waterareasLayerSource = new VectorSource({
+    wrapX: false,
+    projection: "EPSG:3857",
+    format: extendedGeoJSON,
+    url: "./rest/water-areas"
+  });
+
+  var waterareasLayer = new VectorLayer({
+    name: waterareasLayerName,
+    source: waterareasLayerSource,
+    maxResolution: resolutions[12],
+    style(feature) {
+      return new Style({
+        fill: new Fill({
+          color: "blue"
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        })
+      });
+    }
+  });
+
+  // High Voltage Lines Layer
+  var hvlsLayerSource = new VectorSource({
+    wrapX: false,
+    projection: "EPSG:3857",
+    format: extendedGeoJSON,
+    url: "./rest/hvls"
+  });
+
+  var hvlsLayer = new VectorLayer({
+    name: hvlsLayerName,
+    source: hvlsLayerSource,
+    maxResolution: resolutions[12],
+    style(feature) {
+      return new Style({
+        fill: new Fill({
+          color: "gray"
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        })
+      });
+    }
+  });
+
+  // Antennas Layer
+  var antennasLayerSource = new VectorSource({
+    wrapX: false,
+    projection: "EPSG:3857",
+    format: extendedGeoJSON,
+    url: "./rest/antennas"
+  });
+
+  var antennasLayer = new VectorLayer({
+    name: antennasLayerName,
+    source: antennasLayerSource,
+    maxResolution: resolutions[12],
+    style(feature) {
+      return new Style({
+        fill: new Fill({
+          color: "gray"
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        })
+      });
+    }
+  });
+
+  let layers = [bdorthoLayer, waterareasLayer, hvlsLayer, antennasLayer, foragingAreasLayer, apiariesLayer, hivesLayer, vegetationsLayer];
   if (isOnline) { layers.push(extentsLayer); }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 

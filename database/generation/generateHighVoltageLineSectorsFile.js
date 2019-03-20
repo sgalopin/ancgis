@@ -32,7 +32,7 @@ module.exports = function (inputFileName, outputJsFileName) {
     poly=turf.polygon([coord])
     poly=turf.unkinkPolygon(poly)
     poly=turf.union.apply(this,poly.features)
-    poly.properties.id=featureIndex
+    //poly.properties.id=featureIndex
     poly.properties.fac=fac
 
     sector.push(JSON.stringify(poly));

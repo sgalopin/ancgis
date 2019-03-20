@@ -149,6 +149,8 @@ app.use("/requirePwdReset", require("./routes/requirePwdReset"));
 app.use("/resetPwd", require("./routes/resetPwd"));
 app.use("/rest/taxons", require("./routes/rest/taxons"));
 app.use("/rest/vegetation-zones", require("./routes/rest/vegetation-zones"));
+app.use("/rest/hvls", require("./routes/rest/hvls"));
+app.use("/rest/water-areas", require("./routes/rest/water-areas"));
 app.use("/rest/antennas", require("./routes/rest/antennas"));
 app.use("/rest/apiaries", require("./routes/rest/apiaries"));
 app.use("/foraging-area", require("./routes/services/foragingArea"));
