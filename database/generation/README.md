@@ -9,12 +9,15 @@ Put the rawdata into the rawdata directory and launch the generation of the data
 > Go the [stations page]( https://www.cartoradio.fr/index.html#/cartographie/stations). Create an account to download the data. Get the data in csv format and join the antennas and the associated pylons in a geojson file.
 
 ## Generation of the data
-- Add the raw data into the "rawdata" directory,
-- Set the parameters into the "config.json" file,
-- Install the required packages:  
-```npm install```,
-- Launch the generation:  
-```npm run start```,
-- Launch the db populate:  
-```cd /var/tmp/ancgis/database/data```  
-```/bin/bash /var/tmp/ancgis/shell/populate-db.sh```.
+- On the host:
+ - Add the raw data into the "rawdata" directory,
+ - Set the parameters into the "config.json" file,
+ - Stop the folders synchronizations to avoid the generated data files drop.
+- On the guest:
+ - Install the required packages:  
+ ```npm install```,
+ - Launch the generation:  
+ ```npm run start```,
+ - Launch the db populate:  
+ ```cd /var/tmp/ancgis/database/data```  
+ ```/bin/bash /var/tmp/ancgis/shell/populate-db.sh```.

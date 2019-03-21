@@ -5,15 +5,15 @@ module.exports = function (inputFileName, outputFileName) {
 
   // Removes the extra fields
   const data = JSON.parse(fs.readFileSync(inputFileName));
-  let cleaned_data = data.features.map(function(antenne) {
+  let cleaned_data = data.features.map(function(data) {
     return JSON.stringify({
-      "type": antenne.type,
+      "type": data.type,
       "properties": {
-        "Azimut": antenne.properties.Azimut
+        "Azimut": data.properties.Azimut
       },
       "geometry": {
-        "type": antenne.geometry.type,
-        "coordinates": antenne.geometry.coordinates
+        "type": data.geometry.type,
+        "coordinates": data.geometry.coordinates
       }
     });
   });

@@ -9,6 +9,10 @@ let schema = new mongoose.Schema({
   "properties": {
     "fac": {type: Number}
   },
+  "line": {
+    "type": {type: String, required: true, default: "LineString"},
+    "coordinates": {type: [[Number]], required: true}
+  },
   "geometry": {
     "type": {type: String, required: true, default: "Polygon"},
     "coordinates": {type: [[[Number]]], required: true}

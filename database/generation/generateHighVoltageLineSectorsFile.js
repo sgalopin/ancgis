@@ -7,10 +7,6 @@ module.exports = function (inputFileName, outputJsFileName) {
   // Gets the hvl
   const hvl = JSON.parse(fs.readFileSync(inputFileName));
 
-  // hvl parameters
-  const rayon_zone_emission_antenne= 0.5;
-  const angle_cone_emission = 120;
-
   // Creates the hvl sectors
   let sector=[];
   turf.geomEach(hvl, function (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) {
@@ -29,17 +25,31 @@ module.exports = function (inputFileName, outputJsFileName) {
       coord.push(offsetLine2.geometry.coordinates[iter])
     }
     coord.push(coord[0])
+
     poly=turf.polygon([coord])
     poly=turf.unkinkPolygon(poly)
     poly=turf.union.apply(this,poly.features)
-    //poly.properties.id=featureIndex
-    poly.properties.fac=fac
+    poly.properties.id = featureIndex
+    poly.properties.fac = fac
+    poly.line = currentGeometry;
 
-    sector.push(JSON.stringify(poly));
+    sector.push(poly);
   });
 
+  // Removes the duplicates
+  let final_cleaned_data = [];
+  sector.forEach(function(element) {
+    sEl = JSON.stringify(element)
+    sElGeom = JSON.stringify(element.geometry.coordinates)
+    // Removes bad data
+    if (!sElGeom.includes("-1.") && !sElGeom.includes("0.")) {
+        final_cleaned_data.push(sEl);
+    }
+  });
+  console.log("hvl cleaned sectors: ", final_cleaned_data.length + '/' + sector.length)
+
   // Override the sector toString method.
-  sector.toString = function() {
+  final_cleaned_data.toString = function() {
       return this.join(',\n');
   };
 
@@ -48,7 +58,7 @@ module.exports = function (inputFileName, outputJsFileName) {
 `/*global db*/
 db.hvlsectors.drop();
 db.hvlsectors.insert([
-${sector}
+${final_cleaned_data}
 ]);
 db.hvlsectors.createIndex({ "geometry": "2dsphere" });`;
 

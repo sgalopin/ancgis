@@ -2,7 +2,9 @@
 const turf = require('@turf/turf');
 const fs = require('fs');
 const cfg = require("./foragingAreaConfig.js");
-const AntennaSector = require("../models/antenna-sectors.js");
+const AntennaSectors = require("../models/antenna-sectors.js");
+const HvlSectors = require("../models/hvl-sectors.js");
+const WaterAreas = require("../models/water-areas.js");
 
 module.exports = async function (coordinates) {
   try{
@@ -39,9 +41,11 @@ module.exports = async function (coordinates) {
     });
     centroid_hexgrid = turf.featureCollection(centroid_hexgrid);
 
-    // Pondération de la grille par antenne
+    // Pondération de la grille
     for (var hexgridCell of hexgrid.features) {
-      const intersectedSectors = await AntennaSector.find({
+
+      // Pondération de la grille par antenne
+      const intersectedAntennaSectors = await AntennaSectors.find({
           "geometry": {
               "$geoIntersects": {
                   "$geometry": {
@@ -55,13 +59,72 @@ module.exports = async function (coordinates) {
               }
           }
       });
-      if ( intersectedSectors.length > 0 ) {
-        intersectedSectors.forEach(function(intersectedSector){
+      if ( intersectedAntennaSectors.length > 0 ) {
+        intersectedAntennaSectors.forEach(function(intersectedSector){
           const intersectionGeom = turf.intersect(intersectedSector.geometry, hexgridCell.geometry);
           if (intersectionGeom != null) {
             const ratio = turf.area(intersectionGeom) / aire_cellule;
             const dist = turf.distance(intersectedSector.position.coordinates, hexgridCell.properties.centroid);
             const cout = ratio * cfg.antennaWeightFactor / dist**2;
+            hexgridCell.properties.cout = hexgridCell.properties.cout + cout;
+          }
+        });
+      }
+
+      // Pondération de la grille pour les lignes à haute tension
+      const intersectedHvlSectors = await HvlSectors.find({
+          "geometry": {
+              "$geoIntersects": {
+                  "$geometry": {
+                     type: "Polygon" ,
+                     coordinates: hexgridCell.geometry.coordinates,
+                     crs: {
+                        type: "name",
+                        properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+                     }
+                  }
+              }
+          }
+      });
+      if ( intersectedHvlSectors.length > 0 ) {
+        intersectedHvlSectors.forEach(function(intersectedSector){
+          let intersectionGeom = null;
+          if (intersectedSector.geometry.coordinates.length > 0){
+            intersectionGeom = turf.intersect(intersectedSector.geometry, hexgridCell.geometry);
+          }
+          if (intersectionGeom != null) {
+            const ratio = turf.area(intersectionGeom) / aire_cellule;
+            const dist = turf.pointToLineDistance(hexgridCell.properties.centroid.geometry,intersectedSector.line)
+            const cout = ratio * intersectedSector.properties.fac * cfg.hvlWeightFactor / dist**2;
+            hexgridCell.properties.cout = hexgridCell.properties.cout + cout;
+          }
+        });
+      }
+
+      // Pondération de la grille pour les plans d'eau
+      const intersectedWaterAreas = await WaterAreas.find({
+          "geometry": {
+              "$geoIntersects": {
+                  "$geometry": {
+                     type: "Polygon" ,
+                     coordinates: hexgridCell.geometry.coordinates,
+                     crs: {
+                        type: "name",
+                        properties: { name: "urn:x-mongodb:crs:strictwinding:EPSG:4326" }
+                     }
+                  }
+              }
+          }
+      });
+      if ( intersectedWaterAreas.length > 0 ) {
+        intersectedWaterAreas.forEach(function(intersectedSector){
+          let intersectionGeom = null;
+          if (intersectedSector.geometry.coordinates.length > 0){
+            intersectionGeom = turf.intersect(intersectedSector.geometry, hexgridCell.geometry);
+          }
+          if (intersectionGeom != null) {
+            const ratio = turf.area(intersectionGeom) / aire_cellule;
+            const cout = ratio * cfg.waterWeightFactor;
             hexgridCell.properties.cout = hexgridCell.properties.cout + cout;
           }
         });
@@ -174,8 +237,7 @@ module.exports = async function (coordinates) {
     // TODO: If the polygone_zone_butinage aera < cfg.targetArea increase the cfg.maxWeight and add the next grid cells
     polygone_zone_butinage = turf.union.apply(this,polygone_zone_butinage);
 
-    var c_polygone_zone_butinage = turf.toMercator(polygone_zone_butinage);
-    return c_polygone_zone_butinage.geometry;
+    return polygone_zone_butinage.geometry;
 
   } catch(e) {
     console.log(e);
