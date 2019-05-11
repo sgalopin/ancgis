@@ -71,3 +71,11 @@ exports.expectMessage = async function(page, expectedMessage) {
     console.log(e);
   }
 }
+
+exports.logPageConsoleMessages = function(page) {
+  page.on("console", function(msg) {
+    if (msg.text() !== "Service worker registration failed, error: JSHandle@error") {
+      console.log("PAGE LOG:", msg.text())
+    }
+  });
+}
