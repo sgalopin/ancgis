@@ -145,7 +145,7 @@ module.exports = async function (coordinates) {
         for (var iter = 0; iter < 3;iter++){
           if (turf.inside(temp[iter],currentGeometry2)){
             // le cout de chaque arc est calculé en considérant un cout minimal égal à la distance entre deux cellules auquel on ajoute cette distance pondéré de la moyenne ds côut constaté entre les 2 cellules
-            temp2[featureIndex2]=distance_inter_centroid*1000+distance_inter_centroid*1000*(hexgrid.features[featureIndex].properties.cout+hexgrid.features[featureIndex2].properties.cout  )/2
+            temp2[featureIndex2] = distance_inter_centroid * 1000 + distance_inter_centroid * 1000 * ( hexgrid.features[featureIndex].properties.cout + hexgrid.features[featureIndex2].properties.cout ) / 2;
           }
         };
       });
@@ -228,13 +228,13 @@ module.exports = async function (coordinates) {
 
     // On ne retient que les x polygones les plus facilement atteignable
     hexgrid.features.sort((a, b) => parseFloat(a.properties.res) - parseFloat(b.properties.res)); //tri des polygones par éloignement
-    var polygone_zone_butinage = []
-    for (var hexgridCell of hexgrid.features) {
-      if(hexgridCell.properties.res < cfg.maxWeight){
-        polygone_zone_butinage.push(turf.buffer(hexgridCell,0.001));
-      }
-    }
-    // TODO: If the polygone_zone_butinage aera < cfg.targetArea increase the cfg.maxWeight and add the next grid cells
+
+    const targetCellNumber = (Math.PI * (cfg.targetRadius * 1000) ** 2) / aire_cellule;
+    gridFeatures = hexgrid.features.slice(0, targetCellNumber + 1)
+    let polygone_zone_butinage = gridFeatures.map(function(hexgridCell) {
+      return turf.buffer(hexgridCell,0.001);
+    });
+
     polygone_zone_butinage = turf.union.apply(this,polygone_zone_butinage);
 
     return polygone_zone_butinage.geometry;

@@ -253,7 +253,7 @@ export default async function(waterareasLayerName, hvlsLayerName, antennasLayerN
     style(feature) {
       return new Style({
         fill: new Fill({
-          color: "blue"
+          color: "rgba(44, 130, 201, 0.1)"
         }),
         stroke: new Stroke({
           color: "black",
@@ -278,7 +278,7 @@ export default async function(waterareasLayerName, hvlsLayerName, antennasLayerN
     style(feature) {
       return new Style({
         fill: new Fill({
-          color: "gray"
+          color: "rgba(46, 49, 49, 0.2)"
         }),
         stroke: new Stroke({
           color: "black",
@@ -303,7 +303,7 @@ export default async function(waterareasLayerName, hvlsLayerName, antennasLayerN
     style(feature) {
       return new Style({
         fill: new Fill({
-          color: "gray"
+          color: "rgba(46, 49, 49, 0.2)"
         }),
         stroke: new Stroke({
           color: "black",
