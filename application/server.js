@@ -12,7 +12,7 @@ const log = require("loglevel");
  * The https server is configured only for the development virtual machine context.
  * Heroku automatically creates and configures its own https server.
  */
-if (process.env.SET_HTTPS_SERVER) {
+if (JSON.parse(process.env.SET_HTTPS_SERVER)) {
   const fs = require("fs");
   const spdy = require("spdy");
   const options = {

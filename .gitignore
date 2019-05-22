@@ -1,2 +1,4 @@
 /.vagrant
 /application/.env
+/shell/.env
+/application/node_modules/
