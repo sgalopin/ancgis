@@ -1,25 +1,57 @@
 #!/bin/bash
 
+# Data directory
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+DATA_DIR="$SCRIPTPATH/../database/data"
+
+# Environment variables
+source "$SCRIPTPATH/.env"
+
 echo "--------------------------------------------------"
 echo " Populate DB "
 echo "--------------------------------------------------"
 
 echo "--- Populating of the taxons collection."
-mongo localhost/ancgis taxons.js
+if [ $MONGODB_USER ]
+then
+  mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/taxons.js"
+else
+  mongo $MONGODB_SHORTURI "$DATA_DIR/taxons.js"
+fi
 echo "--- Populating done."
 
 echo "--- Populating of the accounts collection."
-mongo localhost/ancgis accounts.js
+if [ $MONGODB_USER ]
+then
+  mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/accounts.js"
+else
+  mongo $MONGODB_SHORTURI "$DATA_DIR/accounts.js"
+fi
 echo "--- Populating done."
 
 echo "--- Populating of the vegetation zones collection."
-mongo localhost/ancgis vegetation-zones.js
+if [ $MONGODB_USER ]
+then
+  mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/vegetation-zones.js"
+else
+  mongo $MONGODB_SHORTURI "$DATA_DIR/vegetation-zones.js"
+fi
 echo "--- Populating done."
 
 echo "--- Populating of the hives collection."
-mongo localhost/ancgis hives.js
+if [ $MONGODB_USER ]
+then
+  mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/hives.js"
+else
+  mongo $MONGODB_SHORTURI "$DATA_DIR/hives.js"
+fi
 echo "--- Populating done."
 
 echo "--- Populating of the extents collection."
-mongo localhost/ancgis extents.js
+if [ $MONGODB_USER ]
+then
+  mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/extents.js"
+else
+  mongo $MONGODB_SHORTURI "$DATA_DIR/extents.js"
+fi
 echo "--- Populating done."

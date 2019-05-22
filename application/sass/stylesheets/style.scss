@@ -671,3 +671,8 @@ progress[value]::-webkit-progress-value {
 .ancgis-form-title, .ancgis-form-ttbar, .ancgis-form-btbar {
   background-color: rgb(100,100,100);
 }
+.ancgis-form-ttbar, .ancgis-form-btbar {
+ .btn {
+   background-color: lightgray;
+ }
+}
