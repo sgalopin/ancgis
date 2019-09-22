@@ -7,7 +7,7 @@ db.vegetationzones.insert([{
   "properties": {
     "type": "forets",
     "flore": [{
-      "taxon": 1 ,
+      "taxon": 116574,
       "recovery": 75
     }],
     "account": "5b939503845b75060d79c7da",
@@ -26,10 +26,7 @@ db.vegetationzones.insert([{
   "properties": {
     "type": "cultures",
     "flore": [{
-      "taxon": 21,
-      "recovery": 100
-    },{
-      "taxon": 22,
+      "taxon": 127454,
       "recovery": 100
     }],
     "account": "5b939503845b75060d79c7da",

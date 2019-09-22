@@ -255,10 +255,10 @@ class PeriodSwitcher extends Control {
             // factor *= ol.Sphere.getArea(feature.getGeometry());
             factor *= feature.getGeometry().getArea();
           }
-          specie.taxon.periods.forEach(function(period){
+          specie.taxon.periods.blooming.forEach(function(period){
             periodsPotential[period] = periodsPotential[period] ? periodsPotential[period] : { nectar: 0, pollen: 0 };
-            periodsPotential[period].nectar = Math.round((periodsPotential[period].nectar + (specie.taxon.nectarPotential * factor)) * 10) / 10;
-            periodsPotential[period].pollen = Math.round((periodsPotential[period].pollen + (specie.taxon.pollenPotential * factor)) * 10) / 10;
+            periodsPotential[period].nectar = Math.round((periodsPotential[period].nectar + (specie.taxon.potentials.nectar * factor)) * 10) / 10;
+            periodsPotential[period].pollen = Math.round((periodsPotential[period].pollen + (specie.taxon.potentials.pollen * factor)) * 10) / 10;
           }, this);
         }, this);
       }

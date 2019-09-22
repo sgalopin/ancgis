@@ -104,8 +104,8 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
           } else {
             text += "\n\n";
           }
-          text += species.taxon.vernacularName + "\n"
-          + species.taxon.periods + "\n"
+          text += species.taxon.name.fr + "\n"
+          + species.taxon.periods.blooming + "\n"
           + species.recovery + "%";
         });
       }
