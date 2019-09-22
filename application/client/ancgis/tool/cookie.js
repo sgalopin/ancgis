@@ -3,6 +3,7 @@
  */
 import jwt from "jsonwebtoken";
 import jwks from "../../../encryption/jwks.json";
+import * as log from "loglevel";
 
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -43,6 +44,9 @@ export function hasVerifiedJWT() {
     jwt.verify(token, jwks.keys[0].n);
     return true;
   } catch (e) {
+    log.error("The JSON Web Token (JWT) requires a valid https certificate.");
+    log.error("The JSON Web Key Set (JWKS) must contain the public key of the certificate.");
+    log.error(e.stack);
     return false;
   }
 }
