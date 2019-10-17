@@ -38,8 +38,22 @@ export default async function(idbm) {
       // Get the taxon fields
       idbm.readAll("taxons")
       .then(function(taxons) {
+        // Split the taxon name
+        let splitedTaxons = [];
+        taxons.forEach(function(taxon){
+          let taxonNames = taxon.name.fr.split(', ');
+          taxonNames.forEach(function(taxonName, index){
+            splitedTaxons.push({
+              id: taxon.id,
+              name: taxonName,
+              synonymous: index !== 0,
+              smartflore: taxon.urns.fr.telabotanica
+            });
+          });
+        });
+
         // HTML builds
-        var speciesFormHtml = speciesFormTemplate({ taxons });
+        var speciesFormHtml = speciesFormTemplate({ taxons: splitedTaxons });
         $("body").append(speciesFormHtml);
         $("#ancgis-speciesform [data-toggle=\"tooltip\"]").tooltip();
         $("#ancgis-speciesform").focus();
@@ -64,6 +78,15 @@ export default async function(idbm) {
             event.preventDefault();
             validateForm();
           }
+        });
+        $("#ancgis-speciesform-taxonfield").change( function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+          $(this).find(":selected").each(function () {
+              $("#ancgis-speciesform").addClass("enlarged");
+              $("#ancgis-speciesform-taxonfield-iframe").show();
+              $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
+          });
         });
 
         // Cancel button handler

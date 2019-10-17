@@ -295,13 +295,13 @@
         }
       }
     },
-    "urls": {
-      "description": "The taxon's urls",
+    "urns": {
+      "description": "The taxon's urns",
       "type": "object",
       "required": [ "fr" ],
       "properties": {
         "fr": {
-          "description": "The taxon's french urls",
+          "description": "The taxon's french urns",
           "type": "object",
           "required": [ "wikipedia", "telabotanica", "smartflore", "inpn" ],
           "properties": {
@@ -311,10 +311,6 @@
             },
             "telabotanica": {
               "description": "The taxon's telabotanica url",
-              "type": "string"
-            },
-            "smartflore": {
-              "description": "The taxon's smartflore url",
               "type": "string"
             },
             "inpn": {

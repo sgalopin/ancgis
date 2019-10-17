@@ -557,6 +557,18 @@ progress[value]::-webkit-progress-value {
   top: calc(50% - 85px);
   left: calc(50% - 200px);
 }
+#ancgis-speciesform.enlarged {
+  width: 400px;
+  height: 510px;
+  top: calc(50% - 255px);
+  left: calc(50% - 200px);
+}
+#ancgis-speciesform-taxonfield-iframe {
+  display: none;
+  margin-top:10px;
+  width: 100%;
+  height: 330px;
+}
 @media screen and (max-width: 640px) {
   #ancgis-hiveform {
     width: 350px;

@@ -38,11 +38,10 @@ module.exports = mongoose.model("Taxon", new mongoose.Schema({
 			"solidHoney": {type: String}
 		}
 	},
-	"urls": {
+	"urns": {
 		"fr": {
 			"wikipedia": {type: String},
 			"telabotanica": {type: String},
-			"smartflore": {type: String},
 			"inpn": {type: String}
 		}
 	},

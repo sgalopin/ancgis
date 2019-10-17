@@ -151,6 +151,7 @@ app.use("/rest/taxons", require("./routes/rest/taxons"));
 app.use("/rest/vegetation-zones", require("./routes/rest/vegetation-zones"));
 app.use("/rest/hives", require("./routes/rest/hives"));
 app.use("/rest/extents", require("./routes/rest/extents"));
+app.use("/smartflore", require("./routes/smartflore"));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

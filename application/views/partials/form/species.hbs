@@ -6,9 +6,14 @@
       <select id="ancgis-speciesform-taxonfield">
         <option value="" disabled selected>Sélectionner</option>
         {{#each taxons}}
-          <option value="{{id}}">{{name.fr}}</option>
+            {{#unless synonymous}}
+              <option value="{{id}}" class="font-bold" data-smartflore="{{smartflore}}">{{name}}</option>
+            {{else}}
+              <option value="{{id}}" class="font-italic" data-smartflore="{{smartflore}}">&nbsp;&nbsp;{{name}}</option>
+            {{/unless}}
         {{/each}}
       </select>
+      <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
     </div>
     <div class="ancgis-form-field">
       <label for="ancgis-speciesform-recoveryfield">Recouvrement (%) : </label>
