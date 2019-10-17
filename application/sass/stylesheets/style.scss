@@ -568,6 +568,7 @@ progress[value]::-webkit-progress-value {
   margin-top:10px;
   width: 100%;
   height: 330px;
+  background: url('../images/loading.gif') center center no-repeat;
 }
 @media screen and (max-width: 640px) {
   #ancgis-hiveform {
