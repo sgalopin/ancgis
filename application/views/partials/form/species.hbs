@@ -13,7 +13,9 @@
             {{/unless}}
         {{/each}}
       </select>
-      <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
+      {{#if isOnline}}
+        <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
+      {{/if}}
     </div>
     <div class="ancgis-form-field">
       <label for="ancgis-speciesform-recoveryfield">Recouvrement (%) : </label>

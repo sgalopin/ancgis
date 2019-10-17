@@ -7,9 +7,9 @@ import * as log from "loglevel";
 /**
  * Zone form builder.
  */
-export default async function(idbm) {
+export default async function(idbm, isOnline) {
 
-  let speciesForm = await getSpeciesForm(idbm);
+  let speciesForm = await getSpeciesForm(idbm, isOnline);
 
   return {
     show(map, feature) {

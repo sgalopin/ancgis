@@ -42,7 +42,7 @@ export default async function(isOnline) {
   let hiveDAO = new HiveDAO(idbm);
   let zoneDAO = new ZoneDAO(idbm);
   let extentDAO = new ExtentDAO(idbm);
-  let zoneForm = await getZoneForm(idbm);
+  let zoneForm = await getZoneForm(idbm, isOnline);
   let hiveForm = await getHiveForm();
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";

@@ -5,7 +5,7 @@ import * as log from "loglevel";
 /**
  * Species form builder.
  */
-export default async function(idbm) {
+export default async function(idbm, isOnline) {
 
   return {
     show() {
@@ -53,7 +53,7 @@ export default async function(idbm) {
         });
 
         // HTML builds
-        var speciesFormHtml = speciesFormTemplate({ taxons: splitedTaxons });
+        var speciesFormHtml = speciesFormTemplate({ isOnline, taxons: splitedTaxons });
         $("body").append(speciesFormHtml);
         $("#ancgis-speciesform [data-toggle=\"tooltip\"]").tooltip();
         $("#ancgis-speciesform").focus();
@@ -83,9 +83,11 @@ export default async function(idbm) {
           event.stopPropagation();
           event.preventDefault();
           $(this).find(":selected").each(function () {
+            if (isOnline) {
               $("#ancgis-speciesform").addClass("enlarged");
               $("#ancgis-speciesform-taxonfield-iframe").show();
               $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
+            }
           });
         });
 
