@@ -84,11 +84,38 @@ export default async function(idbm, isOnline) {
           event.preventDefault();
           $(this).find(":selected").each(function () {
             if (isOnline) {
-              $("#ancgis-speciesform").addClass("enlarged");
-              $("#ancgis-speciesform-taxonfield-iframe").show();
+              $("#ancgis-speciesform-taxonfield-trigger").show();
+              $("#ancgis-speciesform-taxonfield-loadingdiv").show();
+              $("#ancgis-speciesform-taxonfield-iframe").hide();
               $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
             }
           });
+        });
+
+        // Add taxonfield trigger handler
+        $("#ancgis-speciesform-taxonfield-trigger").click(function(event) {
+          event.stopPropagation();
+          if (isOnline) {
+            $(this).toggleClass("active");
+            let span = $(this).children(":first");
+            if ($(this).hasClass("active")) {
+              span.addClass("ancgis-glyphicons-546eyeclose");
+              span.removeClass("ancgis-glyphicons-546eyeopen");
+              $("#ancgis-speciesform").addClass("enlarged");
+              $("#ancgis-speciesform-taxonfield-frame").show();
+            } else {
+              span.addClass("ancgis-glyphicons-546eyeopen");
+              span.removeClass("ancgis-glyphicons-546eyeclose");
+              $("#ancgis-speciesform").removeClass("enlarged");
+              $("#ancgis-speciesform-taxonfield-frame").hide();
+            }
+          }
+        });
+
+        // Add taxonfield iframe handler
+        $('#ancgis-speciesform-taxonfield-iframe').on("load", function() {
+            $("#ancgis-speciesform-taxonfield-loadingdiv").hide();
+            $("#ancgis-speciesform-taxonfield-iframe").show();
         });
 
         // Cancel button handler

@@ -14,7 +14,11 @@
         {{/each}}
       </select>
       {{#if isOnline}}
-        <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
+        <button id="ancgis-speciesform-taxonfield-trigger" class="btn btn-primary" alt="Ouvrir la description" type="button"><span class="ancgis-glyphicons ancgis-glyphicons-545eyeopen"></span></button>
+        <div id="ancgis-speciesform-taxonfield-frame">
+          <div id="ancgis-speciesform-taxonfield-loadingdiv"></div>
+          <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
+        </div>
       {{/if}}
     </div>
     <div class="ancgis-form-field">
