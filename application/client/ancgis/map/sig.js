@@ -405,6 +405,13 @@ export default async function(isOnline) {
     }, 3000);
   });
 
+  // Management of the menus buttons
+  $(".dropdown-item").click(function() {
+    event.stopPropagation();
+    $(this).parent().removeClass("show");
+    $(this).parent().parent().removeClass("show");
+  });
+
   // Management of the extents layer change
   extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
