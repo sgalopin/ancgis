@@ -329,6 +329,59 @@ export default async function(isOnline) {
     }
   });
 
+  // Management of the database reset button
+  $("#ancgis-topright-dbreset").click(function() {
+    event.stopPropagation();
+    idbm.deleteAll().then(function() {
+      displayMapMessage("Suppression de la base de donnnées réussie.</br>Veuillez patienter durant le rechargement de la page...", "success", true, false);
+      window.location.reload();
+    }, function(error) {
+      displayMapMessage("La suppression de la base de donnnées a échoué. Veuillez réessayer.", "error", true, false);
+    });
+  });
+
+  // Management of the map cache reset button
+  $("#ancgis-topright-mapcachereset").click(function() {
+    event.stopPropagation();
+    const cacheName = "ancgis-statics-tiles";
+    caches.has(cacheName).then(function(cacheExists) {
+      if (cacheExists) {
+        caches.delete(cacheName).then(function(success) {
+          if(success){
+            displayMapMessage("Suppression du cache cartographique réussi.</br>Veuillez patienter durant le rechargement du cache...", "success", true, false);
+            cache.updateCache();
+          } else {
+            displayMapMessage("La suppression du cache cartographique a échoué. Veuillez réessayer.", "error", true, false);
+          }
+        });
+      } else {
+        displayMapMessage("Cache cartographique inexistant.</br>Veuillez patienter durant la création du cache...", "info", true, false);
+        cache.updateCache();
+      }
+    });
+  });
+
+  // Management of the application reload button
+  $("#ancgis-topright-appreload").click(function() {
+    event.stopPropagation();
+    const cacheName = "ancgis-statics-ressources";
+    caches.has(cacheName).then(function(cacheExists) {
+      if (cacheExists) {
+        caches.delete(cacheName).then(function(success) {
+          if(success){
+            displayMapMessage("Suppression du cache applicatif réussi.</br>Veuillez patienter durant le rechargement de la page...", "success", true, false);
+            window.location.reload();
+          } else {
+            displayMapMessage("La suppression du cache applicatif a échoué. Veuillez réessayer.", "error", true, false);
+          }
+        });
+      } else {
+        displayMapMessage("Cache applicatif inexistant.</br>Veuillez patienter durant le rechargement de la page...", "info", true, false);
+        window.location.reload();
+      }
+    });
+  });
+
   // Management of the MapCacheInfo toolbar
   cache.addEventListener("tileAdded", function(count, total) {
     let mapCacheInfoHtml = mapCacheInfoTemplate({count, total});

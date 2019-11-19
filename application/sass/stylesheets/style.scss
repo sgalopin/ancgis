@@ -198,6 +198,31 @@ html, body, .container-fluid {
   .dropdown-toggle::after {
     display: none;
   }
+  >button {
+    border-color: #555 !important;
+  }
+  >.btn-primary.dropdown-toggle:focus {
+      box-shadow: none !important;
+  }
+}
+#ancgis-topright-menu.show>button {
+  background-color: #BBB !important;
+}
+#ancgis-topright-settings-menu {
+  .dropdown-toggle::after {
+    display: none;
+  }
+  >button {
+    height: 100%;
+    margin-left: 3px;
+    border-color: #555 !important;
+  }
+  >.btn-primary.dropdown-toggle:focus {
+      box-shadow: none !important;
+  }
+}
+#ancgis-topright-settings-menu.show>button {
+  background-color: #BBB !important;
 }
 @media screen and (max-width: 640px) {
   #ancgis-topright-tbar {
@@ -396,6 +421,10 @@ progress[value]::-webkit-progress-value {
 }
 .ancgis-glyphicons-546eyeclose {
   background-image: url("../images/glyphicons/glyphicons-53-eye-close.png");
+}
+.ancgis-glyphicons-546optionvertical {
+  background-image: url("../images/glyphicons/glyphicons-518-option-vertical.png");
+  background-position-x: center;
 }
 
 /*************************/

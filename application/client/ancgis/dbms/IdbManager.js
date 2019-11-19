@@ -180,6 +180,25 @@ class IdbManager {
     });
   }
 
+  deleteAll() {
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      // The database must be closed to avoid being blocked when deleting the database
+      self.db.close();
+      var request = window.indexedDB.deleteDatabase("ancDB");
+      request.onerror = function(event) {
+        reject(Error("An error occurred while deleting the database."));
+      };
+      request.onblocked = function () {
+        reject(Error("Couldn't delete database due to the operation being blocked."));
+      };
+      request.onsuccess = function(event) {
+        log.debug("Local database successfully erased.");
+        resolve();
+      };
+    });
+  }
+
   dispatchCreateEvent(collection, doc) {
     this.db.dispatchEvent(new CustomEvent("create", {
       "detail": {
