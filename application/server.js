@@ -12,6 +12,7 @@ const log = require("loglevel");
  * The https server is configured only for the development virtual machine context.
  * Heroku automatically creates and configures its own https server.
  */
+let httpsServer = null;
 if (JSON.parse(process.env.SET_HTTPS_SERVER)) {
   const fs = require("fs");
   const spdy = require("spdy");
@@ -19,10 +20,10 @@ if (JSON.parse(process.env.SET_HTTPS_SERVER)) {
     key: fs.readFileSync("encryption/ancgis.dev.net.key"),
     cert: fs.readFileSync( "encryption/ancgis.dev.net.crt" )
   };
-  let httpsServer = spdy.createServer(options, app);
+  httpsServer = spdy.createServer(options, app);
   httpsServer.listen(443);
-  httpsServer.on("error", onError); // eslint-disable-line no-use-before-define
-  httpsServer.on("listening", onListening); // eslint-disable-line no-use-before-define
+  httpsServer.on("error", onHttpsError); // eslint-disable-line no-use-before-define
+  httpsServer.on("listening", onHttpsListening); // eslint-disable-line no-use-before-define
 }
 
 /**
@@ -37,17 +38,15 @@ httpServer.listen(process.env.HTTP_SERVER_PORT || process.env.PORT || 80);
 /**
  * Event listener for HTTPS server "error" event.
  */
-function onError(error) {
+function onHttpsError(error) {
   if (error.syscall !== "listen") {
     throw error;
   }
-  /*
+
   const addr = httpsServer.address();
-  const port = addr.port;
-  const bind = typeof port === "string"
-    ? "Pipe " + port
-    : "Port " + port;*/
-    const bind = "";
+  const bind = typeof addr === "string"
+    ? "pipe " + addr
+    : "port " + addr.port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -67,11 +66,10 @@ function onError(error) {
 /**
  * Event listener for HTTPS server "listening" event.
  */
-function onListening() {
-  /*const addr = httpsServer.address();
-  const bind = typeof addr === "string"
-    ? "pipe " + addr
-    : "port " + addr.port;*/
-  const bind = "";
-  debug("Listening on " + bind);
+function onHttpsListening() {
+    const addr = httpsServer.address();
+    const bind = typeof addr === "string"
+      ? "pipe " + addr
+      : "port " + addr.port;
+    console.log("Listening on " + bind);
 }
