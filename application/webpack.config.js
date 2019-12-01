@@ -13,8 +13,8 @@ module.exports = {
   // "production" | "development" | "none"
   mode: env,
   entry: { // https://webpack.js.org/guides/code-splitting/
-    app: ["./client/main.js"],
-    tools: ["./client/tools-main.js"]
+    app: ["./lib/client/main.js"],
+    tools: ["./lib/client/tools-main.js"]
   },
   devtool: env === "development" ? "inline-source-map" : "none",
   output: env !== "production" ? {
@@ -23,7 +23,7 @@ module.exports = {
     publicPath: "/javascripts" //  Required per webpack-dev-middleware
   } : {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "public/javascripts")
+    path: path.resolve(__dirname, "lib/public/javascripts")
   },
   module: {
     rules: [{
@@ -42,7 +42,7 @@ module.exports = {
       loader: "handlebars-loader",
       query: {
         helperDirs: [
-          path.resolve(__dirname, "views/helpers")
+          path.resolve(__dirname, "lib/views/helpers")
         ]
       }
     },{
@@ -52,7 +52,7 @@ module.exports = {
   },
   "resolve": {
     "alias": {
-      "@environment$": `${__dirname}/client/ancgis/env/${env}.js`
+      "@environment$": `${__dirname}/lib/client/ancgis/env/${env}.js`
     }
   }
 };

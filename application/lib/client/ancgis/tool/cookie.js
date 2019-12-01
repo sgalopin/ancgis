@@ -2,7 +2,7 @@
  * Cookie tools
  */
 import jwt from "jsonwebtoken";
-import jwks from "../../../encryption/jwks.json";
+import jwks from "../../../../encryption/jwks.json";
 import * as log from "loglevel";
 
 export function setCookie(cname, cvalue, exdays) {

@@ -41,6 +41,7 @@ app.engine("hbs", exphbs({
     __dirname + "/views/partials/"
   ]
 }));
+app.set('views', __dirname + '/views');
 app.set("view engine", "hbs");
 // Note: you must place sass-middleware *before* `express.static` or else it will not work.
 app.use (
@@ -59,14 +60,19 @@ if (process.env.NODE_ENV === "development") {
   // webpack-dev-middleware
   const webpack = require("webpack");
   const webpackDevMiddleware = require("webpack-dev-middleware");
-  const webpackConfig = require("./webpack.config.js");
+  const webpackConfig = require("../webpack.config.js");
   const compiler = webpack(webpackConfig);
   // Tell express to use the webpack-dev-middleware and use the webpack.config.js
   // configuration file as a base.
   app.use(webpackDevMiddleware(compiler, {
     noInfo: false,
     publicPath: webpackConfig.output.publicPath,
-    writeToDisk: true
+    writeToDisk: true,
+    // Enable change detection on VirtualBox/Vagrant mounted folders
+    watch: false,
+    watchOptions: {
+        poll: true
+    }
   }));
   // BrowserSync
   const browserSync = require("browser-sync");
