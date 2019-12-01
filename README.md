@@ -8,10 +8,9 @@
 # AncGIS&trade;
 [SIG](https://fr.wikipedia.org/wiki/Syst%C3%A8me_d%27information_g%C3%A9ographique) Web pour l'analyse des ressources mellifères autour d'un rucher, de type [PWA](https://fr.wikipedia.org/wiki/Progressive_web_app) et [SPA](https://fr.wikipedia.org/wiki/Application_web_monopage).
 
-- [Accueil](https://github.com/sgalopin/ancgis/wiki)
-- [Installation](https://github.com/sgalopin/ancgis/wiki/Installation)
-- [Développement](https://github.com/sgalopin/ancgis/wiki/D%C3%A9veloppement)
-- [Désinstallation](https://github.com/sgalopin/ancgis/wiki/D%C3%A9sinstallation)
+- [Site de présentation du projet](https://apinutriculture.org/ancgis/)
+- [Machine virtuelle de développement](https://github.com/sgalopin/vm4ancgis)
+
 
 <p align="center">
   <img src="https://github.com/sgalopin/ancgis/wiki/img/Badge_AncGIS_200px.png">
