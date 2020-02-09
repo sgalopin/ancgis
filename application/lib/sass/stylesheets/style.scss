@@ -1,9 +1,9 @@
 /*************************/
 /**       Template      **/
 /*************************/
-
 html, body, .container-fluid {
-  height: calc(100% - 1px);
+  height: 100%;
+  overflow: hidden;
 }
 @media screen and (max-width: 640px) {
   html, body, .container-fluid {
@@ -144,6 +144,7 @@ html, body, .container-fluid {
   font-size: 10px;
   width: 100%;
   padding: 1px 5px 1px 5px;
+  height: 35px;
 }
 #ancgis-info-tbar, #ancgis-uploadinfo-tbar {
   margin: auto 0;
@@ -161,7 +162,19 @@ html, body, .container-fluid {
     font-weight: 700;
   }
 }
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 840px) {
+  #ancgis-info-tbar {
+    .content {
+      .label {
+        display: none;
+      }
+      .info {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 540px) {
   #ancgis-info-tbar {
     margin: 0;
     .content {
@@ -199,6 +212,7 @@ html, body, .container-fluid {
     display: none;
   }
   >button {
+    height: 100%;
     border-color: #555 !important;
   }
   >.btn-primary.dropdown-toggle:focus {
@@ -224,7 +238,7 @@ html, body, .container-fluid {
 #ancgis-topright-settings-menu.show>button {
   background-color: #BBB !important;
 }
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 720px) {
   #ancgis-topright-tbar {
     display: none;
   }
@@ -242,6 +256,7 @@ html, body, .container-fluid {
   border-top: solid 1px #999;
   font-size: 10px;
   width: 100%;
+  height: 25px;
 }
 #ancgis-mapstatus-tbar>div {
   display: inline-block;
@@ -535,17 +550,26 @@ progress[value]::-webkit-progress-value {
 /*************************/
 /**      Openlayer      **/
 /*************************/
-
-@media screen and (max-width: 640px) {
-  .ol-zoomslider {
-    display:none;
-  }
+@media screen and (max-width: 840px) {
   .ol-scale-line {
     top: 8px;
     bottom: auto;
   }
+}
+@media screen and (max-width: 640px) {
+  .ol-zoomslider {
+    display:none;
+  }
   .ol-periodswitcher-button {
     padding: 3px 5px;
+  }
+}
+@media screen and (max-height: 440px) {
+  .ol-zoomslider {
+    display:none;
+  }
+  .ol-periodswitcher {
+    display:none;
   }
 }
 .ol-control button, .ol-periodswitcher-button {
