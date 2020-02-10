@@ -1,5 +1,6 @@
 // Requirements
 import speciesFormTemplate from "../../../views/partials/form/species.hbs";
+import PedoclimaticFilter from "../services/PedoclimaticFilter.js";
 import * as log from "loglevel";
 
 /**
@@ -8,7 +9,7 @@ import * as log from "loglevel";
 export default async function(idbm, isOnline) {
 
   return {
-    show() {
+    show(feature) {
 
       // Manage the validation of the form
       function validateForm () {
@@ -84,7 +85,6 @@ export default async function(idbm, isOnline) {
           event.preventDefault();
           $(this).find(":selected").each(function () {
             if (isOnline) {
-              $("#ancgis-speciesform-taxonfield-trigger").show();
               $("#ancgis-speciesform-taxonfield-loadingdiv").show();
               $("#ancgis-speciesform-taxonfield-iframe").hide();
               $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
@@ -92,30 +92,55 @@ export default async function(idbm, isOnline) {
           });
         });
 
-        // Add taxonfield trigger handler
-        $("#ancgis-speciesform-taxonfield-trigger").click(function(event) {
-          event.stopPropagation();
+        // Add taxonfield iframe handler
+        $('#ancgis-speciesform-taxonfield-iframe').on("load", function() {
+            $("#ancgis-speciesform-taxonfield-loadingdiv").hide();
+            $("#ancgis-speciesform-taxonfield-iframe").show();
+        });
+
+        // Add taxonfield opendescription handler
+        $("#ancgis-speciesform-taxonfield-opendescription").click(function(event) {
+          // Note: The event's propagation is required here to close the menu.
           if (isOnline) {
-            $(this).toggleClass("active");
-            let span = $(this).children(":first");
-            if ($(this).hasClass("active")) {
-              span.addClass("ancgis-glyphicons-546eyeclose");
-              span.removeClass("ancgis-glyphicons-546eyeopen");
+            $(this).toggleClass("ckecked");
+            let span = $(this).children(":first").children(":first");
+            if ($(this).hasClass("ckecked")) {
+              span.addClass("ancgis-glyphicons-153check");
+              span.removeClass("ancgis-glyphicons-154unchecked");
               $("#ancgis-speciesform").addClass("enlarged");
               $("#ancgis-speciesform-taxonfield-frame").show();
             } else {
-              span.addClass("ancgis-glyphicons-546eyeopen");
-              span.removeClass("ancgis-glyphicons-546eyeclose");
+              span.addClass("ancgis-glyphicons-154unchecked");
+              span.removeClass("ancgis-glyphicons-153check");
               $("#ancgis-speciesform").removeClass("enlarged");
               $("#ancgis-speciesform-taxonfield-frame").hide();
             }
           }
         });
 
-        // Add taxonfield iframe handler
-        $('#ancgis-speciesform-taxonfield-iframe').on("load", function() {
-            $("#ancgis-speciesform-taxonfield-loadingdiv").hide();
-            $("#ancgis-speciesform-taxonfield-iframe").show();
+        // Add taxonfield pedoclimaticfilter handler
+        let pcFilter = new PedoclimaticFilter({
+          idbm: idbm,
+          vegetationZone: feature,
+          taxonsList: taxons
+        });
+        $("#ancgis-speciesform-taxonfield-pedoclimaticfilter").click(function(event) {
+          // Note: The event's propagation is required here to close the menu.
+          if (isOnline) {
+            $(this).toggleClass("ckecked");
+            let span = $(this).children(":first").children(":first");
+            if ($(this).hasClass("ckecked")) {
+              span.addClass("ancgis-glyphicons-153check");
+              span.removeClass("ancgis-glyphicons-154unchecked");
+              // Add filter
+              // TODO: update the taxon list with the new list ( pcFilter.getList() )
+            } else {
+              span.addClass("ancgis-glyphicons-154unchecked");
+              span.removeClass("ancgis-glyphicons-153check");
+              // Remove filter
+              // TODO: update the taxon list with the full list ( splitedTaxons )
+            }
+          }
         });
 
         // Cancel button handler

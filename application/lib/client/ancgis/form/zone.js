@@ -102,7 +102,7 @@ export default async function(idbm, isOnline) {
         event.stopPropagation();
         $("#ancgis-zoneform").hide();
         // Display the species form
-        speciesForm.show();
+        speciesForm.show(feature);
       });
 
       // Remove buttons handler

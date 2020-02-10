@@ -13,8 +13,30 @@
             {{/unless}}
         {{/each}}
       </select>
+      <div id="ancgis-speciesform-taxonfield-menu" class="dropdown">
+        <button id="ancgis-speciesform-taxonfield-trigger" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="ancgis-glyphicons ancgis-glyphicons-546optionvertical"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownSettingsMenu">
+          {{#if isOnline}}
+            <button id="ancgis-speciesform-taxonfield-opendescription" class="dropdown-item" alt="Voir la description" type="button">
+              <span>
+                <span class="ancgis-glyphicons ancgis-glyphicons-154unchecked"></span>
+              </span>
+              <span class="ancgis-glyphicons ancgis-glyphicons-545eyeopen"></span>
+              <span>Voir la description</span>
+            </button>
+          {{/if}}
+          <button id="ancgis-speciesform-taxonfield-pedoclimaticfilter" class="dropdown-item" alt="Filtrer avec les zones pédoclimatiques" type="button">
+            <span>
+              <span class="ancgis-glyphicons ancgis-glyphicons-154unchecked"></span>
+            </span>
+            <span class="ancgis-glyphicons ancgis-glyphicons-321filter"></span>
+            <span>Filtrer avec les zones pédoclimatiques</span>
+          </button>
+        </div>
+      </div>
       {{#if isOnline}}
-        <button id="ancgis-speciesform-taxonfield-trigger" class="btn btn-primary" alt="Ouvrir la description" type="button"><span class="ancgis-glyphicons ancgis-glyphicons-545eyeopen"></span></button>
         <div id="ancgis-speciesform-taxonfield-frame">
           <div id="ancgis-speciesform-taxonfield-loadingdiv"></div>
           <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>
