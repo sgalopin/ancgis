@@ -9,7 +9,7 @@ import uuidv1 from "uuid/v1";
 
 /**
  * @classdesc
- * Hive DAO
+ * Extent DAO
  *
  * @api
  */
