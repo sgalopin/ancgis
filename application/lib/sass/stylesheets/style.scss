@@ -203,7 +203,7 @@ html, body, .container-fluid {
 }
 #ancgis-mapcontrol-drawcircle,
 #ancgis-topright-drawextent,
-#ancgis-topright-zoomtofeature {
+#ancgis-topright-displayLegend {
   border-right-width: 3px;
 }
 #ancgis-topright-menu {
@@ -441,6 +441,25 @@ progress[value]::-webkit-progress-value {
   background-image: url("../images/glyphicons/glyphicons-518-option-vertical.png");
   background-position-x: center;
 }
+.ancgis-glyphicons-321filter {
+  background-image: url("../images/glyphicons/glyphicons-321-filter.png");
+}
+.ancgis-glyphicons-153check {
+  background-image: url("../images/glyphicons/glyphicons-153-check.png");
+}
+.ancgis-glyphicons-154unchecked {
+  background-image: url("../images/glyphicons/glyphicons-154-unchecked.png");
+}
+.ancgis-glyphicons-charts {
+  background-image: url("../images/glyphicons/glyphicons-42-charts.png");
+}
+.ancgis-glyphicons-list-alt {
+  background-image: url("../images/glyphicons/glyphicons-530-list-alt.png");
+}
+.ancgis-glyphicons-adjust-alt {
+  background-image: url("../images/glyphicons/glyphicons-140-adjust-alt.png");
+}
+
 
 /*************************/
 /**   Period switcher   **/

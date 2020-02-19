@@ -3,6 +3,7 @@
 // ol import
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
+import LayerGroup from "ol/layer/Group.js"
 import Style from "ol/style/Style.js";
 import Fill from "ol/style/Fill.js";
 import Stroke from "ol/style/Stroke.js";
@@ -23,6 +24,7 @@ import {getWidth as olExtentGetWidth} from "ol/extent.js";
 // Local import
 import ExtendedMap from "../../ol/ExtendedMap.js";
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
+import LayerSwitcher from "../../ol/control/LayerSwitcher.js"
 import PeriodSwitcher from "../../ol/control/PeriodSwitcher.js";
 import PeriodSwitcherEvent from "../../ol/control/PeriodSwitcherEvent.js";
 import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js";
@@ -40,6 +42,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     format: extendedGeoJSON
   });
   var hivesLayer = new VectorLayer({
+    title: 'Ruches',
     name: hivesLayerName,
     source: hivesLayerSource,
     style(feature) {
@@ -67,6 +70,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     format: extendedGeoJSON
   });
   var vegetationsLayer = new VectorLayer({
+    title: 'Végétations',
     name: vegetationsLayerName,
     source: vegetationsLayerSource,
     style(feature) {
@@ -123,6 +127,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     format: extendedGeoJSON
   });
   var extentsLayer = new VectorLayer({
+    title: 'Zones de cache cartographique',
     name: extentsLayerName,
     source: extentsLayerSource,
     style(feature) {
@@ -185,12 +190,29 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
   });
 
   var bdorthoLayer = new TileLayer({
+    title: 'Photos aériennes',
+    type: 'base', // Required by LayerSwitcher
     name: bdorthoLayerName,
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
-  if (isOnline) { layers.push(extentsLayer); }
+  let vectorLayersGroup = new LayerGroup({
+    title: 'Données',
+    fold: 'open',
+    layers: [hivesLayer, vegetationsLayer]
+  });
+
+  let layers = [
+    new LayerGroup({
+      title: 'Fonds',
+      fold: 'open',
+      layers: [bdorthoLayer]
+      }),
+    vectorLayersGroup
+  ];
+  if (isOnline) {
+    vectorLayersGroup.getLayers().push(extentsLayer);
+  }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 
   return new ExtendedMap ({ // Openlayers Map
@@ -198,6 +220,10 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     target: "ancgis-map",
     keyboardEventTarget: document,
     controls: [
+      new LayerSwitcher({
+        tipLabel: 'Légende',
+        groupSelectStyle: 'group'
+    }),
       new PeriodSwitcher(),
       new Attribution(),
       new ZoomSlider(),

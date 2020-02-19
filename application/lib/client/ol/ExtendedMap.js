@@ -6,6 +6,7 @@ import PeriodSwitcherEvent from "./control/PeriodSwitcherEvent.js";
 import PeriodSwitcherEventType from "./control/PeriodSwitcherEventType.js";
 import {get as olProjGet} from "ol/proj.js";
 import VectorLayer from "ol/layer/Vector.js";
+import LayerGroup from "ol/layer/Group.js"
 import PointerEvent from 'ol/pointer/PointerEvent.js';
 import MapBrowserPointerEvent from 'ol/MapBrowserPointerEvent.js';
 
@@ -23,10 +24,19 @@ class ExtendedMap extends Map {
     super(options);
   }
 
-  getLayerByName(layerName) {
-    return this.getLayers().getArray().find(function(layer) {
-      return layer.get("name") === layerName;
+  getLayerByName(layerName, node= null) {
+    let map = this, wanted_child = null;
+    if (node === null) { node = map; }
+    node.getLayers().getArray().find(function(child) {
+      if (child instanceof LayerGroup) {
+        wanted_child = map.getLayerByName(layerName, child);
+        if (wanted_child !== null) { return; }
+      } else if(child.get("name") === layerName) {
+        wanted_child = child;
+        return;
+      }
     });
+    return wanted_child;
   }
 
   getFeatures() {

@@ -329,6 +329,24 @@ export default async function(isOnline) {
     }
   });
 
+  // Management of the display histrogram button
+  $(".ol-periodswitcher").hide();
+  // Note: Initialization with "display" set to "none" on the element style,
+  // not on the ".ol-periodswitcher" class (where "display" is set to "flex").
+  $("#ancgis-topright-displayhistrogram, #ancgis-topright-displayhistrogram2").click(function() {
+    event.stopPropagation();
+    $("#ancgis-topright-displayhistrogram").toggleClass("active");
+    $("#ancgis-topright-displayhistrogram2").toggleClass("active");
+    $(".ol-periodswitcher").toggle();
+  });
+
+  // Management of the display layer switcher button
+  $("#ancgis-topright-displayLayerSwitcher, #ancgis-topright-displayLayerSwitcher2").click(function() {
+    event.stopPropagation();
+    let layerSwitcher = map.getControls().item(0);
+    layerSwitcher.showPanel();
+  });
+
   // Management of the database reset button
   $("#ancgis-topright-dbreset").click(function() {
     event.stopPropagation();

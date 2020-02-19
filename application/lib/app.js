@@ -43,12 +43,14 @@ app.engine("hbs", exphbs({
 }));
 app.set('views', __dirname + '/views');
 app.set("view engine", "hbs");
-// Note: you must place sass-middleware *before* `express.static` or else it will not work.
+// Note:
+// - You must place sass-middleware *before* `express.static` or else it will not work.
+// - You must call the stylesheet (via the client browser) to generate the css file.
 app.use (
   sassMiddleware({
     src: __dirname + "/sass",
     dest: __dirname + "/public",
-    debug: true,
+    debug: true
   })
 );
 
