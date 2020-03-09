@@ -100,7 +100,7 @@ class AbstractDAO {
       "crs": {
         "type": "name",
         "properties": {
-          "name": "EPSG:3857"
+          "name": "EPSG:4326"
         }
       },
       "features": await this.dbm.readAll(self.collection)
