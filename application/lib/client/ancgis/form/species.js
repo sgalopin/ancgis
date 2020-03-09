@@ -126,20 +126,18 @@ export default async function(idbm, isOnline) {
         });
         $("#ancgis-speciesform-taxonfield-pedoclimaticfilter").click(function(event) {
           // Note: The event's propagation is required here to close the menu.
-          if (isOnline) {
-            $(this).toggleClass("ckecked");
-            let span = $(this).children(":first").children(":first");
-            if ($(this).hasClass("ckecked")) {
-              span.addClass("ancgis-glyphicons-153check");
-              span.removeClass("ancgis-glyphicons-154unchecked");
-              // Add filter
-              // TODO: update the taxon list with the new list ( pcFilter.getList() )
-            } else {
-              span.addClass("ancgis-glyphicons-154unchecked");
-              span.removeClass("ancgis-glyphicons-153check");
-              // Remove filter
-              // TODO: update the taxon list with the full list ( splitedTaxons )
-            }
+          $(this).toggleClass("ckecked");
+          let span = $(this).children(":first").children(":first");
+          if ($(this).hasClass("ckecked")) {
+            span.addClass("ancgis-glyphicons-153check");
+            span.removeClass("ancgis-glyphicons-154unchecked");
+            // Add filter
+            // TODO: update the taxon list with the new list ( pcFilter.getList() )
+          } else {
+            span.addClass("ancgis-glyphicons-154unchecked");
+            span.removeClass("ancgis-glyphicons-153check");
+            // Remove filter
+            // TODO: update the taxon list with the full list ( splitedTaxons )
           }
         });
 
