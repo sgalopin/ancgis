@@ -1,11 +1,12 @@
 /**
  * @module ancgis/client/ancgis/dao/PedoclimaticZoneDAO
  */
-
 import AbstractDAO from "./AbstractDAO.js";
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 import uuidv1 from "uuid/v1";
-import * as turf from "@turf/intersect"
+import * as turf from "@turf/intersect";
+import turfBooleanWithin from "@turf/boolean-within";
+import { point } from '@turf/helpers'
 
 /**
  * @classdesc
@@ -50,35 +51,43 @@ class PedoclimaticZoneDAO extends AbstractDAO {
 
   // Returns the intersected zones
   getIntersectedZones(vegetationZone) {
-    var vegZone = turf.polygon([vegetationZone.geometry.coordinates]);
+    var vegZone = new Array();
+    for (var v = 0; vegetationZone.values_.geometry.flatCoordinates.length; v = v+2){
+       var pt = point([vegetationZone.values_.geometry.flatCoordinates[v], vegetationZone.values_.geometry.flatCoordinates[v+1]]);
+        console.log(pt.geometry);
+        // vegZone.push(toWgs84(pt));
+    }
+    console.log(vegetationZone.values_.geometry.flatCoordinates);
+    //var vegZone = turf.polygon([vegetationZone.geometry]);
 
-      var obj = Object.values(feature.features);
-      var categ = new Array();
 
-      for(let prop in obj){
-          for (let c in Object.values(obj[prop].geometry.coordinates)){
+    var obj = Object.values(feature.features);
+    var categ = new Array();
 
-              var poly = turf.polygon([obj[prop].geometry.coordinates[c]]);
+    for(let prop in obj){
+        for (let c in Object.values(obj[prop].geometry.coordinates)){
 
-              // Does the first geometry contain the second geometry ?
-              var boolWithin = turf.booleanWithin(vegZone, poly);
+            var poly = turf.polygon([obj[prop].geometry.coordinates[c]]);
 
-              // If yes, we keep the second geometry directly :
-              if (boolWithin == true){
-                  // Retrieval id of the zonePedo
-                  categ.push(obj[prop].properties);
-              }else{
-                  // Otherwise, it is necessary to do an intersection of the two geometries
-                  var inters = turf.intersect(vegZone, poly);
+            // Does the first geometry contain the second geometry ?
+            var boolWithin = turf.booleanWithin(vegZone, poly);
 
-                  if (inters != null){
-                      // Retrieval id of the zonePedo
-                      categ.push(obj[prop].properties);
-                  }
-              }
-          }
-      }
-      return categ ;
+            // If yes, we keep the second geometry directly :
+            if (boolWithin == true){
+                // Retrieval id of the zonePedo
+                categ.push(obj[prop].properties);
+            }else{
+                // Otherwise, it is necessary to do an intersection of the two geometries
+                var inters = turf.intersect(vegZone, poly);
+
+                if (inters != null){
+                    // Retrieval id of the zonePedo
+                    categ.push(obj[prop].properties);
+                }
+            }
+        }
+    }
+    return categ ;
   }
 }
 
