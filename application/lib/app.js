@@ -156,6 +156,7 @@ app.use("/resetPwd", require("./routes/resetPwd"));
 app.use("/rest/taxons", require("./routes/rest/taxons"));
 app.use("/rest/vegetation-zones", require("./routes/rest/vegetation-zones"));
 app.use("/rest/hives", require("./routes/rest/hives"));
+app.use("/rest/pedoclimatic-zones", require("./routes/rest/pedoclimatic-zones"));
 app.use("/rest/extents", require("./routes/rest/extents"));
 app.use("/smartflore", require("./routes/smartflore"));
 

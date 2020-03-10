@@ -29,6 +29,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
     const format = new ExtendedGeoJSON();
 
     return {
+      id: feature.getId() || uuidv1(),
       type: "Feature",
       properties: {
           acidity : ppts.acidity ? ppts.acidity : null,
@@ -59,17 +60,14 @@ class PedoclimaticZoneDAO extends AbstractDAO {
 
     //--------------Use of the new format-------------//
     var vegZoneGeom = turf.polygon([vegZone]);
-    console.log( vegZoneGeom );
+    console.log(vegZoneGeom);
 
     //--------------Reading of the PedoclimaticZones Table-----------//
-    var col = this.dbm.readAll(this.collection)
-      .then(function(zones) {
-        console.log(featureToJSON(zones));
-        });
+    var pedocli = this.dbm.getCollectionsNames ();
 
-    console.log(col);
+    console.log(pedocli);
 
-    var obj = Object.values(feature.features);
+    var obj = Object.values(pedocli.features);
     var categ = new Array();
 
     for(let prop in obj){
@@ -78,7 +76,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
             var poly = turf.polygon([obj[prop].geometry.coordinates[c]]);
 
             // Does the first geometry contain the second geometry ?
-            var boolWithin = turf.booleanWithin(vegZone, poly);
+            var boolWithin = turf.booleanWithin(vegZoneGeom, poly);
 
             // If yes, we keep the second geometry directly :
             if (boolWithin == true){
@@ -86,7 +84,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
                 categ.push(obj[prop].properties);
             }else{
                 // Otherwise, it is necessary to do an intersection of the two geometries
-                var inters = turf.intersect(vegZone, poly);
+                var inters = turf.intersect(vegZoneGeom, poly);
 
                 if (inters != null){
                     // Retrieval id of the zonePedo

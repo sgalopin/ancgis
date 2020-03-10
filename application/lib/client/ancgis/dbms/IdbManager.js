@@ -44,6 +44,8 @@ class IdbManager {
         zonesStore.createIndex("dirty", "properties.metadata.dirty");
         let extentsStore = self.db.createObjectStore("extents", {keyPath: "id"});
         extentsStore.createIndex("dirty", "properties.metadata.dirty");
+        let pedoStore = self.db.createObjectStore("pedoclimatic-zones", {keyPath: "id"});
+        pedoStore.createIndex("dirty", "properties.metadata.dirty");
         // Returns the db
         event.target.transaction.oncomplete = function(e) {
           self.populateDataCollection("taxons"); // is Asynchrone
