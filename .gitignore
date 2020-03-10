@@ -1,0 +1,8 @@
+/.vagrant
+/application/.env
+/shell/.env
+/application/node_modules/
+/application/lib/public/javascripts/app.bundle.js
+/application/lib/public/javascripts/tools.bundle.js
+/application/lib/public/stylesheets/style.css
+/application/lib/public/stylesheets/smartflore.css
