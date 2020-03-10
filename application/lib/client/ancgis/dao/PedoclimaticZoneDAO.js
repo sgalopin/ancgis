@@ -20,7 +20,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
    */
   constructor(dbm) {
     super(dbm);
-    this.collection = "pedoclimatic-zones";
+    this.collection = "pedoclimatic_zones";
   }
 
   // Returns the feature's JSON
@@ -30,10 +30,19 @@ class PedoclimaticZoneDAO extends AbstractDAO {
     const format = new ExtendedGeoJSON();
 
     return {
-      id: feature.getId() || uuidv1(),
       type: "Feature",
       properties: {
-        // TODO
+          acidity : ppts.acidity ? ppts.acidity : null,
+          moisture : ppts.moisture ? ppts.moisture : null,
+          texture : ppts.texture ? ppts.texture : null,
+          salinity :  ppts.salinity ?  ppts.salinity : null,
+          organicmat : ppts.organicmat ? ppts.organicmat : null,
+          nutrients : ppts.nutrients ? ppts.nutrients : null,
+          brightness : ppts.brightness ? brightness.brightness : null,
+          moisture_atmo: obj.moisture_atmo ?  ppts.moisture_atmo : null,
+          temperature : ppts.temperature ? ppts.temperature : null,
+          continentality : ppts.continentality ? ppts.continentality : null,
+          id: ppts.id ? ppts.id : null
       },
       geometry: format.writeGeometryObject(ppts.geometry)
     };
@@ -41,7 +50,35 @@ class PedoclimaticZoneDAO extends AbstractDAO {
 
   // Returns the intersected zones
   getIntersectedZones(vegetationZone) {
-    // TODO: use turf here
+    var vegZone = turf.polygon([vegetationZone.geometry.coordinates]);
+
+      var obj = Object.values(feature.features);
+      var categ = new Array();
+
+      for(let prop in obj){
+          for (let c in Object.values(obj[prop].geometry.coordinates)){
+
+              var poly = turf.polygon([obj[prop].geometry.coordinates[c]]);
+
+              // Does the first geometry contain the second geometry ?
+              var boolWithin = turf.booleanWithin(vegZone, poly);
+
+              // If yes, we keep the second geometry directly :
+              if (boolWithin == true){
+                  // Retrieval id of the zonePedo
+                  categ.push(obj[prop].properties);
+              }else{
+                  // Otherwise, it is necessary to do an intersection of the two geometries
+                  var inters = turf.intersect(vegZone, poly);
+
+                  if (inters != null){
+                      // Retrieval id of the zonePedo
+                      categ.push(obj[prop].properties);
+                  }
+              }
+          }
+      }
+      return categ ;
   }
 }
 
