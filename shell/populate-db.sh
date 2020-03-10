@@ -56,7 +56,7 @@ else
 fi
 echo "--- Populating done."
 
-echo "--- Populating of the accounts collection."
+echo "--- Populating of the pedoclimatic zones collection."
 if [ $MONGODB_USER ]
 then
   mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD "$DATA_DIR/pedoclimatic-zones.js"

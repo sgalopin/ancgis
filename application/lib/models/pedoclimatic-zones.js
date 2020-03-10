@@ -1,25 +1,26 @@
 // Requirements
 var mongoose = require("mongoose");
+const uuidv1 = require("uuid/v1");
 
 // Model's declaration
-module.exports = mongoose.model("PedoclimaticZones", new mongoose.Schema({
+module.exports = mongoose.model("PedoclimaticZone", new mongoose.Schema({
+	"_id": { type: String, default: uuidv1(), alias: "id" },
 	"type": {type: String, required: true},
 	"properties": {
-		"acidity": {type: [Float, Float], required: true},
-		"moisture": {type: [Float, Float], required: true},
-		"texture": {type: [Float, Float], required: true},
-		"salinity": {type: [Float, Float], required: true},
-		"organicmat": {type: [Float, Float], required: true},
-		"nutrients": {type:[Float, Float], required: true},
+		"acidity": {type: Number, required: true},
+		"moisture": {type: Number, required: true},
+		"texture": {type: Number, required: true},
+		"salinity": {type: Number, required: true},
+		"organicmat": {type: Number, required: true},
+		"nutrients": {type: Number, required: true},
 		"brightness": {type: Number, required: true},
 		"moisture_atmo": {type: Number, required: true},
 		"temperature": {type: Number, required: true},
-		"continentalite": {type: Number, required: true},
-		"id": {type: Number, required: true, required: true}
+		"continentalite": {type: Number, required: true}
 	},
   "geometry": {
     "type": {type: String, required: true, default: "Polygon"},
-    "coordinates": {type:[[[Number]]], required: true},
+    "coordinates": {type: [[[Number]]], required: true},
   }
 },{
   toJSON: {
