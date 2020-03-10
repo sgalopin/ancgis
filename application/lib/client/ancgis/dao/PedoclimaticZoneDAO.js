@@ -4,9 +4,7 @@
 import AbstractDAO from "./AbstractDAO.js";
 import ExtendedGeoJSON from "../../ol/format/ExtendedGeoJSON.js";
 import uuidv1 from "uuid/v1";
-import * as turf from "@turf/intersect";
-import turfBooleanWithin from "@turf/boolean-within";
-import { point } from '@turf/helpers'
+import * as turf from '@turf/turf';
 
 /**
  * @classdesc
@@ -21,7 +19,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
    */
   constructor(dbm) {
     super(dbm);
-    this.collection = "pedoclimatic_zones";
+    this.collection = "pedoclimatic-zones";
   }
 
   // Returns the feature's JSON
@@ -50,16 +48,26 @@ class PedoclimaticZoneDAO extends AbstractDAO {
   }
 
   // Returns the intersected zones
-  getIntersectedZones(vegetationZone) {
+  getIntersectedZones(vegetationZone){
+    //--------------Change of the projection in the VegetationZone-----------------//
     var vegZone = new Array();
-    for (var v = 0; vegetationZone.values_.geometry.flatCoordinates.length; v = v+2){
-       var pt = point([vegetationZone.values_.geometry.flatCoordinates[v], vegetationZone.values_.geometry.flatCoordinates[v+1]]);
-        console.log(pt.geometry);
-        // vegZone.push(toWgs84(pt));
-    }
-    console.log(vegetationZone.values_.geometry.flatCoordinates);
-    //var vegZone = turf.polygon([vegetationZone.geometry]);
 
+    for (var v = 0; v < vegetationZone.values_.geometry.flatCoordinates.length; v = v+2){
+      var pt = turf.point([vegetationZone.values_.geometry.flatCoordinates[v], vegetationZone.values_.geometry.flatCoordinates[v+1]]);
+      vegZone.push(turf.toWgs84(pt).geometry.coordinates); // Projection in WGS84, EPSG : 4326
+    }
+
+    //--------------Use of the new format-------------//
+    var vegZoneGeom = turf.polygon([vegZone]);
+    console.log( vegZoneGeom );
+
+    //--------------Reading of the PedoclimaticZones Table-----------//
+    var col = this.dbm.readAll(this.collection)
+      .then(function(zones) {
+        console.log(featureToJSON(zones));
+        });
+
+    console.log(col);
 
     var obj = Object.values(feature.features);
     var categ = new Array();
