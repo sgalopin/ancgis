@@ -63,7 +63,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
     console.log(vegZoneGeom);
 
     //--------------Reading of the PedoclimaticZones Table-----------//
-    var pedocli = this.dbm.getCollectionsNames ();
+    var pedocli = this.dbm.getCollectionsNames();
 
     console.log(pedocli);
 

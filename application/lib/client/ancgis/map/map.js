@@ -30,7 +30,7 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, pedoclimaticLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -135,6 +135,24 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     }
   });
 
+  // Pedoclimatic Layer
+  var pedoclimaticLayerSource = new VectorSource({
+    wrapX: false,
+    format: extendedGeoJSON
+  });
+  var pedoclimaticLayer = new VectorLayer({
+    name: pedoclimaticLayerName,
+    source: pedoclimaticLayerSource,
+    style(feature) {
+      return new Style({
+        stroke: new Stroke({
+          color: "blue",
+          width: 3
+        })
+      });
+    }
+  });
+
   // Errors Layer
   var errorsLayer = new VectorLayer({
     name: errorsLayerName,
@@ -189,7 +207,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     source: ignSource
   });
 
-  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer];
+  let layers = [bdorthoLayer, hivesLayer, vegetationsLayer, pedoclimaticLayer];
   if (isOnline) { layers.push(extentsLayer); }
   layers.push(errorsLayer); // The errors layer must be placed to the top.
 

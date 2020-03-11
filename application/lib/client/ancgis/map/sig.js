@@ -22,6 +22,7 @@ import {displayMapMessage} from "../tool/message.js";
 import ZoneDAO from "../dao/ZoneDAO.js";
 import HiveDAO from "../dao/HiveDAO.js";
 import ExtentDAO from "../dao/ExtentDAO.js";
+import PedoclimaticZoneDAO from "../dao/PedoclimaticZoneDAO.js";
 import getZoneForm from "../form/zone.js";
 import getHiveForm from "../form/hive.js";
 import syncInfoTemplate from "../../../views/partials/sync-info.hbs";
@@ -42,14 +43,16 @@ export default async function(isOnline) {
   let hiveDAO = new HiveDAO(idbm);
   let zoneDAO = new ZoneDAO(idbm);
   let extentDAO = new ExtentDAO(idbm);
+  let pedoclimaticzoneDAO = new PedoclimaticZoneDAO(idbm);
   let zoneForm = await getZoneForm(idbm, isOnline);
   let hiveForm = await getHiveForm();
   const hivesLayerName = "hivesLayer";
   const vegetationsLayerName = "vegetationsLayer";
   const extentsLayerName = "extentsLayer";
+  const pedoclimaticLayerName = "pedoclimaticLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, pedoclimaticLayerName, errorsLayerName, bdorthoLayerName, isOnline);
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -108,6 +111,23 @@ export default async function(isOnline) {
     });
     // Add the features from the local database
     extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
+  }
+
+  // Set up the pedoclimatic layer source
+  if (isOnline) {
+    var pedoclimaticLayerSource = map.getLayerByName(pedoclimaticLayerName).getSource();
+    // Set the default values and save the new extent
+    pedoclimaticLayerSource.on(VectorEventType.ADDFEATURE, function(e){
+      e.feature.setProperties({
+        layerName: pedoclimaticLayerName,
+        dao: pedoclimaticzoneDAO,
+      }, true);
+      if ( typeof e.feature.getId() === "undefined" ) {
+        pedoclimaticzoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
+      }
+    });
+    // Add the features from the local database
+    pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
   }
 
   var interactions = {
@@ -217,6 +237,7 @@ export default async function(isOnline) {
   let cache = new MapCache({
     map,
     extentsLayerName,
+    pedoclimaticLayerName,
     catchedLayerNames: [bdorthoLayerName]
   });
 
@@ -225,6 +246,7 @@ export default async function(isOnline) {
     let count = await zoneDAO.getDirtyDocumentsCount();
     count += await hiveDAO.getDirtyDocumentsCount();
     count += await extentDAO.getDirtyDocumentsCount();
+    count += await pedoclimaticzoneDAO.getDirtyDocumentsCount();
     let syncInfoHtml = syncInfoTemplate({count});
     $("#ancgis-uploadinfo-tbar .content").remove();
     $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
@@ -236,6 +258,7 @@ export default async function(isOnline) {
   zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
   hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
   extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  pedoclimaticzoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
   updateSyncInfo(); // Initialization
 
   // Management of the upload button
@@ -243,6 +266,7 @@ export default async function(isOnline) {
     Promise.all([
       hiveDAO.uploadFeatures(),
       zoneDAO.uploadFeatures(),
+      pedoclimaticzoneDAO.uploadFeatures(),
       extentDAO.uploadFeatures()
     ]).then(function(results){
       let finalSuccess = true;
@@ -277,6 +301,7 @@ export default async function(isOnline) {
     const count = {
       hives: await hiveDAO.downloadFeatures(),
       zones: await zoneDAO.downloadFeatures(),
+      pedoclimaticzones: await pedoclimaticzoneDAO.downloadFeatures(),
       extents: await extentDAO.downloadFeatures()
     };
     if ((count.hives.added + count.hives.updated + count.hives.deleted) > 0) {
@@ -290,6 +315,11 @@ export default async function(isOnline) {
     if ((count.extents.added + count.extents.updated + count.extents.deleted) > 0) {
       extentsLayerSource.clear();
       extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
+      cache.updateCache();
+    }
+    if ((count.pedoclimaticzones.added + count.pedoclimaticzones.updated + count.pedoclimaticzones.deleted) > 0) {
+      pedoclimaticLayerSource.clear();
+      pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
       cache.updateCache();
     }
     displayMapMessage(dataDownloadTemplate({count}), "success", true, false);
@@ -414,6 +444,9 @@ export default async function(isOnline) {
 
   // Management of the extents layer change
   extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
+
+  // Management of the pedoclimatic layer change
+  pedoclimaticzoneDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
   return { map, interactions };
 }

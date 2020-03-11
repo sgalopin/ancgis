@@ -1,4 +1,6 @@
 {
   "taxonsInputFileName": "../rawdata/taxons.js",
-  "taxonsOutputFileName": "../data/taxons.js"
+  "taxonsOutputFileName": "../data/taxons.js",
+  "pedoclimaticzonesInputFileName": "../rawdata/pedoclimatic-zones.js",
+  "pedoclimaticzonesOutputFileName": "../data/pedoclimatic-zones.js"
 }
