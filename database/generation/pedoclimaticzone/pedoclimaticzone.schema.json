@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://ancgis.dev.net/pedoclimaticzone.schema.json",
+  "title": "PedoclimaticZones",
+  "description": "A pedoclimaticzone from AncDB",
+  "type": "object",
+  "properties": {
+    "acidity": {
+      "description": "Indicates the acidity of the pedoclimaticzone",
+      "type": "integer"
+    },
+		"moisture": {
+      "description": "Indicates the moisture of the soil",
+      "type": "integer"
+    },
+		"texture": {
+      "description": "Indicates the texture of the soil",
+      "type": "integer"
+    },
+		"salinity": {
+      "description": "Indicates the salinity of the soil",
+      "type": "integer"
+    },
+		"organicmat": {
+      "description": "Indicates the organicmaterial",
+      "type": "integer"
+    },
+		"nutrients": {
+      "description": "Indicates the nutrients od the soil",
+      "type": "integer"
+    },
+		"brightness": {
+      "description": "Indicates the brightness",
+      "type": "integer"
+    },
+		"moisture_atmo": {
+      "description": "Indicates the atmospheric moisture",
+      "type": "integer"
+    },
+		"temperature": {
+      "description": "Indicates the mean temperature",
+      "type": "integer"
+    },
+		"continentalite": {
+      "description": "Indicates the continentalite",
+      "type": "integer"
+    }
+	}
+}
