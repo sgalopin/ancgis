@@ -38,17 +38,17 @@ class IdbManager {
       request.onupgradeneeded = function(event) {
         self.db = event.target.result;
         self.db.createObjectStore("taxons", {keyPath: "id"});
+        self.db.createObjectStore("pedoclimatic-zones", {keyPath: "id"});
         let hivesStore = self.db.createObjectStore("hives", {keyPath: "id"});
         hivesStore.createIndex("dirty", "properties.metadata.dirty");
         let zonesStore = self.db.createObjectStore("vegetation-zones", {keyPath: "id"});
         zonesStore.createIndex("dirty", "properties.metadata.dirty");
         let extentsStore = self.db.createObjectStore("extents", {keyPath: "id"});
         extentsStore.createIndex("dirty", "properties.metadata.dirty");
-        let pedoStore = self.db.createObjectStore("pedoclimatic-zones", {keyPath: "id"});
-        pedoStore.createIndex("dirty", "properties.metadata.dirty");
         // Returns the db
         event.target.transaction.oncomplete = function(e) {
           self.populateDataCollection("taxons"); // is Asynchrone
+          self.populateDataCollection("pedoclimatic-zones");
           resolve(self);
         };
       };
@@ -82,12 +82,12 @@ class IdbManager {
         objectStore.add(element);
       });
     }, function(xhrObj, textStatus, err) { // Catch the JQuery error
+      console.log(xhrObj);
       // TODO: Delete the db ?
       log.error(err);
     })
     .catch(function(err) { // Catch the success function error
-      // TODO: Delete the db ?
-      log.error(err);
+      // TODO: Delete the d
     });
   }
 

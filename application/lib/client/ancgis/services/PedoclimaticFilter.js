@@ -44,6 +44,7 @@ class PedoclimaticFilter {
   getPedoclimaticZones() {
     const self = this;
     let pcZoneDAO = new PedoclimaticZoneDAO(self.idbm); // TODO
+    console.log(pcZoneDAO);
     return pcZoneDAO.getIntersectedZones(self.vegetationZone); // TODO
   }
 

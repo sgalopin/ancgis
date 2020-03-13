@@ -114,7 +114,6 @@ export default async function(isOnline) {
   }
 
   // Set up the pedoclimatic layer source
-  if (isOnline) {
     var pedoclimaticLayerSource = map.getLayerByName(pedoclimaticLayerName).getSource();
     // Set the default values and save the new extent
     pedoclimaticLayerSource.on(VectorEventType.ADDFEATURE, function(e){
@@ -128,7 +127,7 @@ export default async function(isOnline) {
     });
     // Add the features from the local database
     pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
-  }
+
 
   var interactions = {
     // Add Hive Button Control
@@ -246,7 +245,7 @@ export default async function(isOnline) {
     let count = await zoneDAO.getDirtyDocumentsCount();
     count += await hiveDAO.getDirtyDocumentsCount();
     count += await extentDAO.getDirtyDocumentsCount();
-    count += await pedoclimaticzoneDAO.getDirtyDocumentsCount();
+    // count += await pedoclimaticzoneDAO.getDirtyDocumentsCount();
     let syncInfoHtml = syncInfoTemplate({count});
     $("#ancgis-uploadinfo-tbar .content").remove();
     $("#ancgis-uploadinfo-tbar").append(syncInfoHtml);
@@ -258,7 +257,7 @@ export default async function(isOnline) {
   zoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
   hiveDAO.addEventListener("dirtyAdded", updateSyncInfo);
   extentDAO.addEventListener("dirtyAdded", updateSyncInfo);
-  pedoclimaticzoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
+  // pedoclimaticzoneDAO.addEventListener("dirtyAdded", updateSyncInfo);
   updateSyncInfo(); // Initialization
 
   // Management of the upload button
@@ -317,11 +316,11 @@ export default async function(isOnline) {
       extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
       cache.updateCache();
     }
-    if ((count.pedoclimaticzones.added + count.pedoclimaticzones.updated + count.pedoclimaticzones.deleted) > 0) {
-      pedoclimaticLayerSource.clear();
-      pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
-      cache.updateCache();
-    }
+    // if ((count.pedoclimaticzones.added + count.pedoclimaticzones.updated + count.pedoclimaticzones.deleted) > 0) {
+    //   pedoclimaticLayerSource.clear();
+    //   pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
+    //   cache.updateCache();
+    // }
     displayMapMessage(dataDownloadTemplate({count}), "success", true, false);
   });
 
@@ -446,7 +445,7 @@ export default async function(isOnline) {
   extentDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
   // Management of the pedoclimatic layer change
-  pedoclimaticzoneDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
+  // pedoclimaticzoneDAO.addEventListener("dirtyAdded", cache.updateCache.bind(cache));
 
   return { map, interactions };
 }

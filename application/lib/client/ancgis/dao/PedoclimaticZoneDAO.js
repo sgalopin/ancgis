@@ -29,7 +29,7 @@ class PedoclimaticZoneDAO extends AbstractDAO {
     const format = new ExtendedGeoJSON();
 
     return {
-      id: feature.getId() || uuidv1(),
+      id: feature.getId(),
       type: "Feature",
       properties: {
           acidity : ppts.acidity ? ppts.acidity : null,
@@ -42,7 +42,6 @@ class PedoclimaticZoneDAO extends AbstractDAO {
           moisture_atmo: obj.moisture_atmo ?  ppts.moisture_atmo : null,
           temperature : ppts.temperature ? ppts.temperature : null,
           continentality : ppts.continentality ? ppts.continentality : null,
-          id: ppts.id ? ppts.id : null
       },
       geometry: format.writeGeometryObject(ppts.geometry)
     };
@@ -63,9 +62,29 @@ class PedoclimaticZoneDAO extends AbstractDAO {
     console.log(vegZoneGeom);
 
     //--------------Reading of the PedoclimaticZones Table-----------//
-    var pedocli = this.dbm.getCollectionsNames();
 
-    console.log(pedocli);
+    this.dbm.readAll(this.collection)
+      .then(function(pcZones) {
+        let splitedZones = [];
+        pcZones.forEach(function(pcZone){
+          console.log('cc');
+          let pcZonesNames = pcZone.name.fr.split(', ');
+          pcZonesNames.forEach(function(pcZonesName, index){
+            splitedZones.push({
+              id: pcZone.id,
+              name: pcZonesName,
+              synonymous: index !== 0,
+              smartflore: pcZone.urns.fr.telabotanica
+            });
+          });
+        });
+        console.log(splitedZones);
+      });
+
+    // var pedocli = new PedoclimaticZoneDAO(this.dbm);
+    // console.log(pedocli);
+    // pedocli.readAll(this.collection);
+     // console.log(pedocli);
 
     var obj = Object.values(pedocli.features);
     var categ = new Array();
