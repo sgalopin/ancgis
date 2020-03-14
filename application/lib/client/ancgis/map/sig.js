@@ -114,20 +114,9 @@ export default async function(isOnline) {
   }
 
   // Set up the pedoclimatic layer source
-    var pedoclimaticLayerSource = map.getLayerByName(pedoclimaticLayerName).getSource();
-    // Set the default values and save the new extent
-    pedoclimaticLayerSource.on(VectorEventType.ADDFEATURE, function(e){
-      e.feature.setProperties({
-        layerName: pedoclimaticLayerName,
-        dao: pedoclimaticzoneDAO,
-      }, true);
-      if ( typeof e.feature.getId() === "undefined" ) {
-        pedoclimaticzoneDAO.createFeature(e.feature); // Note: Raise the dispatching of the CHANGEFEATURE event
-      }
-    });
-    // Add the features from the local database
-    pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
-
+  var pedoclimaticLayerSource = map.getLayerByName(pedoclimaticLayerName).getSource();
+  // Add the features from the local database
+  pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
 
   var interactions = {
     // Add Hive Button Control
@@ -316,11 +305,11 @@ export default async function(isOnline) {
       extentsLayerSource.addFeatures(await extentDAO.featuresToGeoJson());
       cache.updateCache();
     }
-    // if ((count.pedoclimaticzones.added + count.pedoclimaticzones.updated + count.pedoclimaticzones.deleted) > 0) {
-    //   pedoclimaticLayerSource.clear();
-    //   pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
-    //   cache.updateCache();
-    // }
+    if ((count.pedoclimaticzones.added + count.pedoclimaticzones.updated + count.pedoclimaticzones.deleted) > 0) {
+       pedoclimaticLayerSource.clear();
+       pedoclimaticLayerSource.addFeatures(await pedoclimaticzoneDAO.featuresToGeoJson());
+       cache.updateCache();
+    }
     displayMapMessage(dataDownloadTemplate({count}), "success", true, false);
   });
 

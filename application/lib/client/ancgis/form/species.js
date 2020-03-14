@@ -1,5 +1,6 @@
 // Requirements
 import speciesFormTemplate from "../../../views/partials/form/species.hbs";
+import taxonsListTemplate from "../../../views/partials/form/taxons-list.hbs";
 import PedoclimaticFilter from "../services/PedoclimaticFilter.js";
 import * as log from "loglevel";
 
@@ -40,21 +41,25 @@ export default async function(idbm, isOnline) {
       idbm.readAll("taxons")
       .then(function(taxons) {
         // Split the taxon name
-        let splitedTaxons = [];
-        taxons.forEach(function(taxon){
-          let taxonNames = taxon.name.fr.split(', ');
-          taxonNames.forEach(function(taxonName, index){
-            splitedTaxons.push({
-              id: taxon.id,
-              name: taxonName,
-              synonymous: index !== 0,
-              smartflore: taxon.urns.fr.telabotanica
+        const setupTaxonList = function(taxons){
+          let splitedTaxons = [];
+          taxons.forEach(function(taxon){
+            let taxonNames = taxon.name.fr.split(', ');
+            taxonNames.forEach(function(taxonName, index){
+              splitedTaxons.push({
+                id: taxon.id,
+                name: taxonName,
+                synonymous: index !== 0,
+                smartflore: taxon.urns.fr.telabotanica
+              });
             });
           });
-        });
+          return splitedTaxons;
+        }
 
         // HTML builds
-        var speciesFormHtml = speciesFormTemplate({ isOnline, taxons: splitedTaxons });
+        var fullTaxonList = setupTaxonList(taxons);
+        var speciesFormHtml = speciesFormTemplate({ isOnline, taxons: fullTaxonList });
         $("body").append(speciesFormHtml);
         $("#ancgis-speciesform [data-toggle=\"tooltip\"]").tooltip();
         $("#ancgis-speciesform").focus();
@@ -85,9 +90,11 @@ export default async function(idbm, isOnline) {
           event.preventDefault();
           $(this).find(":selected").each(function () {
             if (isOnline) {
-              $("#ancgis-speciesform-taxonfield-loadingdiv").show();
               $("#ancgis-speciesform-taxonfield-iframe").hide();
-              $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
+              if(typeof $(this).data("smartflore") !== "undefined") { // Not the "Select..." option.
+                $("#ancgis-speciesform-taxonfield-loadingdiv").show();
+                $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
+              }
             }
           });
         });
@@ -124,20 +131,25 @@ export default async function(idbm, isOnline) {
           vegetationZone: feature,
           taxonsList: taxons
         });
-        $("#ancgis-speciesform-taxonfield-pedoclimaticfilter").click(function(event) {
+        $("#ancgis-speciesform-taxonfield-pedoclimaticfilter").click(async function(event) {
           // Note: The event's propagation is required here to close the menu.
           $(this).toggleClass("ckecked");
           let span = $(this).children(":first").children(":first");
           if ($(this).hasClass("ckecked")) {
             span.addClass("ancgis-glyphicons-153check");
             span.removeClass("ancgis-glyphicons-154unchecked");
-            // Add filter
-            // TODO: update the taxon list with the new list ( pcFilter.getList() )
+            // Update the taxon list with the new list
+            const taxons = setupTaxonList(await pcFilter.getList());
+            const taxonsListHtml = taxonsListTemplate({ taxons });
+            $("#ancgis-speciesform-taxonfield").html(taxonsListHtml);
+            $("#ancgis-speciesform-taxonfield").trigger("change");
           } else {
             span.addClass("ancgis-glyphicons-154unchecked");
             span.removeClass("ancgis-glyphicons-153check");
-            // Remove filter
-            // TODO: update the taxon list with the full list ( splitedTaxons )
+            // Update the taxon list with the full list
+            const taxonsListHtml = taxonsListTemplate({ taxons: fullTaxonList });
+            $("#ancgis-speciesform-taxonfield").html(taxonsListHtml);
+            $("#ancgis-speciesform-taxonfield").trigger("change");
           }
         });
 

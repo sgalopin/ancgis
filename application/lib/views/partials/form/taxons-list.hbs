@@ -1,0 +1,8 @@
+<option value="" disabled selected>Sélectionner</option>
+{{#each taxons}}
+    {{#unless synonymous}}
+      <option value="{{id}}" class="font-bold" data-smartflore="{{smartflore}}">{{name}}</option>
+    {{else}}
+      <option value="{{id}}" class="font-italic" data-smartflore="{{smartflore}}">&nbsp;&nbsp;{{name}}</option>
+    {{/unless}}
+{{/each}}
