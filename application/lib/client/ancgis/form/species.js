@@ -84,7 +84,7 @@ export default async function(idbm, isOnline) {
           event.preventDefault();
           $(this).find(":selected").each(function () {
             if (isOnline) {
-              $("#ancgis-speciesform-taxonfield-trigger").show();
+              $("#ancgis-speciesform-taxonfield").parent().addClass('show-trigger');
               $("#ancgis-speciesform-taxonfield-loadingdiv").show();
               $("#ancgis-speciesform-taxonfield-iframe").hide();
               $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));

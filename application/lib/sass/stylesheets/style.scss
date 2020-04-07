@@ -642,14 +642,18 @@ progress[value]::-webkit-progress-value {
   top: calc(50% - 255px);
   left: calc(50% - 200px);
 }
-#ancgis-speciesform .ancgis-form-field > label {
+#ancgis-speciesform .ancgis-form-field.show-trigger > label {
   width: 160px;
 }
 #ancgis-speciesform-taxonfield-trigger {
-    display: none;
-    background-color: #EEE;
-    vertical-align: top;
+  display: none;
+  background-color: #EEE;
+  vertical-align: top;
 }
+#ancgis-speciesform .ancgis-form-field.show-trigger > button {
+  display: inline-block;
+}
+
 #ancgis-speciesform-taxonfield-trigger.btn-primary:hover,
 #ancgis-speciesform-taxonfield-trigger.btn-primary.active {
   background-color: #BBB !important;
@@ -693,6 +697,18 @@ progress[value]::-webkit-progress-value {
     width: 350px;
     height: 170px;
     top: calc(50% - 85px);
+    left: calc(50% - 175px);
+    .ancgis-form-field > label {
+        width: 150px;
+    }
+    .ancgis-form-field.show-trigger > label {
+        width: 110px;
+    }
+  }
+  #ancgis-speciesform.enlarged {
+    width: 350px;
+    height: 510px;
+    top: calc(50% - 255px);
     left: calc(50% - 175px);
   }
 }
