@@ -44,7 +44,7 @@ module.exports = function (Model, populatePath, returnGeoJson, isPrivate) {
             "crs": {
               "type": "name",
               "properties": {
-                "name": "EPSG:3857"
+                "name": "EPSG:4326"
               }
             },
             "features": docs
