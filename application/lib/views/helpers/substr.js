@@ -1,5 +1,8 @@
 module.exports = function(length, context, options) {
-  if ( context.length > length ) {
+  if ( Array.isArray(context) ) {
+    context = context.join(', ');
+  }
+  if ( typeof context === 'string' && context.length > length ) {
     return context.substring(0, length) + "...";
   } else {
     return context;

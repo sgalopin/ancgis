@@ -623,6 +623,9 @@ progress[value]::-webkit-progress-value {
   height: 200px;
   top: calc(50% - 100px);
   left: calc(50% - 200px);
+  .ancgis-form-title {
+     margin-top: 1px; // Bug chrome ?
+  }
 }
 #ancgis-zoneform {
   width: 400px;
@@ -686,12 +689,18 @@ progress[value]::-webkit-progress-value {
     height: 230px;
     top: calc(50% - 115px);
     left: calc(50% - 175px);
+    .ancgis-form-title {
+       margin-top: 0px !important; // Bug chrome ?
+    }
   }
   #ancgis-zoneform {
     width: 350px;
     height: 350px;
     top: calc(50% - 175px);
     left: calc(50% - 175px);
+    .ancgis-form-title {
+       margin-top: 0px !important; // Bug chrome ?
+    }
   }
   #ancgis-speciesform {
     width: 350px;
@@ -735,6 +744,9 @@ progress[value]::-webkit-progress-value {
 #ancgis-zoneform .ancgis-form-fields {
   background-color: rgba(50,50,50,.3);
 }
+#ancgis-zoneform .ancgis-form-title {
+  margin-top: 1px; // Bug chrome ?
+}
 .ancgis-form-field {
   width: 100%;
   color: rgb(50,50,50);
@@ -755,6 +767,13 @@ progress[value]::-webkit-progress-value {
 .ancgis-form-florefields {
   color: rgb(50,50,50);
   padding: 5px 10px;
+  overflow-y: scroll;
+  height: 132px;
+}
+@media screen and (max-width: 640px) {
+  .ancgis-form-florefields {
+    height: 178px;
+  }
 }
 .ancgis-form-floretable {
   width: 100%;
@@ -763,7 +782,7 @@ progress[value]::-webkit-progress-value {
   border-bottom: 1px solid rgb(50,50,50);
 }
 .ancgis-form-periodcolumn {
-  width: 80px;
+  width: 100px;
 }
 .ancgis-form-recoverycolumn {
   width: 50px;
