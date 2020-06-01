@@ -22,7 +22,7 @@
     "rank": {
       "description": "The taxon's rank (TAXREF v12 rank)",
       "type": "string",
-      "enum": ["GN", "ES"]
+      "enum": ["GN", "ES", "SSES"]
     },
     "family": {
       "description": "The taxon's family name",
@@ -60,6 +60,21 @@
       "required": [ "blooming", "honeydew" ],
       "properties": {
         "blooming": {
+          "description": "The taxon's blooming periods (Months)",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "minItems": 2
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "blooming2": {
           "description": "The taxon's blooming periods (Guerriat's phenoseasons)",
           "type": "array",
           "items": {
@@ -303,7 +318,7 @@
         "fr": {
           "description": "The taxon's french urns",
           "type": "object",
-          "required": [ "wikipedia", "telabotanica", "smartflore", "inpn" ],
+          "required": [ "wikipedia", "telabotanica", "inpn" ],
           "properties": {
             "wikipedia": {
               "description": "The taxon's wikipedia url",
@@ -349,7 +364,8 @@
             "oneOf": [
               {"const": "H", "description": "Herbaceous"},
               {"const": "S", "description": "Shrub"},
-              {"const": "T", "description": "Tree"}
+              {"const": "T", "description": "Tree"},
+              {"const": "L", "description": "Liana"}
             ]
           },
           "minItems": 1,
@@ -358,7 +374,6 @@
         "climate": {
           "description": "The taxon's ecological climate",
           "type": "object",
-          "required": [ "brightness", "moisture", "temperature", "continentality" ],
           "properties": {
             "brightness": {
               "description": "The taxon's brightness need",
@@ -437,7 +452,6 @@
         "soil": {
           "description": "The taxon's ecological soil",
           "type": "object",
-          "required": [ "acidity", "moisture", "texture", "nutrients", "salinity", "organicMaterial" ],
           "properties": {
             "acidity": {
               "description": "The taxon's soil's acidity need",
@@ -553,43 +567,9 @@
     }
   },
   "if": {
-    "properties": { "rank": { "const": "ES" } }
+    "properties": { "rank": { "const": "GN" } }
   },
   "then": {
-    "properties": {
-      "potentials": {
-        "properties": {
-          "nectar": { "type": "integer" },
-          "pollen": { "type": "integer" },
-          "honeydew": { "type": "integer" },
-          "propolis": { "type": "integer" }
-        }
-      },
-      "ecology":{
-        "properties":{
-          "climate":{
-            "properties":{
-              "brightness": { "type": "integer" },
-              "moisture": { "type": "integer" },
-              "temperature": { "type": "integer" },
-              "continentality": { "type": "integer" }
-            }
-          },
-          "soil":{
-            "properties":{
-              "acidity": { "type": "integer" },
-              "moisture": { "type": "integer" },
-              "texture": { "type": "integer" },
-              "nutrients": { "type": "integer" },
-              "salinity": { "type": "integer" },
-              "organicMaterial": { "type": "integer" }
-            }
-          }
-        }
-      }
-    }
-  },
-  "else": {
     "properties": {
       "potentials": {
         "properties": {
@@ -617,6 +597,40 @@
               "nutrients": { "type": "array" },
               "salinity": { "type": "array" },
               "organicMaterial": { "type": "array" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "potentials": {
+        "properties": {
+          "nectar": { "type": "integer" },
+          "pollen": { "type": "integer" },
+          "honeydew": { "type": "integer" },
+          "propolis": { "type": "integer" }
+        }
+      },
+      "ecology":{
+        "properties":{
+          "climate":{
+            "properties":{
+              "brightness": { "type": "integer" },
+              "moisture": { "type": "integer" },
+              "temperature": { "type": "integer" },
+              "continentality": { "type": "integer" }
+            }
+          },
+          "soil":{
+            "properties":{
+              "acidity": { "type": "integer" },
+              "moisture": { "type": "integer" },
+              "texture": { "type": "integer" },
+              "nutrients": { "type": "integer" },
+              "salinity": { "type": "integer" },
+              "organicMaterial": { "type": "integer" }
             }
           }
         }
