@@ -19,8 +19,9 @@
 /**
  * @module ancgis/client/ancgis/dbms/AncgisIdbManager
  */
-  
+
 import SyncIdbManager from "./SyncIdbManager.js";
+import Taxon from "../dao/Taxon.js";
 
 /**
  * @classdesc
@@ -69,7 +70,7 @@ class AncgisIdbManager extends SyncIdbManager {
             if (feature.properties.flore && feature.properties.flore.length > 0) {
               let flore = [];
               feature.properties.flore.forEach(async function(specie){
-                specie.taxon = await self.readStore(taxonStore, specie.taxon);
+                specie.taxon = new Taxon(await self.readStore(taxonStore, specie.taxon));
                 flore.push(specie);
               });
               feature.properties.flore = flore;
@@ -88,6 +89,25 @@ class AncgisIdbManager extends SyncIdbManager {
     });
   }
 
+  readTaxons(id) {
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      var request = self.db.transaction(["taxons"])
+      .objectStore("taxons")
+      .get(id);
+      request.onsuccess = function(event) {
+         if (request.result) {
+            resolve(new Taxon(request.result));
+         } else {
+            reject(Error("'" + id + "' not found in your database."));
+         }
+      };
+      request.onerror = function(event) {
+        reject(Error("Unable to retrieve '" + id + "' from database."));
+      };
+    });
+  }
+
   readAll(collection) {
     if (collection === "vegetation-zones") {
       return this.readAllVegetationZones();
@@ -96,5 +116,12 @@ class AncgisIdbManager extends SyncIdbManager {
     }
   }
 
+  read(collection, id) {
+    if (collection === "taxons") {
+      return this.readTaxons(id);
+    } else {
+      return super.read(collection, id);
+    }
+  }
 }
 export default AncgisIdbManager;

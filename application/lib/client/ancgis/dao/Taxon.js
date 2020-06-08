@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = function(length, context, options) {
-  if ( Array.isArray(context) ) {
-    context = context.toString();
+import Periods from "../dao/Periods.js";
+
+class Taxon {
+  constructor(object) {
+    Object.assign(this, object);
+    this.periods.blooming.calendar = Periods.from(new Map(this.periods.blooming.calendar));
   }
-  if ( typeof context === 'string' && context.length > length ) {
-    return context.substring(0, length) + "...";
-  } else {
-    return context;
-  }
-};
+}
+
+export default Taxon;

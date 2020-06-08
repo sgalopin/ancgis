@@ -16,13 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-module.exports = function(length, context, options) {
-  if ( Array.isArray(context) ) {
-    context = context.toString();
-  }
-  if ( typeof context === 'string' && context.length > length ) {
-    return context.substring(0, length) + "...";
-  } else {
-    return context;
-  }
-};
+class Periods extends Array {
+
+  /**
+   * Returns a string representation of the periods
+   * Ex: [[6],[10,12]] => "6,10>12"
+   * @static
+   */
+  toString() {
+    let periodsString = [];
+    this.forEach(function(period){
+      if (period[1]) { // Interval
+        periodsString += period[0] + '>' + period[1];
+      } else {
+        periodsString += period[0];
+      }
+      periodsString += ',';
+    });
+    return periodsString.substring(0, periodsString.length - 1);
+  };
+}
+
+export default Periods;
