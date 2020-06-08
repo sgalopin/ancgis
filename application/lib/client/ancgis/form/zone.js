@@ -15,10 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 import zoneFormTemplate from "../../../views/partials/form/zone.hbs";
 import floreLineTemplate from "../../../views/partials/form/flore-line.hbs";
 import getSpeciesForm from "./species.js";
+import {displayMapMessage} from "../tool/message.js";
 import * as log from "loglevel";
 
 /**
@@ -104,8 +105,7 @@ export default async function(idbm, isOnline) {
           // Update the view
           updateSpeciesLines(newPpts);
         } else {
-          // TODO: Display an Error
-          log.error(Error("Species already present"));
+          displayMapMessage("L'espèce est déjà présente.", "error", true);
         }
       });
 

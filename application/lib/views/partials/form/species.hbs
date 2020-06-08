@@ -3,18 +3,14 @@
   <div class="ancgis-form-fields">
     <div class="ancgis-form-field">
       <label for="ancgis-speciesform-taxonfield">Espèce : </label>
-      <select id="ancgis-speciesform-taxonfield">
-        <option value="" disabled selected>Sélectionner</option>
+      <input list="ancgis-speciesform-taxonfield-datalist" type="text" id="ancgis-speciesform-taxonfield" placeholder="Sélectionner">
+      <datalist id="ancgis-speciesform-taxonfield-datalist">
         {{#each taxons}}
-            {{#unless synonymous}}
-              <option value="{{id}}" class="font-bold" data-smartflore="{{smartflore}}">{{name}}</option>
-            {{else}}
-              <option value="{{id}}" class="font-italic" data-smartflore="{{smartflore}}">&nbsp;&nbsp;{{name}}</option>
-            {{/unless}}
+            <option data-value="{{id}}" class="font-bold" data-smartflore="{{urns.fr.telabotanica}}" value="{{name.latin.short}}" label="{{name.fr}}">
         {{/each}}
-      </select>
+      </datalist>
       {{#if isOnline}}
-        <button id="ancgis-speciesform-taxonfield-trigger" class="btn btn-primary" alt="Ouvrir la description" type="button"><span class="ancgis-glyphicons ancgis-glyphicons-545eyeopen"></span></button>
+        <button id="ancgis-speciesform-taxonfield-trigger" class="btn btn-primary" alt="Ouvrir la description" type="button"><span class="ancgis-glyphicons-enlarged ancgis-glyphicons-545eyeopen"></span></button>
         <div id="ancgis-speciesform-taxonfield-frame">
           <div id="ancgis-speciesform-taxonfield-loadingdiv"></div>
           <iframe id="ancgis-speciesform-taxonfield-iframe" title="Aperçu"></iframe>

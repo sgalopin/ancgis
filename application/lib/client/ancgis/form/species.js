@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 import speciesFormTemplate from "../../../views/partials/form/species.hbs";
+import {displayMapMessage} from "../tool/message.js";
 import * as log from "loglevel";
 
 /**
@@ -29,16 +30,26 @@ export default async function(idbm, isOnline) {
 
       // Manage the validation of the form
       function validateForm () {
+        let formIsValid = true;
         // Check the recovery field value
         var rf = $("#ancgis-speciesform-recoveryfield");
         let recovery = Number(rf.val());
         recovery === 0 && (recovery = 100); // Set default value to 100
         if (recovery < 0 || recovery > 100) {
-          // TODO: Print an error message
-          log.error(Error("Bad recovery value"));
-        } else {
-          // Get the taxon fields
-          idbm.read("taxons", Number($("#ancgis-speciesform-taxonfield").val()))
+          // TODO: Display the error into the form
+          displayMapMessage("Recouvrement invalide.", "error", true);
+          formIsValid = false;
+        }
+        // Get the taxon fields
+        const currentValue = $("#ancgis-speciesform-taxonfield").val();
+        const selectedTaxonId = $('#ancgis-speciesform-taxonfield-datalist [value="' + currentValue + '"]').data('value');
+        if (!selectedTaxonId) {
+          // TODO: Display the error into the form
+          displayMapMessage("Taxon invalide.", "error", true);
+          formIsValid = false;
+        }
+        if (formIsValid) {
+          idbm.read("taxons", Number(selectedTaxonId))
           .then(function(taxon) {
             // Fire the end event
             $("#ancgis-zoneform").trigger("speciesFormValidated", { taxon, recovery });
@@ -55,33 +66,21 @@ export default async function(idbm, isOnline) {
       // Get the taxon fields
       idbm.readAll("taxons")
       .then(function(taxons) {
-        // Split the taxon name
-        let splitedTaxons = [];
-        taxons.forEach(function(taxon){
-          let taxonNames = taxon.name.fr.split(', ');
-          taxonNames.forEach(function(taxonName, index){
-            splitedTaxons.push({
-              id: taxon.id,
-              name: taxonName,
-              synonymous: index !== 0,
-              smartflore: taxon.urns.fr.telabotanica
-            });
-          });
+
+        // Sorts the data
+        taxons.sort(function(a, b){
+            if(a.name.latin.short < b.name.latin.short) { return -1; }
+            if(a.name.latin.short > b.name.latin.short) { return 1; }
+            return 0;
         });
 
         // HTML builds
-        var speciesFormHtml = speciesFormTemplate({ isOnline, taxons: splitedTaxons });
+        var speciesFormHtml = speciesFormTemplate({ isOnline, taxons });
         $("body").append(speciesFormHtml);
         $("#ancgis-speciesform [data-toggle=\"tooltip\"]").tooltip();
         $("#ancgis-speciesform").focus();
 
         // keys handler
-        // Note: "keypress" doesn't seem to be handled consistently
-        // between browsers whereas keyup is consistent.
-        $("#ancgis-speciesform-taxonfield").on("keypress", function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-          });
         $("#ancgis-speciesform, #ancgis-speciesform-taxonfield, #ancgis-speciesform-recoveryfield").on("keyup", function (event) {
           if (event.keyCode === 27) { // ESC
             event.stopPropagation();
@@ -96,17 +95,31 @@ export default async function(idbm, isOnline) {
             validateForm();
           }
         });
-        $("#ancgis-speciesform-taxonfield").change( function(event) {
+        $("#ancgis-speciesform-taxonfield").on('input', function(event) {
           event.stopPropagation();
           event.preventDefault();
-          $(this).find(":selected").each(function () {
-            if (isOnline) {
+          const currentValue = $(this).val();
+          const selectedTaxonId = $('#ancgis-speciesform-taxonfield-datalist [value="' + currentValue + '"]').data('value');
+          const smartflore = $('#ancgis-speciesform-taxonfield-datalist [value="' + currentValue + '"]').data('smartflore');
+          if (isOnline) {
+            if(selectedTaxonId){
               $("#ancgis-speciesform-taxonfield").parent().addClass('show-trigger');
               $("#ancgis-speciesform-taxonfield-loadingdiv").show();
               $("#ancgis-speciesform-taxonfield-iframe").hide();
-              $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + $(this).data("smartflore"));
+              $("#ancgis-speciesform-taxonfield-iframe").prop("src","/smartflore/" + smartflore);
+            } else {
+              $("#ancgis-speciesform-taxonfield").parent().removeClass('show-trigger');
+              $("#ancgis-speciesform-taxonfield-loadingdiv").hide();
+              $("#ancgis-speciesform-taxonfield-iframe").hide();
+              let trigger = $("#ancgis-speciesform-taxonfield-trigger");
+              trigger.removeClass("active");
+              let span = trigger.children(":first");
+              span.addClass("ancgis-glyphicons-546eyeopen");
+              span.removeClass("ancgis-glyphicons-546eyeclose");
+              $("#ancgis-speciesform").removeClass("enlarged");
+              $("#ancgis-speciesform-taxonfield-frame").hide();
             }
-          });
+          }
         });
 
         // Add taxonfield trigger handler
