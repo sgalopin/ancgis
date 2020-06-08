@@ -2,6 +2,7 @@
 /application/.env
 /shell/.env
 /application/node_modules/
+/database/generation/node_modules/
 /application/lib/public/javascripts/app.bundle.js
 /application/lib/public/javascripts/tools.bundle.js
 /application/lib/public/stylesheets/*.css
