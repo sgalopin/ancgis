@@ -830,3 +830,22 @@ progress[value]::-webkit-progress-value {
    background-color: lightgray;
  }
 }
+
+/****************************/
+/**      Layerswitcher     **/
+/****************************/
+
+.layer-switcher {
+  background-color: #555 !important;
+  padding: 1px !important;
+}
+.layer-switcher.shown {
+  bottom: inherit !important;
+}
+.layer-switcher button {
+  background-image:  url(../images/layerswitcher.png) !important;
+  background-color: #EEE !important;
+  background-position: 3px center !important;
+  width: 37px !important;
+  height: 35px !important;
+}
