@@ -67,7 +67,8 @@ export default async function(isOnline) {
   const extentsLayerName = "extentsLayer";
   const errorsLayerName = "errorsLayer";
   const bdorthoLayerName = "bdorthoLayer";
-  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline);
+  const scanLayerName = "scanLayer";
+  let map = await getMap(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, scanLayerName, isOnline);
 
   // Set up the hives layer source
   let hivesLayerSource = map.getLayerByName(hivesLayerName).getSource();
@@ -235,7 +236,7 @@ export default async function(isOnline) {
   let cache = new MapCache({
     map,
     extentsLayerName,
-    catchedLayerNames: [bdorthoLayerName]
+    catchedLayerNames: [bdorthoLayerName, scanLayerName]
   });
 
   // Management of the SyncInfo toolbar

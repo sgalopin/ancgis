@@ -50,7 +50,7 @@ import PeriodSwitcherEventType from "../../ol/control/PeriodSwitcherEventType.js
 /**
  * Map builder.
  */
-export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, isOnline) {
+export default async function(hivesLayerName, vegetationsLayerName, extentsLayerName, errorsLayerName, bdorthoLayerName, scanLayerName, isOnline) {
 
   let extendedGeoJSON = new ExtendedGeoJSON();
 
@@ -172,7 +172,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     }
   });
 
-  // BDORTHO layer
+  // Tile Grid
   var resolutions = [];
   var matrixIds = [];
   var proj3857 = olProjGet("EPSG:3857");
@@ -191,7 +191,8 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
 
   var key = "7wbodpc2qweqkultejkb47zv";
 
-  var ignSource = new WMTSSource({
+  // BDORTHO layer
+  var bdorthoLayerSource = new WMTSSource({
     url: "https://wxs.ign.fr/" + key + "/wmts",
     //layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
     layer: "ORTHOIMAGERY.ORTHOPHOTOS",
@@ -211,9 +212,33 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     title: 'Photos aériennes',
     type: 'base', // Required by LayerSwitcher
     name: bdorthoLayerName,
-    source: ignSource
+    source: bdorthoLayerSource
   });
 
+  // SCAN-EXPRESS layer
+  var scanLayerSource = new WMTSSource({
+    url: "https://wxs.ign.fr/" + key + "/wmts",
+    layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
+    matrixSet: "PM",
+    format: "image/jpeg",
+    projection: "EPSG:3857",
+    tileGrid,
+    style: "normal"/*, TODO: update this to openlayers 5
+    attributions: [new ol.Attribution({
+      html: "<a href=\"http://www.geoportail.fr/\" target=\"_blank\">" +
+        "<img src=\"https://api.ign.fr/geoportail/api/js/latest/" +
+        "theme/geoportal/img/logo_gp.gif\"></a>"
+    })]*/
+  });
+
+  var scanLayer = new TileLayer({
+    title: 'Scan express',
+    type: 'base', // Required by LayerSwitcher
+    name: scanLayerName,
+    source: scanLayerSource
+  });
+
+  // Layers groups
   let vectorLayersGroup = new LayerGroup({
     title: 'Données',
     fold: 'open',
@@ -224,8 +249,8 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
     new LayerGroup({
       title: 'Fonds',
       fold: 'open',
-      layers: [bdorthoLayer]
-      }),
+      layers: [bdorthoLayer, scanLayer]
+    }),
     vectorLayersGroup
   ];
   if (isOnline) {

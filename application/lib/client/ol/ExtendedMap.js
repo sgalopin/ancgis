@@ -44,18 +44,17 @@ class ExtendedMap extends Map {
   }
 
   getLayerByName(layerName, node= null) {
-    let map = this, wanted_child = null;
+    let map = this;
     if (node === null) { node = map; }
-    node.getLayers().getArray().find(function(child) {
+    for (const child of node.getLayers().getArray()) {
       if (child instanceof LayerGroup) {
-        wanted_child = map.getLayerByName(layerName, child);
-        if (wanted_child !== null) { return; }
+        let subchild = map.getLayerByName(layerName, child);
+        if (subchild !== null) { return subchild; }
       } else if(child.get("name") === layerName) {
-        wanted_child = child;
-        return;
+        return child;
       }
-    });
-    return wanted_child;
+    }
+    return null;
   }
 
   getFeatures() {
