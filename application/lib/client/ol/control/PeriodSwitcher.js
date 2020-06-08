@@ -19,10 +19,11 @@
 /**
  * @module ancgis/client/ol/control/PeriodSwitcher
  */
- 
+
 import Control from "ol/control/Control.js";
 import {listen} from "ol/events.js";
 import PeriodSwitcherEventType from "./PeriodSwitcherEventType.js";
+import PeriodTypes from "./PeriodTypes.js";
 import GeometryType from "ol/geom/GeometryType.js";
 import EventType from "ol/events/EventType.js";
 import {CLASS_UNSELECTABLE, CLASS_CONTROL} from "ol/css.js";
@@ -42,76 +43,23 @@ class PeriodSwitcher extends Control {
 
     const options = optOptions ? optOptions : {};
 
-    var btnsOptions = [{
-      period: "T1",
-      label: "T1",
-      tipLabel: "Transition 1"
-    },{
-      period: "PV1",
-      label: "PV1",
-      tipLabel: "Pré-vernal 1"
-    },{
-      period: "PV2",
-      label: "PV2",
-      tipLabel: "Pré-vernal 2"
-    },{
-      period: "T2",
-      label: "T2",
-      tipLabel: "Transition 2"
-    },{
-      period: "V1",
-      label: "V1",
-      tipLabel: "Vernal 1"
-    },{
-      period: "V2",
-      label: "V2",
-      tipLabel: "Vernal 2"
-    },{
-      period: "V3",
-      label: "V3",
-      tipLabel: "Vernal 3"
-    },{
-      period: "V4",
-      label: "V4",
-      tipLabel: "Vernal 4"
-    },{
-      period: "T3",
-      label: "T3",
-      tipLabel: "Transition 3"
-    },{
-      period: "E1",
-      label: "E1",
-      tipLabel: "Estival 1"
-    },{
-      period: "E2",
-      label: "E2",
-      tipLabel: "Estival 2"
-    },{
-      period: "T4",
-      label: "T4",
-      tipLabel: "Transition 4"
-    },{
-      period: "EA",
-      label: "EA",
-      tipLabel: "Estivo-automnal"
-    }];
-
     /**
      * Simulate a mouse over on the elements with the same period.
      * @param {MouseEvent} evt The mouse over event.
      */
     function simulateHover(evt) {
       var period = this.getAttribute("data-period");
-      var periodElements = document.querySelectorAll("[data-period="+period+"]:not(."+this.className+")");
+      var periodElements = document.querySelectorAll("[data-period=\""+period+"\"]:not(."+this.className+")");
       periodElements.forEach(function(periodElement){
         periodElement.classList.toggle("hover");
       });
     }
 
     // Buttons list
+    let periodType = PeriodTypes[options.periodType.toUpperCase()];
     var list = document.createElement("ul");
     list.className = "ol-periodswitcher-buttonslist";
-    btnsOptions.forEach(function(btnOpt) {
+    periodType.forEach(function(btnOpt) {
       // Buttons
       var button = document.createElement("li");
       button.className = "ol-periodswitcher-button";
@@ -130,7 +78,7 @@ class PeriodSwitcher extends Control {
     // Potentials nectar histogram
     var histo = document.createElement("div");
     histo.className = "ol-periodswitcher-histogram";
-    btnsOptions.forEach(function(btnOpt) {
+    periodType.forEach(function(btnOpt) {
       // Histo Column
       var histoColumn = document.createElement("div");
       histoColumn.className = "ol-periodswitcher-histo-column";
@@ -151,7 +99,7 @@ class PeriodSwitcher extends Control {
     // Title
     var span = document.createElement("span");
     span.className = "ol.periodswitcher-title";
-    span.innerHTML = "-- Périodes de floraison (Guerriat-1996) --";
+    span.innerHTML = "-- Périodes de floraison --";
     //span.title = "La commande « shift + roulette » permet de changer de période.";
     span.setAttribute("data-toggle", "tooltip");
     span.setAttribute("data-placement", "top");
@@ -177,6 +125,8 @@ class PeriodSwitcher extends Control {
       element,
       target: options.target
     });
+
+    this.periodType = options.periodType;
   }
 
   /**
@@ -245,12 +195,33 @@ class PeriodSwitcher extends Control {
     var maxColumnHeight = 100; // Pixels
     for(period in periodsPotential) {
        if (periodsPotential.hasOwnProperty(period)) {
-        var nectarColumn = document.querySelector(".ol-periodswitcher-histo-column[data-period="+period+"]>.ol-periodswitcher-nectar-column");
+        var nectarColumn = document.querySelector(".ol-periodswitcher-histo-column[data-period=\""+period+"\"]>.ol-periodswitcher-nectar-column");
         nectarColumn.style["height"] = (periodsPotential[period].nectar * maxColumnHeight / maxNectar) + "px";
-        var pollenColumn = document.querySelector(".ol-periodswitcher-histo-column[data-period="+period+"]>.ol-periodswitcher-pollen-column");
+        var pollenColumn = document.querySelector(".ol-periodswitcher-histo-column[data-period=\""+period+"\"]>.ol-periodswitcher-pollen-column");
         pollenColumn.style["height"] = (periodsPotential[period].pollen * maxColumnHeight / maxPollen) + "px";
       }
     }
+  }
+
+  /**
+   * Get a period's full array from the short array.
+   * Ex: [[6,8],[10,12]] => [6, 7, 8, 10, 11, 12]
+   * @private
+   */
+  expandBloomingPeriods_(shortPeriod) {
+    let fullPeriod = [];
+    shortPeriod.forEach(function(period){
+      let p = period[0];
+      if (period[1]) { // Interval
+        while (p <= period[1]) {
+          fullPeriod.push(p);
+          p++;
+        }
+      } else {
+        fullPeriod.push(p);
+      }
+    });
+    return fullPeriod;
   }
 
   /**
@@ -258,7 +229,8 @@ class PeriodSwitcher extends Control {
    * @private
    */
   getPeriodPotentialFromMap_() {
-    var map = this.getMap();
+    let self = this;
+    var map = self.getMap();
     var vegetationsLayer = map.getLayerByName("vegetationsLayer");
     var vegetationsLayerSource = vegetationsLayer.getSource();
     var periodsPotential = {};
@@ -274,14 +246,15 @@ class PeriodSwitcher extends Control {
             // factor *= ol.Sphere.getArea(feature.getGeometry());
             factor *= feature.getGeometry().getArea();
           }
-          specie.taxon.periods.blooming.forEach(function(period){
+          const blooming = this.expandBloomingPeriods_(specie.taxon.periods.blooming[self.periodType]);
+          blooming.forEach(function(period){
             periodsPotential[period] = periodsPotential[period] ? periodsPotential[period] : { nectar: 0, pollen: 0 };
             periodsPotential[period].nectar = Math.round((periodsPotential[period].nectar + (specie.taxon.potentials.nectar * factor)) * 10) / 10;
             periodsPotential[period].pollen = Math.round((periodsPotential[period].pollen + (specie.taxon.potentials.pollen * factor)) * 10) / 10;
-          }, this);
-        }, this);
+          }, self);
+        }, self);
       }
-    }, this);
+    });
     return periodsPotential;
   }
 

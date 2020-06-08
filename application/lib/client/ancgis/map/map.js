@@ -242,7 +242,7 @@ export default async function(hivesLayerName, vegetationsLayerName, extentsLayer
         tipLabel: 'Légende',
         groupSelectStyle: 'group'
     }),
-      new PeriodSwitcher(),
+      new PeriodSwitcher({periodType: "calendar"}),
       new Attribution(),
       new ZoomSlider(),
       new ScaleLine(),
