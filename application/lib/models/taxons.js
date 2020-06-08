@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 var mongoose = require("mongoose");
 
 // Model's declaration
@@ -28,12 +28,20 @@ module.exports = mongoose.model("Taxon", new mongoose.Schema({
 		"fr": {type: String, unique: true, required: true}
 	},
 	"name": {
-		"latin": {type: String, unique: true, required: true},
+		"latin": {
+			"full": {type: String, unique: true, required: true},
+    	"short": {type: String, unique: true, required: true}
+		},
 		"fr": {type: String, unique: true, required: true}
 	},
 	"periods": {
-		"blooming": {type: [String], required: true},
-		"honeydew": {type: [String], required: true}
+		"blooming": {
+			"calendar": {type: [[Number]], required: true},
+			"phenoseason": {type: [[Number]], required: false}
+		},
+		"honeydew": {
+			"phenoseason": {type: [[Number]], required: false}
+		}
 	},
 	"potentials": {
 		"nectar": {type: mongoose.Schema.Types.Mixed, required: true},

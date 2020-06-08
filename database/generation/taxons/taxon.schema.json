@@ -46,7 +46,18 @@
       "properties": {
         "latin": {
           "description": "The taxon's latin name",
-          "type": "string"
+          "type": "object",
+          "required": [ "full", "short" ],
+          "properties": {
+            "full": {
+              "description": "The taxon's latin full name",
+              "type": "string"
+            },
+            "short": {
+              "description": "The taxon's latin short name",
+              "type": "string"
+            }
+          }
         },
         "fr": {
           "description": "The taxon's french vernacular name",
@@ -57,42 +68,80 @@
     "periods": {
       "description": "The taxon's periods",
       "type": "object",
-      "required": [ "blooming", "honeydew" ],
+      "required": [ "blooming"],
       "properties": {
         "blooming": {
-          "description": "The taxon's blooming periods (Months)",
-          "type": "array",
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 12
+          "description": "The taxon's blooming periods",
+          "type": "object",
+          "required": [ "calendar" ],
+          "properties": {
+            "calendar": {
+              "description": "The taxon's blooming periods (Months)",
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 12
+                },
+                "minItems": 1
+              },
+              "minItems": 0,
+              "uniqueItems": true
             },
-            "minItems": 2
-          },
-          "minItems": 0,
-          "uniqueItems": true
-        },
-        "blooming2": {
-          "description": "The taxon's blooming periods (Guerriat's phenoseasons)",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["T1", "PV1", "PV2", "T2", "V1", "V2", "V3", "V4", "T3", "E1", "E2", "T4", "EA"]
-          },
-          "minItems": 0,
-          "uniqueItems": true
+            "phenoseason": {
+              "description": "The taxon's blooming periods (Guerriat's phenoseasons)",
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 13
+                },
+                "minItems": 1
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          }
         },
         "honeydew": {
-          "description": "The taxon's honeydew periods (Guerriat's phenoseasons)",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["T1", "PV1", "PV2", "T2", "V1", "V2", "V3", "V4", "T3", "E1", "E2", "T4", "EA"]
-          },
-          "minItems": 0,
-          "uniqueItems": true
+          "description": "The taxon's honeydew periods",
+          "type": "object",
+          "properties": {
+            "calendar": {
+              "description": "The taxon's honeydew periods (Months)",
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 12
+                },
+                "minItems": 1
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "phenoseason": {
+              "description": "The taxon's honeydew periods (Guerriat's phenoseasons)",
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 13
+                },
+                "minItems": 1
+              },
+              "minItems": 0,
+              "uniqueItems": true
+            }
+          }
         }
       }
     },

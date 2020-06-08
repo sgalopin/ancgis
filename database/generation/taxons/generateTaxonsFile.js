@@ -10,6 +10,13 @@ module.exports = function (inputFileName, outputFileName) {
     return data;
   });
 
+  // Sorts the data
+  cleaned_data.sort(function(a, b){
+      if(a.name.latin.short < b.name.latin.short) { return -1; }
+      if(a.name.latin.short > b.name.latin.short) { return 1; }
+      return 0;
+  });
+
   // Remove the invalid data
   let final_cleaned_data = [];
   cleaned_data.forEach(function(element) {

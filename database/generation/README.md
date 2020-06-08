@@ -40,5 +40,4 @@ You can decide to edit you own database for any reason. In that case, you can ch
  - Launch the generation:  
  ```npm run start```,
  - Launch the db populate:  
- ```cd /var/tmp/ancgis/database/data```  
- ```/bin/bash /var/tmp/ancgis/shell/populate-db.sh```.
+ ```/bin/bash /var/www/ancgis/sources/shell/populate-db.sh```.
