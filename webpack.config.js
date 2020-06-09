@@ -46,7 +46,7 @@ module.exports = {
         ]
       }
     },{
-      test: /^\.\/application\/.*\.json$/,
+      test: /^\.\/lib\/.*\.json$/,
       loader: "json-loader"
     }]
   },

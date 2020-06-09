@@ -3,10 +3,9 @@ node_js:
   - "node"
 notifications:
   email: false
-before_install: cd application
 before_script:
   - sudo setcap cap_net_bind_service=+ep `which node`
-  - cd ../database && /bin/bash ../shell/populate-db.sh && cd ../application
+  - cd ../database && /bin/bash ../shell/populate-db.sh
   - npm run start &
 script: npm test
 sudo: required
