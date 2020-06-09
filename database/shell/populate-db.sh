@@ -2,7 +2,7 @@
 
 # Data directory
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-DATA_DIR="$SCRIPTPATH/../database/data"
+DATA_DIR="$SCRIPTPATH/../data"
 
 # Environment variables
 source "$SCRIPTPATH/.env"
@@ -19,8 +19,7 @@ do
     then
       mongo $MONGODB_SHORTURI -u $MONGODB_USER -p $MONGODB_PASSWORD $f
     else
-      mongo $MONGODB_SHORTURI "$DATA_DIR/taxons.js"
+      mongo $MONGODB_SHORTURI $f
     fi
     echo "--- Populating done."
 done
-
