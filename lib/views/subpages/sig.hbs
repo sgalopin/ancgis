@@ -51,6 +51,7 @@
         <button id="ancgis-topright-logout2" class="dropdown-item" alt="Se déconnecter" type="button">Se déconnecter</button>
       </div>
     </div>
+    {{#if isOnline}}
     <div id="ancgis-topright-settings-menu" class="dropdown">
       <button id="dropdownSettingsMenu" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="ancgis-glyphicons ancgis-glyphicons-546optionvertical"></span>
@@ -61,6 +62,7 @@
         <button id="ancgis-topright-appreload" class="dropdown-item" alt="Recharger l'application" type="button">Recharger l'application</button>
       </div>
     </div>
+    {{/if}}
   </div>
   <!-- Map -->
   <div id="ancgis-map" class="map"></div>
