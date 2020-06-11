@@ -1,0 +1,30 @@
+#smartflore-illustrations .carousel-inner {
+    height: 70vh !important;
+}
+#smartflore-illustrations {
+    background-color: rgba(50, 50, 50, 0.3);
+}
+#smartflore-fiche .smartflore-titre-section {
+    background-color: rgba(50, 50, 50, 0.3);
+}
+#smartflore-fiche #smartflore-footer .smartflore-footer-bouton .btn {
+    background-color: #EEEEEE;
+    color: rgb(50, 50, 50);
+}
+#smartflore-footer>div.col-md-12:first{
+  display: table-row;
+}
+.smartflore-footer-bouton{
+  display: table-cell;
+  float: none;
+}
+#smartflore-footer #smartflore-partenaires #smartflore-accordeon-partenaires h4 {
+  font-size: 16px;
+}
+#smartflore-fiche {
+    display: grid;
+}
+#smartflore-entete{
+   grid-row: 4;
+   padding-top: 30px;
+}

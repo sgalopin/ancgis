@@ -1,4 +1,6 @@
 /.vagrant
-/application/.env
-/shell/.env
-/application/node_modules/
+/.env
+/node_modules/
+/lib/public/javascripts/app.bundle.js
+/lib/public/javascripts/tools.bundle.js
+/lib/public/stylesheets/*.css
