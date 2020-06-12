@@ -1,3 +1,12 @@
+### Chrome parameter
+```
+/usr/bin/google-chrome-stable %U --ignore-certificate-errors
+```
+
+### Chrome certificates page
+```
+chrome://settings/certificates
+```
 
 ### Generate the certificate
 

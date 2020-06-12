@@ -172,7 +172,7 @@ html, body, .container-fluid {
         display: none;
       }
       .info {
-        margin-left: 10px;
+        margin-left: 5px;
       }
     }
   }
@@ -629,6 +629,7 @@ progress[value]::-webkit-progress-value {
   border-image: initial;
   border-radius: 5px;
   color: white;
+  z-index: 2; // Must be above ancgis-uploadinfo-tbar's z-index
 }
 #ancgis-hiveform {
   width: 400px;
