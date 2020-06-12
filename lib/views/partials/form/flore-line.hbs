@@ -1,7 +1,7 @@
 {{#each species}}
 <tr>
-    <td data-toggle="tooltip" data-placement="bottom" data-container=".ancgis-form-florefields>table>tbody" title="{{taxon.name.latin.short}}">{{substr "18" taxon.name.latin.short}}</td>
-    <td data-toggle="tooltip" data-placement="bottom" data-container=".ancgis-form-florefields>table>tbody" title="{{taxon.periods.blooming.calendar}}">{{substr "12" taxon.periods.blooming.calendar}}</td>
+    <td data-toggle="tooltip" data-placement="bottom" data-container=".ancgis-form-florefields>table>tbody" title="{{substr "25" taxon.name.fr}}">{{substr "18" taxon.name.latin.short}}</td>
+    <td data-toggle="tooltip" data-placement="bottom" data-container=".ancgis-form-florefields>table>tbody">{{substr "12" taxon.periods.blooming.calendar}}</td>
     <td>{{recovery}}</td>
     <td class="ancgis-form-removespecies" data-id="{{taxon.id}}" data-toggle="tooltip" data-placement="right" data-container=".ancgis-form-florefields>table>tbody" alt="Supprimer l'espèce" title="Supprimer l'espèce.">
       <span class="ancgis-glyphicons-reducted ancgis-glyphicons-208remove"></span>

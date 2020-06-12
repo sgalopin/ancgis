@@ -146,24 +146,27 @@ html, body, .container-fluid {
   padding: 1px 5px 1px 5px;
   height: 35px;
 }
-#ancgis-info-tbar, #ancgis-uploadinfo-tbar {
-  margin: auto 0;
-  vertical-align: middle;
+#ancgis-info-ttbar, #ancgis-info-btbar {
   .label {
     margin-left: 10px;
   }
-}
-#ancgis-info-tbar {
-  flex: 1;
-  font-family: cursive;
-  font-size: larger;
-  margin-left: 10px;
   .info {
     font-weight: 700;
   }
 }
-@media screen and (max-width: 840px) {
-  #ancgis-info-tbar {
+#ancgis-info-ttbar  {
+  flex: 1;
+  font-family: cursive;
+  font-size: larger;
+  margin-left: 10px;
+  margin: auto 0;
+  vertical-align: middle;
+}
+#ancgis-info-btbar {
+  float: right;
+}
+@media screen and (max-width: 640px) {
+  #ancgis-info-btbar {
     .content {
       .label {
         display: none;
@@ -174,18 +177,19 @@ html, body, .container-fluid {
     }
   }
 }
-@media screen and (max-width: 540px) {
-  #ancgis-info-tbar {
-    margin: 0;
-    .content {
-      display: none;
-    }
-  }
-}
 #ancgis-uploadinfo-tbar {
-  margin-right: 10px;
+  position: absolute;
+  z-index: 1;
+  background-color: #EEE;
+  border: 2px solid #D89B23;
+  border-radius: 4px;
+  top: 2.7em;
+  right: 0.45em;
   font-family: serif;
   font-size: large;
+  .content {
+    padding: 0 10px;
+  }
   .warning {
     background-image: url(../images/warning.png);
     background-repeat: no-repeat;
@@ -193,14 +197,17 @@ html, body, .container-fluid {
     padding-right: 20px;
   }
 }
-#ancgis-map-ttbar .btn-primary {
-    background-color: #EEE;
+#ancgis-map-ttbar .btn-primary,
+#ancgis-map-ttbar .btn-primary:hover {
+    // "hover" must be set to the default button color.
+    // Otherwise, in mobile mode, its necessary to touch the map to remove the hover event.
+    background-color: #EEE !important;
 }
-#ancgis-map-ttbar .btn-primary:hover,
 #ancgis-map-ttbar .btn-primary.active,
 #ancgis-map-ttbar .btn-primary:visited {
   background-color: #BBB !important;
 }
+
 #ancgis-mapcontrol-drawcircle,
 #ancgis-topright-drawextent,
 #ancgis-topright-displayLegend {
@@ -260,7 +267,8 @@ html, body, .container-fluid {
 }
 #ancgis-mapstatus-tbar>div {
   display: inline-block;
-  padding: 4px 6px 4px 6px;
+  padding: 0 6px;
+  margin: 3px 0;
 }
 #ancgis-mapstatus-projection {
 	border-right: solid 1px #999;
@@ -269,7 +277,11 @@ html, body, .container-fluid {
 	text-align: center
 }
 #ancgis-mapstatus-mapcachesync {
-  float: right;
+  position: absolute;
+  z-index: 1;
+  background-color: #e1e1e1;
+  right: 0;
+  font-size: 10px;
   progress {
     vertical-align: middle;
     font-size: 1.3em;
@@ -843,7 +855,7 @@ progress[value]::-webkit-progress-value {
   bottom: inherit !important;
 }
 .layer-switcher button {
-  background-image:  url(../images/layerswitcher.png) !important;
+  background-image:  url("../images/layerswitcher.png") !important;
   background-color: #EEE !important;
   background-position: 3px center !important;
   width: 37px !important;
