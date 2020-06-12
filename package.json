@@ -1,6 +1,6 @@
 {
   "name": "ancgis",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "private": true,
   "scripts": {
     "start": "node lib/server.js",
@@ -15,6 +15,7 @@
   "license": "GPLv3",
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
+    "async": "^3.2.0",
     "body-parser": "~1.18.2",
     "bootstrap": "^4.3.1",
     "connect-mongo": "^2.0.3",
