@@ -14,14 +14,7 @@
       <button id="ancgis-mapcontrol-modify" class="btn btn-primary" alt="Modifier un élément cartographique" type="button" data-toggle="tooltip" data-placement="bottom" title="Modifier un élément cartographique. Un &#171; ctrl + clic &#187; permet de supprimer un sommet." data-shortid="modify"><span class="ancgis-glyphicons ancgis-glyphicons-31pencil"></span></button>
       <button id="ancgis-mapcontrol-erase" class="btn btn-primary" alt="Supprimer un élément cartographique" type="button" data-toggle="tooltip" data-placement="bottom" title="Supprimer un élément cartographique. Le maintien de la touche &#171; ctrl &#187; permet une suppression multiple." data-shortid="erase"><span class="ancgis-glyphicons ancgis-glyphicons-551erase"></span></button>
     </div>
-    <div id="ancgis-info-tbar">
-      <div class="content">
-        <span class="label">Mode: </span><span class="info">{{#if isOnline}}Connecté{{else}}Déconnecté{{/if}}</span>
-        <span class="label">Utilisateur: </span><span class="info">{{user.username}}</span>
-        <span class="label">Profil: </span><span class="info">{{user.profil}}</span>
-      </div>
-    </div>
-    <div id="ancgis-uploadinfo-tbar"></div>
+    <div id="ancgis-info-ttbar"></div>
     <div id="ancgis-topright-tbar" class="btn-group">
       <button id="ancgis-topright-zoomtofeature" class="btn btn-primary" alt="Zoomer sur les éléments cartographiques" type="button" data-toggle="tooltip" data-placement="bottom" title="Zoomer sur les éléments cartographiques."><span class="ancgis-glyphicons ancgis-glyphicons-488fitimagetoframe"></span></button>
       <button id="ancgis-topright-displayhistrogram" class="btn btn-primary" alt="Afficher l'histogramme" type="button" data-toggle="tooltip" data-placement="bottom" title="Afficher l'histogramme des potentiels."><span class="ancgis-glyphicons ancgis-glyphicons-charts"></span></button>
@@ -65,11 +58,20 @@
     {{/if}}
   </div>
   <!-- Map -->
-  <div id="ancgis-map" class="map"></div>
+  <div id="ancgis-map" class="map">
+    <div id="ancgis-uploadinfo-tbar"></div>
+  </div>
   <!-- Map status tbar -->
   <div id="ancgis-mapstatus-tbar">
     <div id="ancgis-mapstatus-projection">EPSG:3857</div>
     <div id="ancgis-mapstatus-mouseposition"></div>
+    <div id="ancgis-info-btbar">
+      <div class="content">
+        <span class="label">Mode: </span><span class="info">{{#if isOnline}}Connecté{{else}}Déconnecté{{/if}}</span>
+        <span class="label">Utilisateur: </span><span class="info">{{user.username}}</span>
+        <span class="label">Profil: </span><span class="info">{{user.profil}}</span>
+      </div>
+    </div>
     <div id="ancgis-mapstatus-mapcachesync"></div>
   </div>
 </div>
